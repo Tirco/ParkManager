@@ -1,4 +1,4 @@
-package tv.tirco.template.util;
+package tv.tirco.parkmanager.util;
 
 import java.util.logging.Level;
 

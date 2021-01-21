@@ -3,13 +3,31 @@ version: ${version}
 description: ${description}
 author: ${author}
 website: ${url}
+api-version: 1.16
 
 main: ${mainClass}
+depend: [Train_Carts]
 
 commands:
     example:
         description: An example command
         permission: spigotplugin.example
+        usage: /<command>
+    sit:
+        description: plunk that butt down on the ground
+        permission: parkmanager.sit
+        usage: /<command>
+    hideiteminfo:
+        description: hides all the flags on the item in hand.
+        permission: parkmanager.hideiteminfo
+        usage: /<command>
+    bench:
+        description: Makes a bench at your position
+        permission: parkmanager.bench
+        usage: /<command>
+    modeldata:
+        description: edits the data of the item in hand.
+        permission: parkmanager.modeldata
         usage: /<command>
 
 permissions: {}

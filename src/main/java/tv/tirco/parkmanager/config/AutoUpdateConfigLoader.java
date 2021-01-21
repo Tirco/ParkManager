@@ -1,4 +1,4 @@
-package tv.tirco.template.config;
+package tv.tirco.parkmanager.config;
 
 import java.io.*;
 import java.util.HashMap;
@@ -9,7 +9,8 @@ import java.util.Set;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import tv.tirco.Lottery.util.MessageHandler;
+import tv.tirco.parkmanager.util.MessageHandler;
+
 
 public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 	public AutoUpdateConfigLoader(String relativePath, String fileName) {

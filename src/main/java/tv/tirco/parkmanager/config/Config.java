@@ -1,14 +1,9 @@
-package tv.tirco.template.config;
+package tv.tirco.parkmanager.config;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import net.md_5.bungee.api.ChatColor;
-import tv.tirco.template.util.MessageHandler;
+import tv.tirco.parkmanager.util.MessageHandler;
 
 public class Config extends AutoUpdateConfigLoader {
 	private static Config instance;

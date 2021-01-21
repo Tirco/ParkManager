@@ -1,4 +1,4 @@
-package tv.tirco.template.config;
+package tv.tirco.parkmanager.config;
 
 import java.io.File;
 import java.util.List;
@@ -6,13 +6,13 @@ import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import tv.tirco.Lottery.lottery.LotteryMain;
-import tv.tirco.Lottery.util.MessageHandler;
+import tv.tirco.parkmanager.ParkManager;
+import tv.tirco.parkmanager.util.MessageHandler;
 
 public abstract class ConfigLoader {
 	// Used to load different config files.
 
-	protected static final LotteryMain plugin = LotteryMain.lotteryMain;
+	protected static final ParkManager plugin = ParkManager.parkManager;
 	protected String fileName;
 	private File configFile;
 	protected FileConfiguration config;
