@@ -11,7 +11,7 @@ import org.bukkit.inventory.EquipmentSlot;
 
 public class SitCommand implements CommandExecutor{
 
-	@Override
+	//@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(sender instanceof Player) {
 			Player player = (Player) sender;

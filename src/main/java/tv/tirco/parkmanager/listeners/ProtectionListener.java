@@ -11,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -55,6 +56,19 @@ public class ProtectionListener implements Listener{
 		}
 	}
 	
+    @EventHandler
+    public void itemFrameItemRemoval(EntityDamageByEntityEvent e) {
+        if (e.getEntity() instanceof ItemFrame) {
+        	if(e.getDamager() instanceof Player) {
+        		Player p = (Player) e.getDamager();
+        		if(p.getGameMode().equals(GameMode.CREATIVE)) {
+        			return;
+        		}
+        	}
+            e.setCancelled(true);
+        }
+    }
+	
 	private boolean canBeClicked(Material mat) {
 		switch(mat) {
 		//Buttons
@@ -83,6 +97,23 @@ public class ProtectionListener implements Listener{
 		case HEAVY_WEIGHTED_PRESSURE_PLATE:
 		//Containers
 		case ENDER_CHEST:
+		//Signs
+		case OAK_SIGN:
+		case ACACIA_SIGN:
+		case SPRUCE_SIGN:
+		case BIRCH_SIGN:
+		case DARK_OAK_SIGN:
+		case JUNGLE_SIGN:
+		case CRIMSON_SIGN:
+		case WARPED_SIGN:
+		case OAK_WALL_SIGN:
+		case ACACIA_WALL_SIGN:
+		case SPRUCE_WALL_SIGN:
+		case BIRCH_WALL_SIGN:
+		case DARK_OAK_WALL_SIGN:
+		case JUNGLE_WALL_SIGN:
+		case CRIMSON_WALL_SIGN:
+		case WARPED_WALL_SIGN:
 			return true;
 		default: 
 			return false;
@@ -123,6 +154,10 @@ public class ProtectionListener implements Listener{
     @EventHandler
     public void onFrameBreak(HangingBreakByEntityEvent event) {
         //Do nothing if not a player
+        Bukkit.getConsoleSender().sendMessage("DEBUG: Hanging break by entity event");
+        Bukkit.getConsoleSender().sendMessage("DEBUG: cause = " + event.getCause());
+        Bukkit.getConsoleSender().sendMessage("DEBUG: entity = " + event.getEntity());
+        Bukkit.getConsoleSender().sendMessage("DEBUG: remover = " + event.getRemover());
         if(!(event.getRemover() instanceof Player)) {
         	event.setCancelled(true);
         	return;

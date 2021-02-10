@@ -134,4 +134,85 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 			}
 		}
 	}
+	
+	protected void saveFile() {
+			// Get Bukkit's version of an acceptable config with new keys, and no old keys
+			String output = config.saveToString();
+
+			// Convert to the superior 4 space indentation
+			output = output.replace("  ", "    ");
+
+			// Rip out Bukkit's attempt to save comments at the top of the file
+			while (output.replaceAll("[//s]", "").startsWith("#")) {
+				output = output.substring(output.indexOf('\n', output.indexOf('#')) + 1);
+			}
+
+			// Read the internal config to get comments, then put them in the new one
+			try {
+				// Read internal
+				BufferedReader reader = new BufferedReader(new InputStreamReader(plugin.getResource(fileName)));
+				LinkedHashMap<String, String> comments = new LinkedHashMap<String, String>();
+				String temp = "";
+
+				String line;
+				while ((line = reader.readLine()) != null) {
+					if (line.contains("#")) {
+						temp += line + "\n";
+					} else if (line.contains(":")) {
+						line = line.substring(0, line.indexOf(":") + 1);
+						if (!temp.isEmpty()) {
+							if (comments.containsKey(line)) {
+								int index = 0;
+								while (comments.containsKey(line + index)) {
+									index++;
+								}
+
+								line = line + index;
+							}
+
+							comments.put(line, temp);
+							temp = "";
+						}
+					}
+				}
+
+				// Dump to the new one
+				HashMap<String, Integer> indexed = new HashMap<String, Integer>();
+				for (String key : comments.keySet()) {
+					String actualkey = key.substring(0, key.indexOf(":") + 1);
+
+					int index = 0;
+					if (indexed.containsKey(actualkey)) {
+						index = indexed.get(actualkey);
+					}
+					boolean isAtTop = !output.contains("\n" + actualkey);
+					index = output.indexOf((isAtTop ? "" : "\n") + actualkey, index);
+
+					if (index >= 0) {
+						output = output.substring(0, index) + "\n" + comments.get(key)
+								+ output.substring(isAtTop ? index : index + 1);
+						indexed.put(actualkey, index + comments.get(key).length() + actualkey.length() + 1);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			// Save it
+			try {
+				String saveName = fileName;
+				// At this stage we cannot guarantee that Config has been loaded, so we do the
+				// check directly here
+				if (!plugin.getConfig().getBoolean("setting.updateoverwrite", true)) {
+					saveName += ".new";
+				}
+
+				BufferedWriter writer = new BufferedWriter(new FileWriter(new File(plugin.getDataFolder(), saveName)));
+				writer.write(output);
+				writer.flush();
+				writer.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	}
 }

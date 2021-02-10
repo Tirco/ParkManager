@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import tv.tirco.parkmanager.Inventories.ItemModifier;
+import tv.tirco.parkmanager.config.Aliases;
 
 public class ExampleCommand implements CommandExecutor {
     ParkManager plugin;
@@ -14,7 +15,7 @@ public class ExampleCommand implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    @Override
+    //@Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         String cmdName = cmd.getName().toLowerCase();
 
@@ -28,8 +29,20 @@ public class ExampleCommand implements CommandExecutor {
         
         if(sender instanceof Player) {
         	Player player = (Player) sender;
-            new ItemModifier(ParkManager.parkManager, player.getInventory().getItemInMainHand() ,player);
+            //new ItemModifier(ParkManager.parkManager, player.getInventory().getItemInMainHand() ,player);
         }
+        
+        String key = "test";
+        String value = "Also test";
+        if(args[0] != null) {
+        	key = args[0];
+        	
+        	if(args[1] != null) {
+            	value = args[1];
+            }
+        }
+        
+        Aliases.getInstance().setValue(key, value);
 
 
         return true;

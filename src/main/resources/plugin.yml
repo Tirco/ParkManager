@@ -29,5 +29,9 @@ commands:
         description: edits the data of the item in hand.
         permission: parkmanager.modeldata
         usage: /<command>
+    voucher:
+        description: edits the data of the item in hand.
+        permission: parkmanager.voucher
+        usage: /<command>
 
 permissions: {}

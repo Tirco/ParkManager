@@ -12,7 +12,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class ModelDataCommand implements CommandExecutor{
 
-	@Override
+	//@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(!(sender instanceof Player)) {
 			sender.sendMessage("This command can only be used by players.");

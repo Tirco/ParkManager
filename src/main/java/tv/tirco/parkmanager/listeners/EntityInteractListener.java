@@ -1,5 +1,6 @@
 package tv.tirco.parkmanager.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -11,14 +12,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
 
 public class EntityInteractListener implements Listener{
@@ -114,6 +114,14 @@ public class EntityInteractListener implements Listener{
 	    		} else {
 	    			p.sendMessage("Your are already wearing a hat.");
 	    			return;
+	    		}
+	    	} else if(item.getType().equals(Material.PAPER)) {
+	    		NBTItem nbti = new NBTItem(item);
+	    		if(nbti.hasNBTData()) {
+	    			//Check for commands:
+	    			if(nbti.hasKey("alias")) {
+	    			}
+	    			
 	    		}
 	    	}
 
