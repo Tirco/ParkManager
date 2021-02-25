@@ -1,6 +1,5 @@
 package tv.tirco.parkmanager.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -43,6 +42,12 @@ public class EntityInteractListener implements Listener{
 				//Tags:
 				//seat - Used when player uses /sit or public chairs.
 				//
+				
+				//Don't sit if creative and not sneaking.
+				if(player.getGameMode().equals(GameMode.CREATIVE) && !player.isSneaking()) {
+					return;
+				}
+				
 				ArmorStand armorStand = (ArmorStand) clicked;
 				if(armorStand.getScoreboardTags().contains("seat")) {
 					armorStand.addPassenger(player);

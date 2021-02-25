@@ -72,4 +72,9 @@ public class Config extends AutoUpdateConfigLoader {
 		return config.getBoolean("setting.debugtoadmins", false);
 	}
 
+	
+	public long getOldUsersCutoff() {
+		return 0;
+	}
+
 }

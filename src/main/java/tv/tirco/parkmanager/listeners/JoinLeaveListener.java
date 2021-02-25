@@ -8,6 +8,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
+import tv.tirco.parkmanager.ParkManager;
+import tv.tirco.parkmanager.tasks.PlayerProfileLoadingTask;
+
 public class JoinLeaveListener implements Listener{
 
 	@EventHandler
@@ -16,6 +19,8 @@ public class JoinLeaveListener implements Listener{
 		Player player = e.getPlayer();
 		Location spawn = new Location(player.getWorld(), -29.5, 65, 161.5, 0f, 0f);
 		player.teleport(spawn, TeleportCause.PLUGIN);
+		
+		new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(ParkManager.plugin, 60);
 	}
 	
 	@EventHandler

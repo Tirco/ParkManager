@@ -154,10 +154,6 @@ public class ProtectionListener implements Listener{
     @EventHandler
     public void onFrameBreak(HangingBreakByEntityEvent event) {
         //Do nothing if not a player
-        Bukkit.getConsoleSender().sendMessage("DEBUG: Hanging break by entity event");
-        Bukkit.getConsoleSender().sendMessage("DEBUG: cause = " + event.getCause());
-        Bukkit.getConsoleSender().sendMessage("DEBUG: entity = " + event.getEntity());
-        Bukkit.getConsoleSender().sendMessage("DEBUG: remover = " + event.getRemover());
         if(!(event.getRemover() instanceof Player)) {
         	event.setCancelled(true);
         	return;

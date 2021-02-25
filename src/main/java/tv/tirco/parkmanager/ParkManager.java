@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.bergerkiller.bukkit.tc.signactions.SignAction;
@@ -15,31 +16,51 @@ import tv.tirco.parkmanager.Inventories.ItemModifierListener;
 import tv.tirco.parkmanager.commands.BenchCommand;
 import tv.tirco.parkmanager.commands.HideItemInfoCommand;
 import tv.tirco.parkmanager.commands.ModelDataCommand;
+import tv.tirco.parkmanager.commands.RideAdminCommand;
+import tv.tirco.parkmanager.commands.RidesCommand;
 import tv.tirco.parkmanager.commands.SitCommand;
 import tv.tirco.parkmanager.commands.VoucherCommand;
 import tv.tirco.parkmanager.config.Aliases;
 import tv.tirco.parkmanager.config.Config;
+import tv.tirco.parkmanager.config.Rides;
 import tv.tirco.parkmanager.listeners.EntityInteractListener;
 import tv.tirco.parkmanager.listeners.JoinLeaveListener;
 import tv.tirco.parkmanager.listeners.ProtectionListener;
 import tv.tirco.parkmanager.listeners.ShulkerBoxListener;
+import tv.tirco.parkmanager.storage.database.DatabaseManager;
+import tv.tirco.parkmanager.storage.database.DatabaseManagerFactory;
 import tv.tirco.parkmanager.traincarts.CmdTrainListener;
+import tv.tirco.parkmanager.traincarts.RideTrainListener;
 
 public class ParkManager extends JavaPlugin {
     
 	public ParkManager parkManagerPlugin;
+	public static String playerDataKey = "ParkManager Tracker";
 
 	public boolean noErrorsInConfigFiles = true;
 	
 	public final CmdTrainListener cmdTrainListener = new CmdTrainListener();
+	public final RideTrainListener rideTrainListener = new RideTrainListener();
 	
     public static ParkManager parkManager;
+    
+	
+	// File Manager setup bulk
+	File mainFile;
+	static String mainDirectory;
+	static String userFileDirectory;
+	static String usersFile;
+	
+	public static Plugin plugin;
+	public static DatabaseManager db;
 
 	@Override
     public void onEnable() {
-		parkManagerPlugin = this;
+		plugin = this;
 		parkManager = this;
         // Don't log enabling, Spigot does that for you automatically!
+		
+		db = DatabaseManagerFactory.getDatabaseManager();
 		
     	setupFilePaths();
         loadConfig();
@@ -51,11 +72,14 @@ public class ParkManager extends JavaPlugin {
         getCommand("bench").setExecutor(new BenchCommand());
         getCommand("modeldata").setExecutor(new ModelDataCommand());
         getCommand("voucher").setExecutor(new VoucherCommand());
+        getCommand("rides").setExecutor(new RidesCommand());
+        getCommand("rideadmin").setExecutor(new RideAdminCommand());
         
         //Register carts
         if(Bukkit.getPluginManager().getPlugin("Train_Carts") != null) {
         	Bukkit.getLogger().log(Level.INFO, "Hooking into Train_Carts");
         	SignAction.register(cmdTrainListener);
+        	SignAction.register(rideTrainListener);
         } else {
         	Bukkit.getLogger().log(Level.INFO, "Could not find the Train_Carts plugin.");
         }
@@ -65,6 +89,7 @@ public class ParkManager extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ProtectionListener(), this);
         Bukkit.getPluginManager().registerEvents(new JoinLeaveListener(), this);
         Bukkit.getPluginManager().registerEvents(new ShulkerBoxListener(), this);
+        
         
     }
     
@@ -79,16 +104,12 @@ public class ParkManager extends JavaPlugin {
 		InputStream in = getResource(fileName);
 		return in == null ? null : new InputStreamReader(in, Charsets.UTF_8);
 	}
-	
-	// File Manager setup bulk
-	File mainFile;
-	static String mainDirectory;
-	static String userFileDirectory;
-	static String usersFile;
+
 	
 	private void loadConfig() {
 		Config.getInstance();
 		Aliases.getInstance();
+		Rides.getInstance();
 	}
 	
 	public static String getMainDirectory() {

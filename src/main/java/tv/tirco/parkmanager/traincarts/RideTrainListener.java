@@ -1,5 +1,6 @@
 package tv.tirco.parkmanager.traincarts;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.bergerkiller.bukkit.tc.controller.MinecartMember;
@@ -9,12 +10,15 @@ import com.bergerkiller.bukkit.tc.signactions.SignAction;
 import com.bergerkiller.bukkit.tc.signactions.SignActionType;
 import com.bergerkiller.bukkit.tc.utils.SignBuildOptions;
 
-public class CmdTrainListener extends SignAction{
+import tv.tirco.parkmanager.storage.DataStorage;
+import tv.tirco.parkmanager.storage.Ride;
+
+public class RideTrainListener extends SignAction{
 
 	
 	@Override
     public boolean match(SignActionEvent info) {
-        return info.isType("cmd");
+        return info.isType("ridetracker");
     }
 
     @Override
@@ -24,7 +28,7 @@ public class CmdTrainListener extends SignAction{
                 && info.isPowered() && info.hasGroup()
         ) {
             for (MinecartMember<?> member : info.getGroup()) {
-                sendGreetingForCart(info, member);
+            	startRideForCart(info, member);
             }
             return;
         }
@@ -32,34 +36,40 @@ public class CmdTrainListener extends SignAction{
                 && info.isAction(SignActionType.MEMBER_ENTER, SignActionType.REDSTONE_ON)
                 && info.isPowered() && info.hasMember()
         ) {
-            sendGreetingForCart(info, info.getMember());
+            startRideForCart(info, info.getMember());
             return;
         }
     }
     
-    //Line 2 - cmd
-    //Line 3 - asPlayer asConsoleOnce asConsoleForAll
-    //Line 4 - alias
+    //Line 0 - [train]
+    //Line 1 - [ridetracker]
+    //Line 2 - [Start / Stop]
+    //Line 3 - [identifier]
     
 
-    public void sendGreetingForCart(SignActionEvent info, MinecartMember<?> member) {
+    //IncorrectNaming...
+    public void startRideForCart(SignActionEvent info, MinecartMember<?> member) {
     	if(member.getEntity().getPlayerPassengers().isEmpty()){
     		return;
     	}
-    	String type = info.getLine(2);
-        String alias = info.getLine(3);
-        if(type.equalsIgnoreCase("asPlayerPerm")) {
-        	
-        } else if(type.equalsIgnoreCase("asPlayerOP")) {
-        	
-        } else if(type.equalsIgnoreCase("asConOnce")) {
+    	String type = info.getLine(2); //start or stop
+        String identifier = info.getLine(3);
         
-        } else if(type.equalsIgnoreCase("asConPerPlayer")) {
-        	
+        Ride ride = DataStorage.getInstance().getRide(identifier);
+        if(ride == null) {
+        	Bukkit.getConsoleSender().sendMessage("Error: Attempted to start ride " + identifier + " - No such identifier exists.");
+        	return;
         }
-        for (Player passenger : member.getEntity().getPlayerPassengers()) {
-            passenger.sendMessage(alias);
+        if(type.equalsIgnoreCase("start")) {
+            for (Player passenger : member.getEntity().getPlayerPassengers()) {
+               ride.start(passenger);
+            }
+        } else if(type.equalsIgnoreCase("stop")) {
+            for (Player passenger : member.getEntity().getPlayerPassengers()) {
+                ride.start(passenger);
+             }
         }
+
     }
 
     @Override

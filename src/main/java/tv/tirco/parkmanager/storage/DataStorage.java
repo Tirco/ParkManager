@@ -1,16 +1,13 @@
 package tv.tirco.parkmanager.storage;
 
-import java.util.HashMap;
-import java.util.UUID;
-
-import org.bukkit.entity.Player;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataStorage {
 
 	private static DataStorage instance;
 	
-	HashMap<UUID,Integer> rideID;
-	HashMap<UUID,Long> rideStartTime;
+	List<Ride> rides;
 	
 	public static DataStorage getInstance() {
 		if (instance == null) {
@@ -21,34 +18,33 @@ public class DataStorage {
 	}
 	
 	public DataStorage() {
-		this.rideID = new HashMap<UUID,Integer>();
-		this.rideStartTime = new HashMap<UUID,Long>();
+		this.rides = new ArrayList<Ride>();
 	}
 	
-	
-	public boolean isInRide(Player p) {
-		return rideID.containsKey(p.getUniqueId());
-	}
-	
-	public void startRide(Player p, int id) {
-		this.rideID.put(p.getUniqueId(), id);
-		this.rideStartTime.put(p.getUniqueId(), System.currentTimeMillis());
-	}
-	
-	public long getStartTime(Player p) {
-		long time = 0;
-		if(this.rideStartTime.containsKey(p.getUniqueId())) {
-			time = rideStartTime.get(p.getUniqueId());
+	public Ride getRide(String identifier) {
+		for(Ride r : rides) {
+			if(r.getIdentifier().equalsIgnoreCase(identifier)) {
+				return r;
+			}
 		}
-		return time;
+		
+		return null;
+	}
+
+	public void addRide(Ride ride) {
+		if(rides.contains(ride)) {
+			rides.remove(ride);
+		}
+		
+		if(getRide(ride.getIdentifier()) != null) {
+			rides.remove(getRide(ride.getIdentifier()));
+		}
+		
+		rides.add(ride);
+		
 	}
 	
-	public void clearPlayer(Player p) {
-		if(this.rideStartTime.containsKey(p.getUniqueId())) {
-			this.rideStartTime.remove(p.getUniqueId());
-		}
-		if(this.rideID.containsKey(p.getUniqueId())) {
-			this.rideID.remove(p.getUniqueId());
-		}
+	public List<Ride> getRides() {
+		return rides;
 	}
 }

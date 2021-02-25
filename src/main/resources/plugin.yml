@@ -33,5 +33,13 @@ commands:
         description: edits the data of the item in hand.
         permission: parkmanager.voucher
         usage: /<command>
+    rides:
+        description: gives the player a list of available rides.
+        permission: parkmanager.command.rides
+        usage: /<command>
+    rideadmin:
+        description: management command for rides.
+        permission: parkmanager.command.rideadmin
+        usage: /<command>
 
 permissions: {}

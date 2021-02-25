@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import tv.tirco.parkmanager.Inventories.ItemModifier;
 import tv.tirco.parkmanager.config.Aliases;
 
 public class ExampleCommand implements CommandExecutor {
@@ -28,7 +27,7 @@ public class ExampleCommand implements CommandExecutor {
         sender.sendMessage("Successfully used example command!");
         
         if(sender instanceof Player) {
-        	Player player = (Player) sender;
+        	//Player player = (Player) sender;
             //new ItemModifier(ParkManager.parkManager, player.getInventory().getItemInMainHand() ,player);
         }
         
