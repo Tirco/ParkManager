@@ -37,9 +37,9 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 		attempt++;
 		//VoidRPG.VoidRPGPlugin.debug("Begin loading profile for player " + player.getName() + " attempt: " + attempt);
 
-		PlayerProfile profile = ParkManager.db.loadPlayerProfile(player.getName(), player.getUniqueId(), true, true);
+		//PlayerProfile profile = ParkManager.db.loadPlayerProfile(player.getName(), player.getUniqueId(), true, true);
 		
-		//PlayerProfile profile = new PlayerProfile(player.getName(), player.getUniqueId());
+		PlayerProfile profile = new PlayerProfile(player.getName(), player.getUniqueId());
 		
 		if (profile.isLoaded()) {
 			MessageHandler.getInstance().debug("Profile is loaded, applying...");

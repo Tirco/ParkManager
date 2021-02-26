@@ -31,7 +31,7 @@ public class RideAdminCommand implements CommandExecutor{
 		}
 		
 		if(args[0].equalsIgnoreCase("save")) {
-			Rides.getInstance().save();
+			Rides.getInstance().saveRides();
 			sender.sendMessage("Saved all rides!");
 			return true;
 		}
@@ -89,7 +89,7 @@ public class RideAdminCommand implements CommandExecutor{
 
 		
 		//args[2 - End]
-		String argument = String.join(" ", Arrays.asList(args).subList(2, args.length - 1).toArray(new String[]{}));
+		String argument = String.join(" ", Arrays.asList(args).subList(2, args.length).toArray(new String[]{}));
 		
 		if(args[0].equalsIgnoreCase("setname")) {
 			ride.setName(argument);

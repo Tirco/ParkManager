@@ -80,8 +80,8 @@ public class PlayerData {
 		profile.startRide(identifier);
 	}
 	
-	public void endRide(String identifier) {
-		profile.endRide(identifier);
+	public void endRide() {
+		profile.endRide();
 	}
 	
 	public boolean isInRide() {
@@ -91,5 +91,10 @@ public class PlayerData {
 	
 	public Long getStartTime() {
 		return profile.getRideStartTime();
+	}
+
+	public String getRideIdentifier() {
+		return profile.getRideIdentifier();
+		
 	}
 }

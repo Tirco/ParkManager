@@ -27,7 +27,7 @@ public class Rides extends AutoUpdateConfigLoader {
 	}
 
 	@Override
-	protected void loadKeys() {
+	public void loadKeys() {
 		for(String s : config.getConfigurationSection("rides").getKeys(false)) {
 			String identifier = s;
 			String name = config.getString("rides." + s + ".name", "Unknown");
@@ -40,7 +40,7 @@ public class Rides extends AutoUpdateConfigLoader {
 		}
 	}
 	
-	protected void saveRides() {
+	public void saveRides() {
 		for(Ride r : DataStorage.getInstance().getRides()) {
 			if(r.changed()) {
 				String path = "rides." + r.getIdentifier() + ".";
@@ -50,6 +50,7 @@ public class Rides extends AutoUpdateConfigLoader {
 				config.set(path+"defaultPayPerMinute", r.getPayPerMinute());
 			}
 		}
+		save();
 	}
 
 	@Override

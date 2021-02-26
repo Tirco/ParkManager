@@ -6,7 +6,7 @@ website: ${url}
 api-version: 1.16
 
 main: ${mainClass}
-depend: [Train_Carts]
+depend: [Train_Carts,PlaceholderAPI]
 
 commands:
     example:
@@ -40,6 +40,7 @@ commands:
     rideadmin:
         description: management command for rides.
         permission: parkmanager.command.rideadmin
+        aliases: [pmra,pmrideadmin]
         usage: /<command>
 
 permissions: {}

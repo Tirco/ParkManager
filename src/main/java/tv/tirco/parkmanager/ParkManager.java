@@ -31,6 +31,7 @@ import tv.tirco.parkmanager.storage.database.DatabaseManager;
 import tv.tirco.parkmanager.storage.database.DatabaseManagerFactory;
 import tv.tirco.parkmanager.traincarts.CmdTrainListener;
 import tv.tirco.parkmanager.traincarts.RideTrainListener;
+import tv.tirco.parkmanager.util.PapiExpansion;
 
 public class ParkManager extends JavaPlugin {
     
@@ -43,6 +44,9 @@ public class ParkManager extends JavaPlugin {
 	public final RideTrainListener rideTrainListener = new RideTrainListener();
 	
     public static ParkManager parkManager;
+    
+	public PapiExpansion placeholders;
+	public boolean papi = false;
     
 	
 	// File Manager setup bulk
@@ -60,7 +64,7 @@ public class ParkManager extends JavaPlugin {
 		parkManager = this;
         // Don't log enabling, Spigot does that for you automatically!
 		
-		db = DatabaseManagerFactory.getDatabaseManager();
+		
 		
     	setupFilePaths();
         loadConfig();
@@ -75,6 +79,8 @@ public class ParkManager extends JavaPlugin {
         getCommand("rides").setExecutor(new RidesCommand());
         getCommand("rideadmin").setExecutor(new RideAdminCommand());
         
+        db = DatabaseManagerFactory.getDatabaseManager();
+        
         //Register carts
         if(Bukkit.getPluginManager().getPlugin("Train_Carts") != null) {
         	Bukkit.getLogger().log(Level.INFO, "Hooking into Train_Carts");
@@ -83,6 +89,13 @@ public class ParkManager extends JavaPlugin {
         } else {
         	Bukkit.getLogger().log(Level.INFO, "Could not find the Train_Carts plugin.");
         }
+        
+        //PAPI
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+			placeholders = new PapiExpansion(this);
+            placeholders.register();
+            this.papi = true;
+		}
         
         Bukkit.getPluginManager().registerEvents(new ItemModifierListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityInteractListener(), this);
@@ -98,6 +111,9 @@ public class ParkManager extends JavaPlugin {
         // Don't log disabling, Spigot does that for you automatically!
     	
     	SignAction.unregister(cmdTrainListener);
+    	SignAction.unregister(rideTrainListener);
+    	
+    	Rides.getInstance().saveRides();
     }
     
 	public InputStreamReader getResourceAsReader(String fileName) {
@@ -109,7 +125,7 @@ public class ParkManager extends JavaPlugin {
 	private void loadConfig() {
 		Config.getInstance();
 		Aliases.getInstance();
-		Rides.getInstance();
+		Rides.getInstance().loadKeys();
 	}
 	
 	public static String getMainDirectory() {

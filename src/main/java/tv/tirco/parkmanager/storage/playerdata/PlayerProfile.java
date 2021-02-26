@@ -26,7 +26,7 @@ public class PlayerProfile {
 		this.rideStartTime = System.currentTimeMillis();
 	}
 	
-	public void endRide(String identifier) {
+	public void endRide() {
 		this.rideidentifier = "none";
 		this.rideStartTime = 0;
 	}

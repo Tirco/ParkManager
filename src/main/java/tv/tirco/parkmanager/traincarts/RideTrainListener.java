@@ -66,7 +66,7 @@ public class RideTrainListener extends SignAction{
             }
         } else if(type.equalsIgnoreCase("stop")) {
             for (Player passenger : member.getEntity().getPlayerPassengers()) {
-                ride.start(passenger);
+                ride.stop(passenger);
              }
         }
 
@@ -75,8 +75,8 @@ public class RideTrainListener extends SignAction{
     @Override
     public boolean build(SignChangeActionEvent event) {
         return SignBuildOptions.create()
-                .setName(event.isCartSign() ? "cart command" : "train command")
-                .setDescription("Sends a command alias for the cart/train. ")
+                .setName(event.isCartSign() ? "cart ridetracker" : "train ridetracker")
+                .setDescription("Starts or stops the tracking of a player in a ride. ")
                 .handle(event.getPlayer());
     }
 }
