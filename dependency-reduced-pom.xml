@@ -4,7 +4,7 @@
   <groupId>tv.tirco.parkmanager</groupId>
   <artifactId>ParkManager</artifactId>
   <name>ParkManager</name>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.3-SNAPSHOT</version>
   <description>Parks will be managed!</description>
   <url>http://tirco.tv</url>
   <developers>
@@ -107,6 +107,10 @@
       <id>placeholderapi</id>
       <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -139,6 +143,18 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>com.github.MilkBowl</groupId>
+      <artifactId>VaultAPI</artifactId>
+      <version>1.7</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>bukkit</artifactId>
+          <groupId>org.bukkit</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <properties>
     <project.tcversion>1.16.4-v1</project.tcversion>
@@ -146,6 +162,8 @@
     <mainClass>tv.tirco.parkmanager.ParkManager</mainClass>
     <author>Tirco</author>
     <maven.compiler.release>9</maven.compiler.release>
+    <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 </project>

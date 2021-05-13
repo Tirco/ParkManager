@@ -42,5 +42,14 @@ commands:
         permission: parkmanager.command.rideadmin
         aliases: [pmra,pmrideadmin]
         usage: /<command>
+    exitride:
+        description: leave your current ride.
+        permission: parkmanager.command.exitride
+        aliases: [exit,leaveride]
+        usage: /<command>
+    resourcepack:
+        description: put on the resourcepack!
+        aliases: [rp]
+        usage: /<command>
 
 permissions: {}

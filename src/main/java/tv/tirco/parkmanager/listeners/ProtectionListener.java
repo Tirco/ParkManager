@@ -35,7 +35,9 @@ public class ProtectionListener implements Listener{
 		if(canBeClicked(e.getClickedBlock().getType())){
 			return;
 		} else {
-			e.setCancelled(true);
+			if(!isAllowedWorld(e.getPlayer().getWorld().getName())) {
+				e.setCancelled(true);
+			}
 			
 			if(!e.getHand().equals(EquipmentSlot.HAND)) {
 				return;
@@ -126,16 +128,23 @@ public class ProtectionListener implements Listener{
 		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
 			return;
 		}
-		e.setCancelled(true);
+		if(!isAllowedWorld(e.getPlayer().getWorld().getName())) {
+			e.setCancelled(true);
+		}
+		
 	}
 	
+
+
 	//Disable placing blocks for non creative players.
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onBlockPlace(BlockPlaceEvent e) {
 		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
 			return;
 		}
-		e.setCancelled(true);
+		if(!isAllowedWorld(e.getPlayer().getWorld().getName())) {
+			e.setCancelled(true);
+		}
 	}
 	
 	
@@ -165,4 +174,10 @@ public class ProtectionListener implements Listener{
 
     }
 
+	private boolean isAllowedWorld(String name) {
+		if(name.equalsIgnoreCase("world_TheLab")) {
+			return true;
+		}
+		return false;
+	}
 }

@@ -3,6 +3,12 @@ package tv.tirco.parkmanager.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import de.tr7zw.changeme.nbtapi.NBTItem;
+import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.Ride;
 
@@ -31,11 +37,14 @@ public class Rides extends AutoUpdateConfigLoader {
 		for(String s : config.getConfigurationSection("rides").getKeys(false)) {
 			String identifier = s;
 			String name = config.getString("rides." + s + ".name", "Unknown");
-			String description = config.getString("rides." + s + ".description", "Unknown");
+			List<String> description = config.getStringList("rides." + s + ".description");
 			double maxPayout = config.getDouble("rides." + s + ".maxPayout", 100.00);
 			double defaultPayPerMinute = config.getDouble("rides." + s + ".defaultPayPerMinute", 100.00);
+			String warp = config.getString("rides." + s + ".warp", "Unknown");
+			ItemStack icon = buildIconItem(identifier,name,description);
+			Boolean hasAdvancement = config.getBoolean("rides." + s + ".hasAdvancement", false);
 			
-			Ride ride = new Ride(identifier, maxPayout, name, description, defaultPayPerMinute, false);
+			Ride ride = new Ride(identifier, maxPayout, name, description, defaultPayPerMinute, icon, warp, hasAdvancement, false);
 			DataStorage.getInstance().addRide(ride);
 		}
 	}
@@ -45,9 +54,22 @@ public class Rides extends AutoUpdateConfigLoader {
 			if(r.changed()) {
 				String path = "rides." + r.getIdentifier() + ".";
 				config.set(path+"name", r.getName());
-				config.set(path+"decription", r.getDescription());
+				config.set(path+"description", r.getDescription());
 				config.set(path+"maxPayout", r.maxPayout());
 				config.set(path+"defaultPayPerMinute", r.getPayPerMinute());
+				config.set(path+"warp", r.getWarp());
+				config.set(path+"hasAdvancement", r.hasAdvancement());
+				
+				ItemStack icon = r.getIcon();
+				config.set(path+"item.material", icon.getType().toString());
+				int modeldata = 0;
+				if(icon.hasItemMeta()) {
+					ItemMeta meta = icon.getItemMeta();
+					if(meta.hasCustomModelData()) {
+						modeldata = meta.getCustomModelData();
+					}
+				}
+				config.set(path+"item.modeldata", modeldata);
 			}
 		}
 		save();
@@ -79,6 +101,32 @@ public class Rides extends AutoUpdateConfigLoader {
 	
 	public boolean isSet(String key) {
 		return config.isSet(key);
+	}
+	
+	private ItemStack buildIconItem(String identifier, String name, List<String> description) {
+		Material mat = Material.getMaterial(config.getString("rides."+identifier+".item.material", "Minecart"));
+		if(mat == null || mat.equals(Material.AIR)) {
+			mat = Material.MINECART;
+		}
+		
+		ItemStack item = new ItemStack(mat);
+		NBTItem nbtItem = new NBTItem(item);
+		nbtItem.setString("RideIdentifier", identifier);
+		item = nbtItem.getItem();
+		
+		int modeldata = config.getInt("rides."+identifier+".item.modeldata",0);
+		
+		ItemMeta meta = item.getItemMeta();
+		meta.setCustomModelData(modeldata);
+		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+		List<String> LoreList = new ArrayList<String>();
+		for(String s : description) {
+			LoreList.add(ChatColor.translateAlternateColorCodes('&', s));
+		}
+		meta.setLore(LoreList);
+		item.setItemMeta(meta);
+
+		return item;
 	}
 	
 

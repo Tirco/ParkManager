@@ -1,18 +1,28 @@
 package tv.tirco.parkmanager.commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.StringUtil;
+
+import com.google.common.collect.ImmutableList;
 
 import tv.tirco.parkmanager.config.Rides;
 import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.Ride;
 
-public class RideAdminCommand implements CommandExecutor{
+public class RideAdminCommand implements CommandExecutor,TabCompleter{
+	
+	List<String> commands = ImmutableList.of("create","setname","setwarp","setdescription","setitem","setmaxpayout","setdefaultpayperminute","startride","stopride","save","reloadrides");
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		//help
@@ -22,17 +32,17 @@ public class RideAdminCommand implements CommandExecutor{
 		//rideadmin setmaxpayout <identifier> name can be long
 		//rideadmin setdefaultpayperminute <identifier> name can be long
 		if(args.length < 1 || args[0].equalsIgnoreCase("help")) {
-			sender.sendMessage("rideadmin create <identifier>");
-			sender.sendMessage("rideadmin setname <identifier> name can be long");
-			sender.sendMessage("rideadmin setdescription <identifier> name can be long");
-			sender.sendMessage("rideadmin setmaxpayout <identifier> name can be long");
-			sender.sendMessage("rideadmin setdefaultpayperminute <identifier> name can be long");
+			sender.sendMessage("No. Ask Tirco :P");
 			return true;
 		}
 		
 		if(args[0].equalsIgnoreCase("save")) {
 			Rides.getInstance().saveRides();
 			sender.sendMessage("Saved all rides!");
+			return true;
+		} else if(args[0].equalsIgnoreCase("reloadrides")) {
+			DataStorage.getInstance().rebuildRideMenu();
+			sender.sendMessage("Reloaded all rides!");
 			return true;
 		}
 		
@@ -58,6 +68,23 @@ public class RideAdminCommand implements CommandExecutor{
 		if(ride == null) {
 			sender.sendMessage("No such ride-identifier found.");
 			return true;
+		}
+		
+		if(args[0].equalsIgnoreCase("setitem")) {
+			if(sender instanceof Player) {
+				Player player = (Player) sender;
+				ItemStack item = player.getInventory().getItemInMainHand();
+				if(item == null) {
+					player.sendMessage("You need to hold an item to use this.");
+					return true;
+				} else {
+					ride.setIcon(item);
+					player.sendMessage("Item added. Server will need a reboot before it is enabled.");
+				}
+			} else {
+				sender.sendMessage("This command must be run by a player.");
+				return true;
+			}
 		}
 		
 		
@@ -95,6 +122,10 @@ public class RideAdminCommand implements CommandExecutor{
 			ride.setName(argument);
 			sender.sendMessage("The name of " + identifier + " has now been set to: " + argument);
 			return true;
+		} else if(args[0].equalsIgnoreCase("setwarp")) {
+				ride.setWarp(argument);
+				sender.sendMessage("The warp of " + identifier + " has now been set to: " + argument);
+				return true;
 		} else if(args[0].equalsIgnoreCase("setdescription")) {
 			ride.setDescription(argument);
 			sender.sendMessage("The description of " + identifier + " has now been set to: " + argument);
@@ -124,8 +155,21 @@ public class RideAdminCommand implements CommandExecutor{
 		}
 		
 		sender.sendMessage("Unknown argument!");
-		sender.sendMessage("Available: create, setname, setdescription, setmaxpayout, setdefaultpayperminute");
+		sender.sendMessage("Available: " + commands);
 		return true;
 
+	}
+	
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		List<String> rides = DataStorage.getInstance().getRides().stream().map(r -> r.getIdentifier()).collect(Collectors.toList());
+		switch (args.length) {
+		case 1:
+			return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<String>(commands.size()));
+		case 2:
+			return StringUtil.copyPartialMatches(args[1], rides, new ArrayList<String>(rides.size()));
+		default:
+			return null;
+    	}
+			
 	}
 }

@@ -3,11 +3,62 @@ package tv.tirco.parkmanager.storage;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.inventory.Inventory;
+
+import net.md_5.bungee.api.ChatColor;
+import tv.tirco.parkmanager.config.Rides;
+
 public class DataStorage {
 
 	private static DataStorage instance;
 	
 	List<Ride> rides;
+	Inventory rideMenu; //Storing it here as it shouldn't change.
+	
+	
+	public Inventory getRideMenu() {
+		return getRideInventory();
+	}
+	
+	private Inventory getRideInventory() {
+		Inventory inv = rideMenu;
+		
+		if(inv == null) {
+			inv = Bukkit.createInventory(null, 45, ChatColor.translateAlternateColorCodes('&', "&6&lAvailable Rides"));
+			for(Ride r : DataStorage.getInstance().getRides()) {
+				inv.addItem(r.getIcon());
+			}
+			setRideMenu(inv);
+			return inv;
+		} else {
+			return inv;
+		}
+		
+	}
+	
+	
+	public void rebuildRideMenu() {
+		Inventory inv = rideMenu;
+		Rides.getInstance().saveRides();
+		this.rides.clear();
+		if(inv != null) {
+			for(HumanEntity e :inv.getViewers()) {
+				e.getOpenInventory().close();
+				e.sendMessage("We had to close this inventory as it is being reloaded.");
+			}
+		}
+		this.rideMenu = null;
+		Rides.getInstance().loadKeys();
+		inv = getRideInventory();
+		
+	}
+	
+	
+	public void setRideMenu(Inventory menu) {
+		this.rideMenu = menu;
+	}
 	
 	public static DataStorage getInstance() {
 		if (instance == null) {
@@ -47,4 +98,6 @@ public class DataStorage {
 	public List<Ride> getRides() {
 		return rides;
 	}
+
+
 }

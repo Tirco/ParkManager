@@ -80,8 +80,9 @@ public class EntityInteractListener implements Listener{
 	}
 
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerUnmount(EntityDismountEvent e) {
+
 		if(!(e.getEntity() instanceof Player)) {
 			return;
 		}
@@ -93,6 +94,20 @@ public class EntityInteractListener implements Listener{
 				armorStand.remove();
 			}
 		}
+//		
+//		if(e.isCancelled()) {
+//			return;
+//		}
+//		
+//		if(UserManager.hasPlayerDataKey(player)) {
+//			PlayerData ridePlayer = UserManager.getPlayer(player);
+//			if(ridePlayer.isInRide()) {
+//				e.setCancelled(true);
+//				player.sendMessage(ChatColor.YELLOW + "If you want to leave the ride you are on, use the command /exitride");
+//				//ridePlayer.endRide();
+//			}
+//		}
+
 	}
 	
 	@EventHandler(priority=EventPriority.HIGH)
