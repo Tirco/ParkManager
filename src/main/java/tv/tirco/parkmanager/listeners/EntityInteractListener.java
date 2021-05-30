@@ -124,6 +124,11 @@ public class EntityInteractListener implements Listener{
 	    		if(!item.hasItemMeta()) {
 	    			return;
 	    		}
+	    		
+	    		if(!item.getItemMeta().hasCustomModelData()) {
+	    			return;
+	    		}
+	    		
 	    		if(item.getItemMeta().getCustomModelData() < 1) {
 	    			return;
 	    		}
@@ -140,11 +145,9 @@ public class EntityInteractListener implements Listener{
 	    		if(nbti.hasNBTData()) {
 	    			//Check for commands:
 	    			if(nbti.hasKey("alias")) {
-	    			}
-	    			
+	    			}		
 	    		}
 	    	}
-
 	    }
 	}
 

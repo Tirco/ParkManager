@@ -175,7 +175,8 @@ public class ProtectionListener implements Listener{
     }
 
 	private boolean isAllowedWorld(String name) {
-		if(name.equalsIgnoreCase("world_TheLab")) {
+		if(name.equalsIgnoreCase("world_TheLab")
+				|| name.equalsIgnoreCase("Murder")) {
 			return true;
 		}
 		return false;

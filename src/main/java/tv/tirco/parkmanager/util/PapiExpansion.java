@@ -114,10 +114,10 @@ public class PapiExpansion extends PlaceholderExpansion {
         // %parkmanager_player_inride%
         if(identifier.equals("player_inride")){
         	if(player == null) {
-        		return null;
+        		return "Loading...";
         	}
         	if(!UserManager.hasPlayerDataKey(player)) {
-        		return null;
+        		return "Loading...";
         	}
         	PlayerData pData = UserManager.getPlayer(player);
             return "" + pData.isInRide();
@@ -125,10 +125,10 @@ public class PapiExpansion extends PlaceholderExpansion {
         
         if(identifier.equals("player_ride_identifier")){
         	if(player == null) {
-        		return null;
+        		return "Loading...";
         	}
         	if(!UserManager.hasPlayerDataKey(player)) {
-        		return null;
+        		return "Loading...";
         	}
         	PlayerData pData = UserManager.getPlayer(player);
             return pData.getRideIdentifier();
@@ -136,10 +136,10 @@ public class PapiExpansion extends PlaceholderExpansion {
         
         if(identifier.equals("player_ride_name")){
         	if(player == null) {
-        		return null;
+        		return "Loading...";
         	}
         	if(!UserManager.hasPlayerDataKey(player)) {
-        		return null;
+        		return "Loading...";
         	}
         	PlayerData pData = UserManager.getPlayer(player);
         	

@@ -1,9 +1,5 @@
 package tv.tirco.parkmanager.listeners;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,11 +19,11 @@ public class CommandStopper implements Listener {
 		if(message == null || message.isEmpty()) {
 			return;
 		}
-		
+
 		Player player = e.getPlayer();
-		if(player.getName().equalsIgnoreCase("Tirco")) {
-			player.sendMessage("Debug - Command Message is: " + message);
-		}
+//		if(player.getName().equalsIgnoreCase("Tirco")) {
+//			player.sendMessage("Debug - Command Message is: " + message);
+//		}
 		
 		//Is on ride test.
 		if(!UserManager.hasPlayerDataKey(player)) {
@@ -61,14 +57,37 @@ public class CommandStopper implements Listener {
 		if(message.startsWith("/tl") || message.startsWith("/thelab")
 				|| message.startsWith("/thelab:thelab")
 				|| message.startsWith("/thelab:tl")) {
-			if(worldname.equalsIgnoreCase("world_thelab")) {
-				
-			} else {
+			if(!worldname.equalsIgnoreCase("world_thelab")) {
 				e.setCancelled(true);
 				player.sendMessage("You can only use that command while you are in TheLab.");
 				return;
 			}
 			
+		}
+		//Wizards
+		else if(message.startsWith("/wizards") || message.startsWith("/wrz") || message.startsWith("/wzds")) {
+			if(!(worldname.equalsIgnoreCase("wizardlobby") ||
+					worldname.equalsIgnoreCase("kingdom"))) {
+				e.setCancelled(true);
+				player.sendMessage("You can only use that command while you are in the Wizards area.");
+				return;
+			}
+		}
+		//murder
+		else if(message.startsWith("/mm") || message.startsWith("/murder") || message.startsWith("/murdermystery")) {
+			if(!(worldname.equalsIgnoreCase("murder"))) {
+				e.setCancelled(true);
+				player.sendMessage("You can only use that command while you are in the Murder Mystery area.");
+				return;
+			}
+		}
+		//Arcade
+		else if(message.startsWith("/arc") || message.startsWith("/arcade")) {
+			if(!(worldname.equalsIgnoreCase("world_Arcade"))) {
+				e.setCancelled(true);
+				player.sendMessage("You can only use that command while you are in the Arcade world.");
+				return;
+			}
 		}
 	}
 }
