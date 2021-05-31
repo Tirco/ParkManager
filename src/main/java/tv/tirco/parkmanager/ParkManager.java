@@ -162,7 +162,7 @@ public class ParkManager extends JavaPlugin {
 	
 	private void loadConfig() {
 		Config.getInstance();
-		Aliases.getInstance();
+		Aliases.getInstance().loadAllAliases();;
 		Rides.getInstance().loadKeys();
 	}
 	

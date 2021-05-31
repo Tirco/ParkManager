@@ -23,7 +23,7 @@ import tv.tirco.parkmanager.storage.DataStorage;
 
 public class AliasCommand implements CommandExecutor,TabCompleter{
 	
-	List<String> actions = ImmutableList.of("create,addvalue,removevalue,setisperm,setasconsole,info,applytoitem");
+	List<String> actions = ImmutableList.of("create","addvalue","removevalue","setisperm","setasconsole","info","applytoitem","save","reload");
 	List<String> booleans = ImmutableList.of("true","false");
 
 	//@Override
@@ -36,7 +36,7 @@ public class AliasCommand implements CommandExecutor,TabCompleter{
 			return true;
 		}
 		
-		if(args.length < 2) {
+		if(args.length < 1) {
 			//No alias specify.
 			sender.sendMessage(ChatColor.RED +"Please specify an action. Available actions are:");
 			for(String s : actions) {
@@ -44,25 +44,26 @@ public class AliasCommand implements CommandExecutor,TabCompleter{
 			}
 			return true;
 		}
+
 		//Alias reload
-		if(args[1].equalsIgnoreCase("reload")) {
+		if(args[0].equalsIgnoreCase("reload")) {
 			Aliases.getInstance().loadAllAliases();
 			sender.sendMessage(ChatColor.GREEN + "All aliases reloaded.");
 			return true;
 		}
 		//Alias save
-		if(args[1].equalsIgnoreCase("save")) {
+		if(args[0].equalsIgnoreCase("save")) {
 			Aliases.getInstance().saveAllAliases();
 			sender.sendMessage(ChatColor.GREEN + "All aliases saved.");
 			return true;
 		}
 		
-		
-		if(args.length < 3) {
+		if(args.length < 2) {
 			//No alias specify.
 			sender.sendMessage(ChatColor.RED +"Please specify an alias.");
 			return true;
 		}
+
 		
 		String aliasName = args[1];
 		
@@ -135,8 +136,10 @@ public class AliasCommand implements CommandExecutor,TabCompleter{
 				return true;
 			}
 		}
+		
+		
 
-		if(args.length < 4) {
+		if(args.length < 3) {
 			//No value specify.
 			sender.sendMessage("Please specify a value.");
 			return true;
@@ -148,6 +151,7 @@ public class AliasCommand implements CommandExecutor,TabCompleter{
 			for(int i = 2 ; i < args.length ; i++){
 				textToAdd += args[i] + " "; 
 			}
+			textToAdd = textToAdd.substring(0, textToAdd.length() - 1);
 			alias.addText(textToAdd);
 			sender.sendMessage(ChatColor.GREEN + "The following string has been added:");
 			sender.sendMessage(ChatColor.YELLOW + textToAdd);
@@ -160,6 +164,7 @@ public class AliasCommand implements CommandExecutor,TabCompleter{
 			for(int i = 2 ; i < args.length ; i++){
 				textToRemove += args[i] + " "; 
 			}
+			textToRemove = textToRemove.substring(0, textToRemove.length() - 1);
 			if(alias.removeText(textToRemove)) {
 				sender.sendMessage(ChatColor.GREEN + "The value was successfully removed.");
 			} else {

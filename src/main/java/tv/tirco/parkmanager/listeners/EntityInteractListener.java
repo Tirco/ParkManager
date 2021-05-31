@@ -117,28 +117,33 @@ public class EntityInteractListener implements Listener{
 	public void onPlayerUse(PlayerInteractEvent event){
 	    Player p = event.getPlayer();
 	    
+	    //Main hand check
 	    if(!event.getHand().equals(EquipmentSlot.HAND)) {
 	    	return;
 	    }
 	 
+	    //Make sure we're doing a right click action
 	    if(event.getAction().equals(Action.RIGHT_CLICK_AIR) 
-	    		|| event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+	    || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
 	    	
 	    	if(event.getClickedBlock() != null
-	    			&& (event.getClickedBlock().getType() != null 
-	    			|| event.getClickedBlock().getType().equals(Material.AIR))) {
+	    	&& 
+	    	event.getClickedBlock().getType() != null 
+	    	&&
+	    	!event.getClickedBlock().getType().equals(Material.AIR)) {
 	    		Material clicked = event.getClickedBlock().getType();
 	    		if(Util.canBeClicked(clicked)) {
 	    			return;
 	    		}
 	    	}
 	    	
+	    	//Use item check - Do we have an item in hand?
 	    	ItemStack item = p.getInventory().getItemInMainHand();
 	    	if(item == null || item.getType().equals(Material.AIR)) {
 	    		return;
 	    	}
 	    	
-	    	//NBTI check
+//NBTI check
 		    NBTItem nbti = new NBTItem(item);
 		    if(nbti.hasNBTData()) {
 		    	//Check for commands:
@@ -149,7 +154,11 @@ public class EntityInteractListener implements Listener{
 		    			p.sendMessage(ChatColor.RED + "There seems to be an issue with your item. Please contact an administrator.");
 		    			return;
 		    		} else {
-		    			alias.execute(p, item);
+		    			if(alias.execute(p, item)) {
+		    				p.sendMessage(ChatColor.GREEN + "Redeemed successfully!");
+		    			} else {
+		    				p.sendMessage(ChatColor.RED + "You can not redeem this item.");
+		    			}
 		    			return;
 		    		}
 		    	}
@@ -157,7 +166,7 @@ public class EntityInteractListener implements Listener{
 	    	
 	    	
 //GOLDEN AXE   //TODO Gold_Ingot, Iron_Ingot
-		    else if(item.getType().equals(Material.GOLDEN_AXE)) {
+		    if(item.getType().equals(Material.GOLDEN_AXE)) {
 	    		if(!item.hasItemMeta()) {
 	    			return;
 	    		}
