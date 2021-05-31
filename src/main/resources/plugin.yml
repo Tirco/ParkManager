@@ -29,9 +29,9 @@ commands:
         description: edits the data of the item in hand.
         permission: parkmanager.modeldata
         usage: /<command>
-    voucher:
-        description: edits the data of the item in hand.
-        permission: parkmanager.voucher
+    alias:
+        description: creates and modifies aliases.
+        permission: parkmanager.alias
         usage: /<command>
     rides:
         description: gives the player a list of available rides.

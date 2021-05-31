@@ -15,6 +15,7 @@ import com.google.common.base.Charsets;
 
 import net.milkbowl.vault.economy.Economy;
 import tv.tirco.parkmanager.Inventories.ItemModifierListener;
+import tv.tirco.parkmanager.commands.AliasCommand;
 import tv.tirco.parkmanager.commands.BenchCommand;
 import tv.tirco.parkmanager.commands.ExitRideCommand;
 import tv.tirco.parkmanager.commands.GadgetsCommand;
@@ -24,7 +25,6 @@ import tv.tirco.parkmanager.commands.ResourcePackCommand;
 import tv.tirco.parkmanager.commands.RideAdminCommand;
 import tv.tirco.parkmanager.commands.RidesCommand;
 import tv.tirco.parkmanager.commands.SitCommand;
-import tv.tirco.parkmanager.commands.VoucherCommand;
 import tv.tirco.parkmanager.config.Aliases;
 import tv.tirco.parkmanager.config.Config;
 import tv.tirco.parkmanager.config.Rides;
@@ -91,7 +91,7 @@ public class ParkManager extends JavaPlugin {
         getCommand("hideiteminfo").setExecutor(new HideItemInfoCommand());
         getCommand("bench").setExecutor(new BenchCommand());
         getCommand("modeldata").setExecutor(new ModelDataCommand());
-        getCommand("voucher").setExecutor(new VoucherCommand());
+        getCommand("alias").setExecutor(new AliasCommand());
         getCommand("rides").setExecutor(new RidesCommand());
         getCommand("rideadmin").setExecutor(new RideAdminCommand());
         getCommand("exitride").setExecutor(new ExitRideCommand());

@@ -3,9 +3,8 @@ package tv.tirco.parkmanager.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
+import tv.tirco.parkmanager.alias.Alias;
+import tv.tirco.parkmanager.storage.DataStorage;
 
 public class Aliases extends AutoUpdateConfigLoader {
 	private static Aliases instance;
@@ -17,7 +16,6 @@ public class Aliases extends AutoUpdateConfigLoader {
 	
 	public void save() {
 		saveFile();
-		config.addDefault("this", "that");
 	}
 	
 	public static Aliases getInstance() {
@@ -56,43 +54,42 @@ public class Aliases extends AutoUpdateConfigLoader {
 		return str;
 	}
 	
-	public void setValue(String key, String value) {
-		config.set(key, value);
+	public void loadAllAliases() {
+		for(String key : config.getKeys(false)) {
+			String identifier = key;
+			List<String> aliasText = config.getStringList(identifier + ".aliasText");
+			boolean asConsole = config.getBoolean(identifier + ".asConsole", false);
+			boolean isPermission = config.getBoolean(identifier + ".isPermission", false);
+			Alias a = new Alias(identifier, aliasText, asConsole, isPermission);
+			
+			DataStorage.getInstance().addAlias(a);
+		}
+	}
+	
+	public void saveAllAliases() {
+		for(Alias a : DataStorage.getInstance().getAliases()) {
+			if(a.isChanged()) {
+				setAlias(a, false);
+				a.setChanged(false);
+			}
+		}
 		saveFile();
+	}
+	
+	public void setAlias(Alias alias, Boolean save) {
+		config.set(alias.getIdentifier() + ".aliasText", alias.getText());
+		config.set(alias.getIdentifier() + ".asConsole", alias.asConsole());
+		config.set(alias.getIdentifier() + ".isPermission", alias.isPermission());
+		
+		//String identifier, String aliasText, Boolean asConsole, Boolean isPermission
+		if(save) {
+			saveFile();
+			alias.setChanged(false);
+		}
 	}
 	
 	public boolean isSet(String key) {
 		return config.isSet(key);
 	}
 	
-	public void executeCommandsAsConsole(String key, String playername) {
-		List<String> commands = config.getStringList(key);
-		ConsoleCommandSender sender = Bukkit.getServer().getConsoleSender();
-		if(commands != null) {
-			for(String s : commands) {
-				String cmd = s.replace("{player}", playername);
-				Bukkit.getServer().dispatchCommand(sender, cmd);
-			}
-		}
-	}
-	
-	public void executeCommandsAsPlayer(String key, Player player) {
-		List<String> commands = config.getStringList(key);
-		if(commands != null) {
-			for(String s : commands) {
-				String cmd = s.replace("{player}", player.getName());
-				Bukkit.getServer().dispatchCommand(player, cmd);
-			}
-		}
-	}
-	
-	public List<String> getAliasList(String key) {
-		List<String> commands = config.getStringList(key);
-		if(commands == null) {
-			commands = new ArrayList<String>();
-		}
-		return commands;
-	}
-
-
 }

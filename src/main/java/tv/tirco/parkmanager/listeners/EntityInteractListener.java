@@ -19,6 +19,9 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
+import tv.tirco.parkmanager.alias.Alias;
+import tv.tirco.parkmanager.storage.DataStorage;
+import tv.tirco.parkmanager.util.Util;
 
 public class EntityInteractListener implements Listener{
 	
@@ -113,14 +116,48 @@ public class EntityInteractListener implements Listener{
 	@EventHandler(priority=EventPriority.HIGH)
 	public void onPlayerUse(PlayerInteractEvent event){
 	    Player p = event.getPlayer();
+	    
+	    if(!event.getHand().equals(EquipmentSlot.HAND)) {
+	    	return;
+	    }
 	 
-	    if(event.getAction().equals(Action.RIGHT_CLICK_AIR)){
+	    if(event.getAction().equals(Action.RIGHT_CLICK_AIR) 
+	    		|| event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+	    	
+	    	if(event.getClickedBlock() != null
+	    			&& (event.getClickedBlock().getType() != null 
+	    			|| event.getClickedBlock().getType().equals(Material.AIR))) {
+	    		Material clicked = event.getClickedBlock().getType();
+	    		if(Util.canBeClicked(clicked)) {
+	    			return;
+	    		}
+	    	}
+	    	
 	    	ItemStack item = p.getInventory().getItemInMainHand();
 	    	if(item == null || item.getType().equals(Material.AIR)) {
 	    		return;
 	    	}
-	    	//TODO Gold_Ingot, Iron_Ingot
-	    	if(item.getType().equals(Material.GOLDEN_AXE)) {
+	    	
+	    	//NBTI check
+		    NBTItem nbti = new NBTItem(item);
+		    if(nbti.hasNBTData()) {
+		    	//Check for commands:
+		    	if(nbti.hasKey("alias")) {
+		    		String aliasIdentifer = nbti.getString("alias");
+		    		Alias alias = DataStorage.getInstance().getAlias(aliasIdentifer);
+		    		if(alias == null) {
+		    			p.sendMessage(ChatColor.RED + "There seems to be an issue with your item. Please contact an administrator.");
+		    			return;
+		    		} else {
+		    			alias.execute(p, item);
+		    			return;
+		    		}
+		    	}
+		    }
+	    	
+	    	
+//GOLDEN AXE   //TODO Gold_Ingot, Iron_Ingot
+		    else if(item.getType().equals(Material.GOLDEN_AXE)) {
 	    		if(!item.hasItemMeta()) {
 	    			return;
 	    		}
@@ -132,20 +169,14 @@ public class EntityInteractListener implements Listener{
 	    		if(item.getItemMeta().getCustomModelData() < 1) {
 	    			return;
 	    		}
+
 	    		if(p.getInventory().getHelmet() == null || p.getInventory().getHelmet().getType().equals(Material.AIR)) {
 	    			p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 	    			p.getInventory().setItem(EquipmentSlot.HEAD, item);
 	    			return;
 	    		} else {
-	    			p.sendMessage("Your are already wearing a hat.");
+	    			p.sendMessage(ChatColor.RED + "Your are already wearing a hat.");
 	    			return;
-	    		}
-	    	} else if(item.getType().equals(Material.PAPER)) {
-	    		NBTItem nbti = new NBTItem(item);
-	    		if(nbti.hasNBTData()) {
-	    			//Check for commands:
-	    			if(nbti.hasKey("alias")) {
-	    			}		
 	    		}
 	    	}
 	    }

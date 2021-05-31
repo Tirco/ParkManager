@@ -1,0 +1,10 @@
+worldprotection:
+ blockbreak_allowed_in:
+    - world_thelab
+    - murder
+ blockplace_allowed_in:
+    - world_thelab
+    - murder
+ rightclickblock_allowed_in:
+    - world_thelab
+    - murder

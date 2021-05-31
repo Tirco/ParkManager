@@ -9,12 +9,16 @@ import com.bergerkiller.bukkit.tc.signactions.SignAction;
 import com.bergerkiller.bukkit.tc.signactions.SignActionType;
 import com.bergerkiller.bukkit.tc.utils.SignBuildOptions;
 
+import tv.tirco.parkmanager.alias.Alias;
+import tv.tirco.parkmanager.storage.DataStorage;
+import tv.tirco.parkmanager.util.MessageHandler;
+
 public class CmdTrainListener extends SignAction{
 
 	
 	@Override
     public boolean match(SignActionEvent info) {
-        return info.isType("cmd");
+        return info.isType("alias");
     }
 
     @Override
@@ -37,36 +41,32 @@ public class CmdTrainListener extends SignAction{
         }
     }
     
-    //Line 2 - cmd
-    //Line 3 - asPlayer asConsoleOnce asConsoleForAll
-    //Line 4 - alias
+    //Line 2 - alias
+    //Line 3 - aliasidentifier
+    //Line 4 - aliasidentifier
     
 
     public void sendGreetingForCart(SignActionEvent info, MinecartMember<?> member) {
     	if(member.getEntity().getPlayerPassengers().isEmpty()){
     		return;
     	}
-    	String type = info.getLine(2);
-        String alias = info.getLine(3);
-        if(type.equalsIgnoreCase("asPlayerPerm")) {
-        	
-        } else if(type.equalsIgnoreCase("asPlayerOP")) {
-        	
-        } else if(type.equalsIgnoreCase("asConOnce")) {
-        
-        } else if(type.equalsIgnoreCase("asConPerPlayer")) {
-        	
+        String alias = info.getLine(2)+info.getLine(3);
+        Alias a = DataStorage.getInstance().getAlias(alias);
+        if(a == null) {
+        	MessageHandler.getInstance().debug("Train carts attempted to run the Alias " + alias + " but returned null");
+        } else {
+            for (Player passenger : member.getEntity().getPlayerPassengers()) {
+                a.execute(passenger, null);
+            }
         }
-        for (Player passenger : member.getEntity().getPlayerPassengers()) {
-            passenger.sendMessage(alias);
-        }
+
     }
 
     @Override
     public boolean build(SignChangeActionEvent event) {
         return SignBuildOptions.create()
-                .setName(event.isCartSign() ? "cart command" : "train command")
-                .setDescription("Sends a command alias for the cart/train. ")
+                .setName(event.isCartSign() ? "cart alias" : "train alias")
+                .setDescription("Executes a command/permission alias for the cart/train. ")
                 .handle(event.getPlayer());
     }
 }

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -18,6 +19,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import net.md_5.bungee.api.ChatColor;
+import tv.tirco.parkmanager.util.Util;
 
 public class ProtectionListener implements Listener{
 	
@@ -28,33 +30,45 @@ public class ProtectionListener implements Listener{
 			return;
 		}
 		
+		//Don't you point that NULL at me!
 		if(e.getClickedBlock() == null) {
 			return;
 		}
 		
-		if(canBeClicked(e.getClickedBlock().getType())){
+		//Is it okay to click this block?
+		if(Util.canBeClicked(e.getClickedBlock().getType())){
 			return;
-		} else {
-			if(!isAllowedWorld(e.getPlayer().getWorld().getName())) {
-				e.setCancelled(true);
+		}
+		
+		//Is clicking blocks allowed in this world?
+		//Needed for some minigames that have doors etc.
+		if(!Util.rightClickBlockAllowed(player.getWorld().getName())) {
+			e.setCancelled(true);
+		}
+		
+		if(!e.getHand().equals(EquipmentSlot.HAND)) {
+			return;
+		}
+		
+		//NO LEFT CLICK ALLOWED
+		if(!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			e.setCancelled(true);
+			return;
+		}
+		
+		//Trashcan
+		if(e.getClickedBlock().getType().equals(Material.CAULDRON)) {
+			//BlockData data = e.getClickedBlock().getBlockData();
+			Levelled cauldronData = (Levelled) e.getClickedBlock().getBlockData();
+			if(cauldronData.getLevel() == 3) {
+				//Makes a new inventory not stored anywhere.
+				player.openInventory(Bukkit.createInventory(null, 9, ChatColor.translateAlternateColorCodes('&', 
+						"&cTrashcan!")));
+			} else {
+				//player.sendMessage("Cauldron level: " + cauldronData.getLevel() + "/" + cauldronData.getMaximumLevel());
 			}
-			
-			if(!e.getHand().equals(EquipmentSlot.HAND)) {
-				return;
-			}
-			//Trashcan?
-			if(e.getClickedBlock().getType().equals(Material.CAULDRON)) {
-				//BlockData data = e.getClickedBlock().getBlockData();
-				Levelled cauldronData = (Levelled) e.getClickedBlock().getBlockData();
-				if(cauldronData.getLevel() == 3) {
-					player.openInventory(Bukkit.createInventory(null, 9, ChatColor.translateAlternateColorCodes('&', 
-							"&cTrashcan!")));
-				} else {
-					player.sendMessage("Cauldron level: " + cauldronData.getLevel() + "/" + cauldronData.getMaximumLevel());
-				}
-				//String dataString = "minecraft:cauldron[level=3]";
-				//data.getAsString();
-			}
+			//String dataString = "minecraft:cauldron[level=3]";
+			//data.getAsString();
 		}
 	}
 	
@@ -70,57 +84,7 @@ public class ProtectionListener implements Listener{
             e.setCancelled(true);
         }
     }
-	
-	private boolean canBeClicked(Material mat) {
-		switch(mat) {
-		//Buttons
-		case STONE_BUTTON:
-		case OAK_BUTTON:
-		case SPRUCE_BUTTON:
-		case BIRCH_BUTTON:
-		case JUNGLE_BUTTON:
-		case ACACIA_BUTTON:
-		case DARK_OAK_BUTTON:
-		case CRIMSON_BUTTON:
-		case WARPED_BUTTON:
-		case POLISHED_BLACKSTONE_BUTTON:
-		//Pressureplates
-		case STONE_PRESSURE_PLATE:
-		case OAK_PRESSURE_PLATE:
-		case SPRUCE_PRESSURE_PLATE:
-		case BIRCH_PRESSURE_PLATE:
-		case JUNGLE_PRESSURE_PLATE:
-		case ACACIA_PRESSURE_PLATE:
-		case DARK_OAK_PRESSURE_PLATE:
-		case CRIMSON_PRESSURE_PLATE:
-		case WARPED_PRESSURE_PLATE:
-		case POLISHED_BLACKSTONE_PRESSURE_PLATE:
-		case LIGHT_WEIGHTED_PRESSURE_PLATE:
-		case HEAVY_WEIGHTED_PRESSURE_PLATE:
-		//Containers
-		case ENDER_CHEST:
-		//Signs
-		case OAK_SIGN:
-		case ACACIA_SIGN:
-		case SPRUCE_SIGN:
-		case BIRCH_SIGN:
-		case DARK_OAK_SIGN:
-		case JUNGLE_SIGN:
-		case CRIMSON_SIGN:
-		case WARPED_SIGN:
-		case OAK_WALL_SIGN:
-		case ACACIA_WALL_SIGN:
-		case SPRUCE_WALL_SIGN:
-		case BIRCH_WALL_SIGN:
-		case DARK_OAK_WALL_SIGN:
-		case JUNGLE_WALL_SIGN:
-		case CRIMSON_WALL_SIGN:
-		case WARPED_WALL_SIGN:
-			return true;
-		default: 
-			return false;
-		}
-	}
+
 	
 	//Disable breaking blocks for non creative players.
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -128,7 +92,7 @@ public class ProtectionListener implements Listener{
 		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
 			return;
 		}
-		if(!isAllowedWorld(e.getPlayer().getWorld().getName())) {
+		if(!Util.blockBreakAllowed(e.getPlayer().getWorld().getName())) {
 			e.setCancelled(true);
 		}
 		
@@ -142,7 +106,7 @@ public class ProtectionListener implements Listener{
 		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
 			return;
 		}
-		if(!isAllowedWorld(e.getPlayer().getWorld().getName())) {
+		if(!Util.blockPlaceAllowed(e.getPlayer().getWorld().getName())) {
 			e.setCancelled(true);
 		}
 	}
@@ -174,11 +138,4 @@ public class ProtectionListener implements Listener{
 
     }
 
-	private boolean isAllowedWorld(String name) {
-		if(name.equalsIgnoreCase("world_TheLab")
-				|| name.equalsIgnoreCase("Murder")) {
-			return true;
-		}
-		return false;
-	}
 }

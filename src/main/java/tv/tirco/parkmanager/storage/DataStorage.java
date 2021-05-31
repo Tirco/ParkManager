@@ -8,6 +8,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.Inventory;
 
 import net.md_5.bungee.api.ChatColor;
+import tv.tirco.parkmanager.alias.Alias;
 import tv.tirco.parkmanager.config.Rides;
 
 public class DataStorage {
@@ -15,6 +16,7 @@ public class DataStorage {
 	private static DataStorage instance;
 	
 	List<Ride> rides;
+	List<Alias> aliases;
 	Inventory rideMenu; //Storing it here as it shouldn't change.
 	
 	
@@ -55,7 +57,6 @@ public class DataStorage {
 		
 	}
 	
-	
 	public void setRideMenu(Inventory menu) {
 		this.rideMenu = menu;
 	}
@@ -70,8 +71,19 @@ public class DataStorage {
 	
 	public DataStorage() {
 		this.rides = new ArrayList<Ride>();
+		this.aliases = new ArrayList<Alias>();
 	}
 	
+
+	/**
+	 * RIDES
+	 */
+
+	/**
+	 * 
+	 * @param identifier
+	 * @return the Ride object
+	 */
 	public Ride getRide(String identifier) {
 		for(Ride r : rides) {
 			if(r.getIdentifier().equalsIgnoreCase(identifier)) {
@@ -94,9 +106,44 @@ public class DataStorage {
 		rides.add(ride);
 		
 	}
-	
+
 	public List<Ride> getRides() {
 		return rides;
+	}
+	
+	/**
+	 * ALIASES
+	 */
+	
+	/**
+	 * 
+	 * @param identifier
+	 * @return the Alias object
+	 */
+	public Alias getAlias(String identifier) {
+		for(Alias a : aliases) {
+			if(a.getIdentifier().equalsIgnoreCase(identifier)) {
+				return a;
+			}
+		}
+		return null;
+	}
+	
+	public void addAlias(Alias alias) {
+		if(aliases.contains(alias)) {
+			aliases.remove(alias);
+		}
+		
+		if(getRide(alias.getIdentifier()) != null) {
+			aliases.remove(getAlias(alias.getIdentifier()));
+		}
+		
+		aliases.add(alias);
+		
+	}
+
+	public List<Alias> getAliases() {
+		return aliases;
 	}
 
 

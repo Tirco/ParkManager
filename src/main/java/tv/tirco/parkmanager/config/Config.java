@@ -35,10 +35,6 @@ public class Config extends AutoUpdateConfigLoader {
 			MessageHandler.getInstance().setDebugState(true);
 			MessageHandler.getInstance().debug("Debugging has been enabled.");
 		}
-		if (getDebugToAdmins()) {
-			MessageHandler.getInstance().setDebugState(true);
-			MessageHandler.getInstance().debug("Debug loggint to admins has been enabled.");
-		}
 
 		// If the reason list is empty, keys are valid.
 		return noErrorsInConfig(reason);
@@ -68,13 +64,22 @@ public class Config extends AutoUpdateConfigLoader {
 		return config.getBoolean("setting.debug", false);
 	}
 	
-	public boolean getDebugToAdmins() {
-		return config.getBoolean("setting.debugtoadmins", false);
+	public List<String> blockBreakAllowedWorlds(){
+		return config.getStringList("worldprotection.blockbreak_allowed_in");
+	}
+	
+	public List<String> blockPlaceAllowedWorlds(){
+		return config.getStringList("worldprotection.blockplace_allowed_in");
+	}
+	
+	public List<String> rightClickBlockAllowedWorlds(){
+		return config.getStringList("worldprotection.rightclickblock_allowed_in");
 	}
 
-	
-	public long getOldUsersCutoff() {
+	public int getOldUsersCutoff() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
+	
 
 }
