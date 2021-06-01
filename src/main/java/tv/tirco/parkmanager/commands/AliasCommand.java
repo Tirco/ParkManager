@@ -130,7 +130,7 @@ public class AliasCommand implements CommandExecutor,TabCompleter{
 				player.getInventory().setItemInMainHand(nbti.getItem());
 				
 				player.sendMessage("Item in hand has been updated.");
-				
+				return true;
 			} else {
 				sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
 				return true;

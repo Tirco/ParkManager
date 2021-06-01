@@ -1,12 +1,20 @@
 package tv.tirco.parkmanager.util;
 
+import java.util.Random;
+
 import org.bukkit.Material;
 
 import tv.tirco.parkmanager.config.Config;
 
 public class Util {
 
-	public static boolean canBeClicked(Material mat) {
+    static Random rand = new Random();
+    
+    public static Random getRandom() {
+    	return rand;
+    }
+	
+ 	public static boolean canBeClicked(Material mat) {
 		switch(mat) {
 		//Buttons
 		case STONE_BUTTON:

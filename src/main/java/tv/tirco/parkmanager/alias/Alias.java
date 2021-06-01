@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -108,9 +109,10 @@ public class Alias {
 			}
 		}
 		if(item != null) {
-			ItemStack removeItem = item;
+			ItemStack removeItem = item.clone();
 			removeItem.setAmount(1);
 			player.getInventory().removeItem(removeItem);
+			player.playSound(player.getLocation(), Sound.ITEM_AXE_STRIP, 2.0f, 0.2f);
 		}
 		
 		return true;

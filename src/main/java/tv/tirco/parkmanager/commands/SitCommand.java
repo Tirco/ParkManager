@@ -1,5 +1,9 @@
 package tv.tirco.parkmanager.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,8 +13,28 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.ArmorStand.LockType;
 import org.bukkit.inventory.EquipmentSlot;
 
+import com.google.common.collect.ImmutableList;
+
+import net.md_5.bungee.api.ChatColor;
+import tv.tirco.parkmanager.util.Util;
+
 public class SitCommand implements CommandExecutor{
 
+    List<String> sitMessages = ImmutableList.of(
+    		"&eYou plonked those ol' butcheeks down.",
+    		"&eYou sit down.",
+    		"&eTime to stop moving around!",
+    		"&eOof, those legs were getting tired.",
+    		"&eTime to sit down and enjoy the view!",
+    		"&eNever underestimate the power of sitting quietly!",
+    		"&eOne sits more comfortably on a colour that one likes.",
+    		"&eSitting time!",
+    		"&eWoohoo! Resting time! You better not be spamming the sit command just to see what type of messages you can get!",
+    		"&eI fits, I sits! &a-Any cat ever&e.",
+    		"&eWho needs a bench?! This spot right here is perfect!",
+    		"&eWalking around the park can be tiring! Time for some rest!",
+    		"&eYou are no longer standing. Nice!");
+	
 	//@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(sender instanceof Player) {
@@ -53,7 +77,10 @@ public class SitCommand implements CommandExecutor{
 	        as.addEquipmentLock(EquipmentSlot.FEET, LockType.REMOVING_OR_CHANGING);
 	        as.addEquipmentLock(EquipmentSlot.LEGS, LockType.REMOVING_OR_CHANGING);
 	        
-	        player.sendMessage("You plonked those ol' butcheeks down.");
+	        Random rand = Util.getRandom();
+
+	        player.sendMessage(ChatColor.translateAlternateColorCodes('&', 
+	        		sitMessages.getItem(rand.nextInt(sitMessages.size()))));
 	        return true;
 
 		} else {

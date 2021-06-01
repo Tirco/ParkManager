@@ -55,5 +55,9 @@ commands:
         description: open the gadgets menu!
         aliases: [gadget,cosmetics,trails,hats]
         usage: /<command>
+    randomride:
+        description: takes you to a random ride!
+        aliases: [rr]
+        usage: /<command>
 
 permissions: {}
