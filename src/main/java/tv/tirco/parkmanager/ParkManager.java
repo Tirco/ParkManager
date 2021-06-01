@@ -21,6 +21,7 @@ import tv.tirco.parkmanager.commands.ExitRideCommand;
 import tv.tirco.parkmanager.commands.GadgetsCommand;
 import tv.tirco.parkmanager.commands.HideItemInfoCommand;
 import tv.tirco.parkmanager.commands.ModelDataCommand;
+import tv.tirco.parkmanager.commands.RandomrideCommand;
 import tv.tirco.parkmanager.commands.ResourcePackCommand;
 import tv.tirco.parkmanager.commands.RideAdminCommand;
 import tv.tirco.parkmanager.commands.RidesCommand;
@@ -74,6 +75,8 @@ public class ParkManager extends JavaPlugin {
 		plugin = this;
 		parkManager = this;
         
+		MessageHandler.getInstance().log("Setting up economy...");
+		
     	//Vault
         if (!setupEconomy() ) {
             MessageHandler.getInstance().log(Level.SEVERE, String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -81,10 +84,12 @@ public class ParkManager extends JavaPlugin {
             return;
         }
 		
-		
+        MessageHandler.getInstance().log("Fixing file paths...");
     	setupFilePaths();
+    	MessageHandler.getInstance().log("Loading configuration files...");
         loadConfig();
 
+        MessageHandler.getInstance().log("Registering commands...");
         // Commands enabled with following method must have entries in plugin.yml
         getCommand("example").setExecutor(new ExampleCommand(this));
         getCommand("sit").setExecutor(new SitCommand());
@@ -97,25 +102,31 @@ public class ParkManager extends JavaPlugin {
         getCommand("exitride").setExecutor(new ExitRideCommand());
         getCommand("resourcepack").setExecutor(new ResourcePackCommand());
         getCommand("gadgets").setExecutor(new GadgetsCommand());
+        getCommand("randomride").setExecutor(new RandomrideCommand());
         
+        MessageHandler.getInstance().log("Loading database...");
         db = DatabaseManagerFactory.getDatabaseManager();
         
         //Register carts
         if(Bukkit.getPluginManager().getPlugin("Train_Carts") != null) {
-        	Bukkit.getLogger().log(Level.INFO, "Hooking into Train_Carts");
+        	MessageHandler.getInstance().log("Hooking into Train_Carts...");
         	SignAction.register(cmdTrainListener);
         	SignAction.register(rideTrainListener);
         } else {
-        	Bukkit.getLogger().log(Level.INFO, "Could not find the Train_Carts plugin.");
+        	MessageHandler.getInstance().log("Could not find the Train_Carts plugin... Ignoring");
         }
         
         //PAPI
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+        	MessageHandler.getInstance().log("Hooking into PlaceholderAPI...");
 			placeholders = new PapiExpansion(this);
             placeholders.register();
             this.papi = true;
+		} else {
+			MessageHandler.getInstance().log("PlaceholderAPI not found... Ignoring");
 		}
         
+        MessageHandler.getInstance().log("Setting up EventListeners...");
         Bukkit.getPluginManager().registerEvents(new ItemModifierListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new ProtectionListener(), this);
@@ -129,13 +140,17 @@ public class ParkManager extends JavaPlugin {
     
     @Override
     public void onDisable() {
+    	MessageHandler.getInstance().log("Preparing to disable!");
         // Don't log disabling, Spigot does that for you automatically!
+    	MessageHandler.getInstance().log("Saving all rides...");
     	Rides.getInstance().saveRides();
+    	MessageHandler.getInstance().log("Saving all aliases...");
+    	Aliases.getInstance().saveAllAliases();
     	
+    	MessageHandler.getInstance().log("Unregistering TrainCarts signs...");
     	SignAction.unregister(cmdTrainListener);
     	SignAction.unregister(rideTrainListener);
     	
-
     }
     
     private boolean setupEconomy() {

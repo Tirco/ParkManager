@@ -10,7 +10,7 @@ import net.md_5.bungee.api.ChatColor;
 public class MessageHandler {
 
 	private static MessageHandler instance;
-	public String prefix = ChatColor.BLUE +"" +  ChatColor.BOLD + "Plugin" + ChatColor.GRAY;
+	public String prefix = ChatColor.BLUE +"" +  ChatColor.BOLD + "[Parkmanager] " + ChatColor.GRAY;
 	
 	private boolean debug = false;
 	private boolean debugToAdmins = false;
@@ -58,7 +58,7 @@ public class MessageHandler {
 	}
 	
 	public void log(String msg) {
-		log(Level.INFO, msg);
+		log(Level.INFO, prefix + msg);
 	}
 
 	

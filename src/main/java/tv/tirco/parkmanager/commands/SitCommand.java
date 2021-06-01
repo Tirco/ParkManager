@@ -1,6 +1,5 @@
 package tv.tirco.parkmanager.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -80,7 +79,7 @@ public class SitCommand implements CommandExecutor{
 	        Random rand = Util.getRandom();
 
 	        player.sendMessage(ChatColor.translateAlternateColorCodes('&', 
-	        		sitMessages.getItem(rand.nextInt(sitMessages.size()))));
+	        		sitMessages.get(rand.nextInt(sitMessages.size()))));
 	        return true;
 
 		} else {
