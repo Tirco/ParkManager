@@ -1,0 +1,80 @@
+settings:
+    shinychance: 0.05 #chance of card being enchanted.
+    rarity:
+        chances:
+            COMMON: 0.40
+            UNCOMMON: 0.34
+            RARE: 0.20
+            EPIC: 0.05
+            LEGENDARY: 0.01
+    condition:
+        chances: ##Should add up to 1.00 if not, remaining points will be added to POOR, excess points will be removed from poor and up. Basically it checks if it's GEM first, then MINT, etc.
+            POOR: 0.15 #15/100 
+            FAIR: 0.25 #25/100 1/4 
+            GOOD: 0.369 #369/1000 ~ 37/100 Default value.
+            VERY_GOOD: 0.10 #10/100 - 1/10
+            EXCELLENT: 0.08 #8/100 - 2/25
+            NEAR_MINT: 0.04 #4/100 - 1/25
+            MINT: 0.01 #1/100
+            GEM_MINT: 0.001 #1/1000
+   
+signatures: {}
+cards: {}
+  #1: ##IS ID and MODELDATA
+  # type: PLAYER
+  # available: true
+  # name: "&6Ang"
+  # lore:
+  #  - This is description
+  #  - Isn't this nice?
+  # signer: UUIDOFSIGNERGOESHERE
+  1:
+    type: UNKNOWN
+    available: true
+    name: "&fFiller Card"
+    lore:
+        -"&aThis card is the very first"
+        -"&aof the common cards. It does"
+        -"&anot have an image, or any"
+        -"&aspecial features."
+    signer: NONE
+   2:
+    type: UNKNOWN
+    available: true
+    name: "&fFiller Card"
+    lore:
+        -"&aThis card is the very first"
+        -"&aof the common cards. It does"
+        -"&anot have an image, or any"
+        -"&aspecial features."
+    signer: NONE
+   3:
+    type: UNKNOWN
+    available: true
+    name: "&fFiller Card"
+    lore:
+        -"&aThis card is the very first"
+        -"&aof the common cards. It does"
+        -"&anot have an image, or any"
+        -"&aspecial features."
+    signer: NONE
+   4:
+    type: UNKNOWN
+    available: true
+    name: "&fFiller Card"
+    lore:
+        -"&aThis card is the very first"
+        -"&aof the common cards. It does"
+        -"&anot have an image, or any"
+        -"&aspecial features."
+    signer: NONE
+   5:
+    type: UNKNOWN
+    available: true
+    name: "&fFiller Card"
+    lore:
+        -"&aThis card is the very first"
+        -"&aof the common cards. It does"
+        -"&anot have an image, or any"
+        -"&aspecial features."
+    signer: NONE

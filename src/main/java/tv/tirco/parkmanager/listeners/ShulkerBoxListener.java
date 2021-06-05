@@ -211,6 +211,7 @@ public class ShulkerBoxListener implements Listener {
 			case RED_SHULKER_BOX:
 			case WHITE_SHULKER_BOX:
 			case YELLOW_SHULKER_BOX:
+			case SHULKER_BOX:
 				return true;
 			default:
 				return false;

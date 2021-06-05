@@ -36,7 +36,7 @@ public class ProtectionListener implements Listener{
 		}
 		
 		//Is it okay to click this block?
-		if(Util.canBeClicked(e.getClickedBlock().getType())){
+		if(Util.canBeInteracted(e.getClickedBlock().getType())){
 			return;
 		}
 		
@@ -58,17 +58,23 @@ public class ProtectionListener implements Listener{
 		
 		//Trashcan
 		if(e.getClickedBlock().getType().equals(Material.CAULDRON)) {
-			//BlockData data = e.getClickedBlock().getBlockData();
-			Levelled cauldronData = (Levelled) e.getClickedBlock().getBlockData();
-			if(cauldronData.getLevel() == 3) {
-				//Makes a new inventory not stored anywhere.
-				player.openInventory(Bukkit.createInventory(null, 9, ChatColor.translateAlternateColorCodes('&', 
-						"&cTrashcan!")));
+			if(!(player.getInventory().getItemInMainHand() == null ||
+					player.getInventory().getItemInMainHand().getType().equals(Material.AIR))) {
+				player.sendMessage("Please don't hold an item in your hand while trying to interact with this block.");
 			} else {
-				//player.sendMessage("Cauldron level: " + cauldronData.getLevel() + "/" + cauldronData.getMaximumLevel());
+				//BlockData data = e.getClickedBlock().getBlockData();
+				Levelled cauldronData = (Levelled) e.getClickedBlock().getBlockData();
+				if(cauldronData.getLevel() == 3) {
+					//Makes a new inventory not stored anywhere.
+					player.openInventory(Bukkit.createInventory(null, 9, ChatColor.translateAlternateColorCodes('&', 
+							"&cTrashcan!")));
+				} else {
+					//player.sendMessage("Cauldron level: " + cauldronData.getLevel() + "/" + cauldronData.getMaximumLevel());
+				}
+				//String dataString = "minecraft:cauldron[level=3]";
+				//data.getAsString();
 			}
-			//String dataString = "minecraft:cauldron[level=3]";
-			//data.getAsString();
+
 		}
 	}
 	

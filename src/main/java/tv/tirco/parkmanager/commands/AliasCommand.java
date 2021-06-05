@@ -18,7 +18,7 @@ import com.google.common.collect.ImmutableList;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.alias.Alias;
-import tv.tirco.parkmanager.config.Aliases;
+import tv.tirco.parkmanager.config.AliasesConfig;
 import tv.tirco.parkmanager.storage.DataStorage;
 
 public class AliasCommand implements CommandExecutor,TabCompleter{
@@ -47,13 +47,13 @@ public class AliasCommand implements CommandExecutor,TabCompleter{
 
 		//Alias reload
 		if(args[0].equalsIgnoreCase("reload")) {
-			Aliases.getInstance().loadAllAliases();
+			AliasesConfig.getInstance().loadAllAliases();
 			sender.sendMessage(ChatColor.GREEN + "All aliases reloaded.");
 			return true;
 		}
 		//Alias save
 		if(args[0].equalsIgnoreCase("save")) {
-			Aliases.getInstance().saveAllAliases();
+			AliasesConfig.getInstance().saveAllAliases();
 			sender.sendMessage(ChatColor.GREEN + "All aliases saved.");
 			return true;
 		}
@@ -76,7 +76,7 @@ public class AliasCommand implements CommandExecutor,TabCompleter{
 			} else {
 				Alias a = new Alias(aliasName, new ArrayList<String>(), false, false);
 				DataStorage.getInstance().addAlias(a);
-				Aliases.getInstance().setAlias(a, false);
+				AliasesConfig.getInstance().setAlias(a, false);
 				sender.sendMessage(ChatColor.GREEN + 
 						"A new alias with the identifier " + ChatColor.YELLOW + aliasName +
 						ChatColor.GREEN + " has been created.");

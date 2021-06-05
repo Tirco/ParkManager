@@ -15,6 +15,7 @@ import com.google.common.base.Charsets;
 
 import net.milkbowl.vault.economy.Economy;
 import tv.tirco.parkmanager.Inventories.ItemModifierListener;
+import tv.tirco.parkmanager.TradingCards.TradingCardConfig;
 import tv.tirco.parkmanager.commands.AliasCommand;
 import tv.tirco.parkmanager.commands.BenchCommand;
 import tv.tirco.parkmanager.commands.ExitRideCommand;
@@ -26,9 +27,9 @@ import tv.tirco.parkmanager.commands.ResourcePackCommand;
 import tv.tirco.parkmanager.commands.RideAdminCommand;
 import tv.tirco.parkmanager.commands.RidesCommand;
 import tv.tirco.parkmanager.commands.SitCommand;
-import tv.tirco.parkmanager.config.Aliases;
+import tv.tirco.parkmanager.config.AliasesConfig;
 import tv.tirco.parkmanager.config.Config;
-import tv.tirco.parkmanager.config.Rides;
+import tv.tirco.parkmanager.config.RidesConfig;
 import tv.tirco.parkmanager.listeners.CommandStopper;
 import tv.tirco.parkmanager.listeners.EntityInteractListener;
 import tv.tirco.parkmanager.listeners.JoinLeaveListener;
@@ -135,7 +136,7 @@ public class ParkManager extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RideMenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new CommandStopper(), this);
         
-        
+        MessageHandler.getInstance().log("Parkmanager has been Enabled!");
     }
     
     @Override
@@ -143,9 +144,9 @@ public class ParkManager extends JavaPlugin {
     	MessageHandler.getInstance().log("Preparing to disable!");
         // Don't log disabling, Spigot does that for you automatically!
     	MessageHandler.getInstance().log("Saving all rides...");
-    	Rides.getInstance().saveRides();
+    	RidesConfig.getInstance().saveRides();
     	MessageHandler.getInstance().log("Saving all aliases...");
-    	Aliases.getInstance().saveAllAliases();
+    	AliasesConfig.getInstance().saveAllAliases();
     	
     	MessageHandler.getInstance().log("Unregistering TrainCarts signs...");
     	SignAction.unregister(cmdTrainListener);
@@ -177,8 +178,9 @@ public class ParkManager extends JavaPlugin {
 	
 	private void loadConfig() {
 		Config.getInstance();
-		Aliases.getInstance().loadAllAliases();;
-		Rides.getInstance().loadKeys();
+		AliasesConfig.getInstance().loadAllAliases();;
+		RidesConfig.getInstance().loadKeys();
+		TradingCardConfig.getInstance().loadAllCards();
 	}
 	
 	public static String getMainDirectory() {

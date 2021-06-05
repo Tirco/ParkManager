@@ -116,15 +116,17 @@ public class EntityInteractListener implements Listener{
 	@EventHandler(priority=EventPriority.HIGH)
 	public void onPlayerUse(PlayerInteractEvent event){
 	    Player p = event.getPlayer();
-	    
-	    //Main hand check
-	    if(!event.getHand().equals(EquipmentSlot.HAND)) {
-	    	return;
-	    }
+
 	 
 	    //Make sure we're doing a right click action
 	    if(event.getAction().equals(Action.RIGHT_CLICK_AIR) 
 	    || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+	    	
+		    
+		    //Main hand check
+		    if(!event.getHand().equals(EquipmentSlot.HAND)) {
+		    	return;
+		    }
 	    	
 	    	if(event.getClickedBlock() != null
 	    	&& 
@@ -132,7 +134,7 @@ public class EntityInteractListener implements Listener{
 	    	&&
 	    	!event.getClickedBlock().getType().equals(Material.AIR)) {
 	    		Material clicked = event.getClickedBlock().getType();
-	    		if(Util.canBeClicked(clicked)) {
+	    		if(Util.canBeInteracted(clicked)) {
 	    			return;
 	    		}
 	    	}

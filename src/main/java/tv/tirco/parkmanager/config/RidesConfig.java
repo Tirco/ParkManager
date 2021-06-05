@@ -12,10 +12,10 @@ import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.Ride;
 
-public class Rides extends AutoUpdateConfigLoader {
-	private static Rides instance;
+public class RidesConfig extends AutoUpdateConfigLoader {
+	private static RidesConfig instance;
 
-	private Rides() {
+	private RidesConfig() {
 		super("rides.yml");
 		validate();
 	}
@@ -24,9 +24,9 @@ public class Rides extends AutoUpdateConfigLoader {
 		saveFile();
 	}
 	
-	public static Rides getInstance() {
+	public static RidesConfig getInstance() {
 		if (instance == null) {
-			instance = new Rides();
+			instance = new RidesConfig();
 		}
 
 		return instance;

@@ -14,7 +14,7 @@ public class Util {
     	return rand;
     }
 	
- 	public static boolean canBeClicked(Material mat) {
+ 	public static boolean canBeInteracted(Material mat) {
 		switch(mat) {
 		//Buttons
 		case STONE_BUTTON:
@@ -42,7 +42,6 @@ public class Util {
 		case HEAVY_WEIGHTED_PRESSURE_PLATE:
 		//Containers
 		case ENDER_CHEST:
-		case CAULDRON:
 		//Signs
 		case OAK_SIGN:
 		case ACACIA_SIGN:

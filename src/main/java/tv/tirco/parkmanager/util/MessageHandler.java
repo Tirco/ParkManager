@@ -35,7 +35,7 @@ public class MessageHandler {
 		}
 		if(debugToAdmins) {
 			for(Player p : Bukkit.getOnlinePlayers()) {
-				if(p.hasPermission("lottery.admin")) {
+				if(p.hasPermission("parkmanager.admin")) {
 					p.sendMessage(prefix + msg);
 				}
 			}
@@ -50,7 +50,7 @@ public class MessageHandler {
 		Bukkit.getLogger().log(lvl, prefix + msg);
 		if(debugToAdmins) {
 			for(Player p : Bukkit.getOnlinePlayers()) {
-				if(p.hasPermission("lottery.admin")) {
+				if(p.hasPermission("parkmanager.admin")) {
 					p.sendMessage(prefix + msg);
 				}
 			}
@@ -58,7 +58,7 @@ public class MessageHandler {
 	}
 	
 	public void log(String msg) {
-		log(Level.INFO, prefix + msg);
+		log(Level.INFO, msg);
 	}
 
 	

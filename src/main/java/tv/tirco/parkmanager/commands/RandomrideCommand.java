@@ -47,9 +47,9 @@ public class RandomrideCommand implements CommandExecutor{
 
 			Random rand = Util.getRandom();
 		    Ride selected = rides.get(rand.nextInt(rides.size()));
-		    player.sendMessage(
-		    		ChatColor.GREEN + "Randomly selected the " 
-		    + ChatColor.YELLOW + selected.getName() + ChatColor.GREEN +" ride.");
+		    player.sendMessage(ChatColor.translateAlternateColorCodes(
+		    		'&',"&aRandomly selected the &e"+ selected.getName() + "&a ride."));
+
 		    player.performCommand("warp " + selected.getWarp());
 		    return true;
 			

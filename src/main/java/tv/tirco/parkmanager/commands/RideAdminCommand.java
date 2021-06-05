@@ -16,13 +16,13 @@ import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.ImmutableList;
 
-import tv.tirco.parkmanager.config.Rides;
+import tv.tirco.parkmanager.config.RidesConfig;
 import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.Ride;
 
 public class RideAdminCommand implements CommandExecutor,TabCompleter{
 	
-	List<String> commands = ImmutableList.of("create","setname","setwarp","setdescription","setitem","setmaxpayout","setdefaultpayperminute","startride","stopride","save","reloadrides");
+	List<String> commands = ImmutableList.of("help","create","setname","setwarp","setdescription","setitem","setmaxpayout","setdefaultpayperminute","startride","stopride","save","reloadrides");
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		//help
@@ -37,7 +37,7 @@ public class RideAdminCommand implements CommandExecutor,TabCompleter{
 		}
 		
 		if(args[0].equalsIgnoreCase("save")) {
-			Rides.getInstance().saveRides();
+			RidesConfig.getInstance().saveRides();
 			sender.sendMessage("Saved all rides!");
 			return true;
 		} else if(args[0].equalsIgnoreCase("reloadrides")) {
@@ -80,6 +80,7 @@ public class RideAdminCommand implements CommandExecutor,TabCompleter{
 				} else {
 					ride.setIcon(item);
 					player.sendMessage("Item added. Server will need a reboot before it is enabled.");
+					return true;
 				}
 			} else {
 				sender.sendMessage("This command must be run by a player.");

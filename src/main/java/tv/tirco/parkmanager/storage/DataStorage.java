@@ -9,7 +9,7 @@ import org.bukkit.inventory.Inventory;
 
 import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.alias.Alias;
-import tv.tirco.parkmanager.config.Rides;
+import tv.tirco.parkmanager.config.RidesConfig;
 
 public class DataStorage {
 
@@ -43,7 +43,7 @@ public class DataStorage {
 	
 	public void rebuildRideMenu() {
 		Inventory inv = rideMenu;
-		Rides.getInstance().saveRides();
+		RidesConfig.getInstance().saveRides();
 		this.rides.clear();
 		if(inv != null) {
 			for(HumanEntity e :inv.getViewers()) {
@@ -52,7 +52,7 @@ public class DataStorage {
 			}
 		}
 		this.rideMenu = null;
-		Rides.getInstance().loadKeys();
+		RidesConfig.getInstance().loadKeys();
 		inv = getRideInventory();
 		
 	}

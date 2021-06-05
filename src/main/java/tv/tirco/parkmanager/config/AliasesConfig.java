@@ -6,10 +6,10 @@ import java.util.List;
 import tv.tirco.parkmanager.alias.Alias;
 import tv.tirco.parkmanager.storage.DataStorage;
 
-public class Aliases extends AutoUpdateConfigLoader {
-	private static Aliases instance;
+public class AliasesConfig extends AutoUpdateConfigLoader {
+	private static AliasesConfig instance;
 
-	private Aliases() {
+	private AliasesConfig() {
 		super("alias.yml");
 		validate();
 	}
@@ -18,9 +18,9 @@ public class Aliases extends AutoUpdateConfigLoader {
 		saveFile();
 	}
 	
-	public static Aliases getInstance() {
+	public static AliasesConfig getInstance() {
 		if (instance == null) {
-			instance = new Aliases();
+			instance = new AliasesConfig();
 		}
 
 		return instance;
