@@ -8,7 +8,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import tv.tirco.parkmanager.config.AutoUpdateConfigLoader;
 import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.Ride;
-import tv.tirco.parkmanager.util.Util;
 
 public class TradingCardConfig extends AutoUpdateConfigLoader {
 	private static TradingCardConfig instance;

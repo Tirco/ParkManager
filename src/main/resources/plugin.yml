@@ -59,5 +59,20 @@ commands:
         description: takes you to a random ride!
         aliases: [rr]
         usage: /<command>
+    tradingcardadmin:
+        description: creates and modifies aliases.
+        aliases: []
+        permission: parkmanager.tradingcard.admin
+        usage: /<command>
+    tradingcardevaluate:
+        description: creates and modifies aliases.
+        aliases: [evaluatecard]
+        permission: parkmanager.tradingcard.admin
+        usage: /<command>
+    tradingcardsign:
+        description: creates and modifies aliases.
+        aliases: [signcard]
+        permission: parkmanager.tradingcard.admin
+        usage: /<command>
 
 permissions: {}
