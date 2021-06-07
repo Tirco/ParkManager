@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
+import tv.tirco.parkmanager.util.Util;
 
 public class TradingCard {
 	
@@ -21,6 +22,7 @@ public class TradingCard {
 	List<String> lore;
 	boolean available;
 	TradingCardType type;
+	int modelData;
 
 	/**
 	 * 
@@ -35,13 +37,14 @@ public class TradingCard {
 	public TradingCard(
 			@NotNull String name,@NotNull int id,@NotNull List<String> lore,
 			@NotNull TradingCardRarity rarity, @NotNull String UUID, 
-			@NotNull TradingCardType cardType, boolean available) {
+			@NotNull TradingCardType cardType, boolean available, int modelData) {
 		this.name = name;
 		this.id = id;
 		this.lore = lore;
 		this.rarity = rarity;
 		this.type = cardType;
 		this.available = available;
+		this.modelData = modelData;
 	}
 	
 	public ItemStack buildCardItem(TradingCardCondition condition, Boolean signed, Boolean shiny) {
@@ -49,6 +52,7 @@ public class TradingCard {
 		//Name
 		//Lore
 		String rarityString = rarity.getAsString();
+		String typeString = type.getString();
 		String rarityNamePrefix = rarity.getNamePrefix();
 		String conditionString = condition.getAsString();
 		
@@ -56,38 +60,42 @@ public class TradingCard {
 		
 		
 		if(shiny) {
-			item.addEnchantment(Enchantment.MENDING, 1);
+			item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
 		}
 		
 		ItemMeta meta = item.getItemMeta();
 		//Item Name
-		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', rarityNamePrefix + " " + name));
+		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', 
+				rarityNamePrefix + " " + name + " &a#" + String.format("%03d",id)));
 		
 		//Build lore
 		List<String> itemLore = new ArrayList<String>();
 		itemLore.add(ChatColor.translateAlternateColorCodes('&', "&aTrading Card"));
 		itemLore.add(ChatColor.translateAlternateColorCodes('&', "&aRarity: " + rarityString));
+		itemLore.add(ChatColor.translateAlternateColorCodes('&', "&aCard Type: " + typeString));
 		itemLore.add(ChatColor.translateAlternateColorCodes('&', "&aCondition:&7 " + conditionString));
 		itemLore.add(ChatColor.translateAlternateColorCodes('&', "&f"));
 		for(String s : lore) {
 			itemLore.add(ChatColor.translateAlternateColorCodes('&', s));
 		}
 		
-		meta.setLore(lore);
+		meta.setLore(itemLore);
 		
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS);
-		meta.setCustomModelData(id);
+		meta.setCustomModelData(modelData);
 		item.setItemMeta(meta);
 		
 		//NBT
 		NBTItem nbti = new NBTItem(item);
 		nbti.setInteger("TradingCardID", id);
 		nbti.setString("TradingCardRarity", rarity.toString());
+		nbti.setString("TradingCardCondition", condition.toString());
 		nbti.setBoolean("TradingCardShiny", shiny);
 		nbti.setInteger("TradingCardDefaultLoreSize", itemLore.size());
 		nbti.setBoolean("TradingCardSigned", false);
 		nbti.setDouble("TradingCardValue", TradingCardManager.getInstance().getCardValue(rarity,condition,signed,shiny,available));
-		//nbti.setLong("TradingCardStorageID", 0L); //TODO
+		nbti.setString("TradingCardStorageID", TradingCardManager.getInstance().getCardStorageID(id, shiny, signed, condition, rarity)); //TODO
+		nbti.setLong("TradinCardNoStack", Util.getRandom().nextLong());
 		
 		item = nbti.getItem();
 		return item;

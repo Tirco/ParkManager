@@ -158,18 +158,22 @@ public class TradingCardConfig extends AutoUpdateConfigLoader {
 		String name = config.getString("cards."+ id + ".name", "Unknown");
 		List<String> lore = config.getStringList("cards." + id + ".lore");
 		String signerUUID = config.getString("cards." + id + ".signer","NONE");
-		TradingCardRarity rarity = TradingCardRarity.valueOf(config.getString("cards." + id + ".signer","COMMON").toUpperCase());
+		TradingCardRarity rarity = TradingCardRarity.valueOf(config.getString("cards." + id + ".rarity","COMMON").toUpperCase());
 		TradingCardType cardType = TradingCardType.valueOf(config.getString("cards." + id + ".type","UNKNOWN").toUpperCase());
 		boolean available = config.getBoolean("cards." + id + ".available");
+		int modelData = config.getInt("cards."+id+".modeldata", 1);
 		
-		return new TradingCard(name, id, lore, rarity, signerUUID, cardType, available);
-
+		return new TradingCard(name, id, lore, rarity, signerUUID, cardType, available,modelData);
 	}
 
 	public boolean getShinyRandom() {
 		Double shinyChance = config.getDouble("settings.shinychance",0.05);
 		Double random = Math.random();
 		return (shinyChance > random);
+	}
+
+	public int getAmountOfCards() {
+		return config.getConfigurationSection("cards").getKeys(false).size();
 	}
 	
 

@@ -1,8 +1,10 @@
 package tv.tirco.parkmanager.storage.playerdata;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import tv.tirco.parkmanager.ParkManager;
@@ -96,5 +98,9 @@ public class PlayerData {
 	public String getRideIdentifier() {
 		return profile.getRideIdentifier();
 		
+	}
+
+	public List<Inventory> getBinderPages() {
+		return profile.getBinderPages();
 	}
 }

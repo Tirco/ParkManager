@@ -15,7 +15,11 @@ import com.google.common.base.Charsets;
 
 import net.milkbowl.vault.economy.Economy;
 import tv.tirco.parkmanager.Inventories.ItemModifierListener;
+import tv.tirco.parkmanager.TradingCards.TradingCardBinderListener;
 import tv.tirco.parkmanager.TradingCards.TradingCardConfig;
+import tv.tirco.parkmanager.TradingCards.commands.TradingCardAdminCommand;
+import tv.tirco.parkmanager.TradingCards.commands.TradingCardEvaluateCommand;
+import tv.tirco.parkmanager.TradingCards.commands.TradingCardSignCommand;
 import tv.tirco.parkmanager.commands.AliasCommand;
 import tv.tirco.parkmanager.commands.BenchCommand;
 import tv.tirco.parkmanager.commands.ExitRideCommand;
@@ -104,6 +108,9 @@ public class ParkManager extends JavaPlugin {
         getCommand("resourcepack").setExecutor(new ResourcePackCommand());
         getCommand("gadgets").setExecutor(new GadgetsCommand());
         getCommand("randomride").setExecutor(new RandomrideCommand());
+        getCommand("tradingcardadmin").setExecutor(new TradingCardAdminCommand());
+        getCommand("tradingcardevaluate").setExecutor(new TradingCardEvaluateCommand());
+        getCommand("tradingcardsign").setExecutor(new TradingCardSignCommand());
         
         MessageHandler.getInstance().log("Loading database...");
         db = DatabaseManagerFactory.getDatabaseManager();
@@ -135,6 +142,7 @@ public class ParkManager extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ShulkerBoxListener(), this);
         Bukkit.getPluginManager().registerEvents(new RideMenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new CommandStopper(), this);
+        Bukkit.getPluginManager().registerEvents(new TradingCardBinderListener(), this);
         
         MessageHandler.getInstance().log("Parkmanager has been Enabled!");
     }

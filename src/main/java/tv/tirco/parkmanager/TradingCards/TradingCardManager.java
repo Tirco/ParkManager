@@ -3,6 +3,10 @@ package tv.tirco.parkmanager.TradingCards;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -31,15 +35,66 @@ public class TradingCardManager {
 	private List<Integer> uncommonCards;
 	private List<Integer> commonCards;
 	
-	public TradingCardManager() {
+	private List<Inventory> emptyInventories;
+	
+ 	public TradingCardManager() {
 		this.allCards = HashBiMap.create();
 		this.legendaryCards = new ArrayList<Integer>();
 		this.epicCards = new ArrayList<Integer>();
 		this.rareCards = new ArrayList<Integer>();
 		this.uncommonCards = new ArrayList<Integer>();
 		this.commonCards = new ArrayList<Integer>();
+		
+		buildEmptyInventories();
 	}
 	
+	private void buildEmptyInventories() {
+		this.emptyInventories = new ArrayList<Inventory>();
+		int maxCards = TradingCardConfig.getInstance().getAmountOfCards();
+		int remainingCardCounter = maxCards;
+		int cardCounter = 1;
+		
+		//Filer item
+		ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
+		ItemMeta fillerMeta = filler.getItemMeta();
+		fillerMeta.setDisplayName(" ");
+		filler.setItemMeta(fillerMeta);
+
+		//Default Card Item
+		ItemStack cardItem = getUnownedCardItem(1);
+		ItemMeta cardMeta = cardItem.getItemMeta();
+
+		
+		//loop 'em
+		while(remainingCardCounter > 0) {
+			Inventory inv = Bukkit.createInventory(null, 54); //Last 9 is for menu buttons.
+			
+			//Set bottom line
+
+			for(int i = 45; i <= 53; i++) {
+				inv.setItem(i, filler);
+			}
+			//Set Next button
+			//Set Insert button
+			//Set Prev button
+			//Set exit button
+
+			//Load empty cards:
+			for(int i = 0; i <= 44; i++) {
+				cardMeta.setDisplayName(ChatColor.YELLOW + "Unknown Card " + ChatColor.GREEN + "#" + String.format("%03d",cardCounter));
+				cardItem.setItemMeta(cardMeta);
+				inv.setItem(i, cardItem);
+				cardCounter ++;
+				if(cardCounter > maxCards) {
+					break;
+				}
+			}
+			remainingCardCounter -= 45; //45 cards pr page.
+			
+			emptyInventories.add(inv);
+		}
+	}
+
 	public TradingCardCondition getRandomCondition() {
 		return TradingCardConfig.getInstance().getRandomCondition();
 	}
@@ -97,13 +152,14 @@ public class TradingCardManager {
 		ItemMeta meta = item.getItemMeta();
 		String conditionString = condition.getAsString();
 		List<String> lore = meta.getLore();
-		lore.set(2,ChatColor.translateAlternateColorCodes('&', "&aCondition:&7 " + conditionString));
+		lore.set(3,ChatColor.translateAlternateColorCodes('&', "&aCondition:&7 " + conditionString));
 		
 		meta.setLore(lore);
 		returnItem.setItemMeta(meta);
 		return returnItem;
 	}
 
+	//TODO rename to score / points
 	public double getCardValue(TradingCardRarity rarity, TradingCardCondition condition, Boolean signed, Boolean shiny, Boolean available) {
 		double value = 1;
 		value = value * rarity.getBaseValue();
@@ -158,5 +214,105 @@ public class TradingCardManager {
 		TradingCardRarity rarity = TradingCardConfig.getInstance().getRandomRarity();
 		return drawTradingCard(rarity);
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param shiny
+	 * @param signed
+	 * @param cond
+	 * @param rarity
+	 * @return
+	 */
+	public String getCardStorageID(int id, boolean shiny, boolean signed, TradingCardCondition cond, TradingCardRarity rarity) {
+		String returnValue = "";
+		returnValue += id + ":";
+		returnValue += (shiny ? "1" : "0") + ":";
+		returnValue += (signed ? "1" : "0") + ":";
+		returnValue += cond.getConditionCode() + ":";
+		//returnValue += rarity.getRarityCode() + ":"; //Not needed, rarity is stored in card.
+		
+		return returnValue;
+	}
+	
+	public ItemStack getCardItemFromCode(String cardCode) {
+		String[] cardString = cardCode.split(":");
+		if(cardString.length < 4) {
+			MessageHandler.getInstance().debug("Error when loading card from id - not enough arguments.");
+			return null;
+		}
+		int cardID = 0;
+		try {
+			cardID = Integer.parseInt(cardString[0]);
+		} catch(NumberFormatException ex) {
+			MessageHandler.getInstance().debug("Error when loading card from id - ID was not a number.");
+			return null;
+		}
+		
+		Boolean shiny = cardString[1].equals("1");
+		Boolean signed = cardString[2].equals("1");
+		TradingCardCondition cond = TradingCardCondition.getCondFromCode(cardString[3]);
+		//TradingCardRarity rarity = TradingCardRarity.getRarityFromCode(cardString[4]);
+		
+		TradingCard card = getCardByID(cardID);
+		if(card == null) {
+			MessageHandler.getInstance().debug("Error when loading card from id - card not found.");
+			return null;
+		}
+		
+		return card.buildCardItem(cond, signed, shiny);
+	}
+	
+	
+	/*
+	 * Inventory Stuff
+	 */
 
+	
+	public Inventory buildCardBinderPage(BiMap<Integer,ItemStack> cards, int page) {
+		ItemStack[] items = emptyInventories.get(page - 1).getContents().clone();
+ 		Inventory inv = Bukkit.createInventory(null, 54);
+ 		inv.setContents(items);
+		
+ 		int startID = 1 + ((page - 1) * 45);
+ 		int endID = startID + 45;
+ 		int max = TradingCardConfig.getInstance().getAmountOfCards();
+ 		if (endID > max ) endID = max;
+ 		int posCounter = 0;
+ 		
+ 		for(int i = startID; i >= endID; i++) {
+ 			if(cards.containsKey(i)) {
+ 				inv.setItem(posCounter, cards.get(i));
+ 			}
+ 			posCounter ++;
+ 		}
+ 		
+		return inv;
+	}
+	
+	public ItemStack getUnownedCardItem(int id) {
+		ItemStack cardItem = new ItemStack(Material.BLAZE_POWDER);
+		ItemMeta cardMeta = cardItem.getItemMeta();
+		cardMeta.setDisplayName(ChatColor.YELLOW + "Unknown Card " + ChatColor.GREEN + "#" + String.format("%03d",id));
+		List<String> lore = new ArrayList<String>();
+		lore.add(ChatColor.GREEN + "Trading Card");
+		lore.add("");
+		lore.add(ChatColor.YELLOW + "???");
+		cardMeta.setLore(lore);
+		cardMeta.setCustomModelData(1000);
+		
+		cardItem.setItemMeta(cardMeta);
+		return cardItem;
+	}
+
+	public List<Inventory> buildCardBinder(BiMap<Integer, ItemStack> storedCards) {
+		List<Inventory> returnList = new ArrayList<Inventory>();
+		int page = 1;
+		for(@SuppressWarnings("unused") Inventory inv : emptyInventories) { //TODO better loop?
+			returnList.add(buildCardBinderPage(storedCards, page));
+			page ++;
+		}
+		return returnList;
+	}
+	
 }

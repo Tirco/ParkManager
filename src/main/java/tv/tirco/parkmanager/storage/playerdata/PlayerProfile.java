@@ -1,6 +1,16 @@
 package tv.tirco.parkmanager.storage.playerdata;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
+import tv.tirco.parkmanager.TradingCards.TradingCardManager;
 
 public class PlayerProfile {
 
@@ -11,6 +21,10 @@ public class PlayerProfile {
 	private long rideStartTime;
 	private boolean changed = false;
 	//private volatile boolean changed;
+	
+	//Card stuff
+	private BiMap<Integer, ItemStack> storedCards;
+	private List<Inventory> cardBinderPages;
 
 	
 	public PlayerProfile(String playerName, UUID uuid) {
@@ -19,6 +33,11 @@ public class PlayerProfile {
 		this.loaded = true;
 		this.rideidentifier = "none";
 		//this.changed = true; //Changed so we get an updated last login.
+		
+		this.storedCards = HashBiMap.create();
+		this.cardBinderPages = TradingCardManager.getInstance().buildCardBinder(storedCards);
+		
+		
 	}
 	
 	public void startRide(String identifier) {
@@ -71,6 +90,11 @@ public class PlayerProfile {
 
 	public String getPlayerName() {
 		return playerName;
+	}
+
+	
+	public List<Inventory> getBinderPages() {
+		return cardBinderPages; 
 	}
 
 

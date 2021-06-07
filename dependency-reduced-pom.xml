@@ -4,7 +4,7 @@
   <groupId>tv.tirco.parkmanager</groupId>
   <artifactId>ParkManager</artifactId>
   <name>ParkManager</name>
-  <version>1.5-SNAPSHOT</version>
+  <version>1.6-SNAPSHOT</version>
   <description>Parks will be managed!</description>
   <url>http://tirco.tv</url>
   <developers>

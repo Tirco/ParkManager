@@ -71,5 +71,39 @@ public enum TradingCardRarity {
 	}
 	 */
 
+	public int getRarityCode() {
+		switch(this) {
+		case COMMON:
+			return 1;
+		case UNCOMMON:
+			return 2;
+		case RARE:
+			return 3;
+		case EPIC:
+			return 4;
+		case LEGENDARY:
+			return 5;
+		default:
+			return 1;
+		}
+	}
+		
+	public static TradingCardRarity getRarityFromCode(String code) {
+		switch(code) {
+		case "1":
+			return COMMON;
+		case "2":
+			return UNCOMMON;
+		case "3":
+			return RARE;
+		case "4":
+			return EPIC;
+		case "5":
+			return LEGENDARY;
+		default:
+			return COMMON;
+		}
+	}
+
 
 }
