@@ -23,7 +23,8 @@ public class Config extends AutoUpdateConfigLoader {
 
 	@Override
 	protected void loadKeys() {
-
+		MessageHandler.getInstance().setDebugState(getDebug());
+		MessageHandler.getInstance().setDebugToAdminState(getDebugToAdmins());
 	}
 
 	@Override
@@ -61,7 +62,10 @@ public class Config extends AutoUpdateConfigLoader {
 	}
 
 	public boolean getDebug() {
-		return config.getBoolean("setting.debug", false);
+		return config.getBoolean("debug", false);
+	}
+	public boolean getDebugToAdmins() {
+		return config.getBoolean("debugToAdmins", false);
 	}
 	
 	public List<String> blockBreakAllowedWorlds(){

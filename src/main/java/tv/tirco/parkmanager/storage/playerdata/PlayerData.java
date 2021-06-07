@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import tv.tirco.parkmanager.ParkManager;
@@ -103,4 +104,43 @@ public class PlayerData {
 	public List<Inventory> getBinderPages() {
 		return profile.getBinderPages();
 	}
+
+	public Inventory getBinderPage(int page) {
+		return profile.getBinderPage(page);
+	}
+
+	public void storeCard(int cardID, ItemStack item) {
+		profile.storeCard(cardID, item);	
+	}
+
+	public int getBinderPageNumber(Inventory inv) {
+		return profile.getBinderPageNumber(inv);
+	}
+
+	public ItemStack getStoredCard(int cardID) {
+		return profile.getStoredCard(cardID);
+	}
+	
+	public void removeStoredCard(int cardID) {
+		removeStoredCard(cardID, null);
+	}
+
+	public void removeStoredCard(int cardID, ItemStack unownedCardItem) {
+		profile.removeStoredCard(cardID, unownedCardItem);
+	}
+
+	public int getCardScore() {
+		return profile.getCardScore();
+	}
+
+	public void removeCardScore(int score) {
+		profile.removeCardScore(score);
+		
+	}
+
+	public void updateScore(int remove, int add) {
+		profile.updateScore(remove, add);
+		
+	}
+	
 }

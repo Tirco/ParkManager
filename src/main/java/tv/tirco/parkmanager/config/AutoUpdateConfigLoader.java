@@ -44,7 +44,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 		}
 
 		for (String key : oldKeys) {
-			MessageHandler.getInstance().debug("Detected potentially unused key: " + key);
+			//MessageHandler.getInstance().debug("Detected potentially unused key: " + key);
 			// config.set(key, null);
 		}
 

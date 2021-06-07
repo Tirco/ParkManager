@@ -13,7 +13,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
+import tv.tirco.parkmanager.storage.playerdata.PlayerData;
 import tv.tirco.parkmanager.util.MessageHandler;
 import tv.tirco.parkmanager.util.Util;
 
@@ -64,10 +66,11 @@ public class TradingCardManager {
 		ItemStack cardItem = getUnownedCardItem(1);
 		ItemMeta cardMeta = cardItem.getItemMeta();
 
-		
+		int page = 1;
 		//loop 'em
 		while(remainingCardCounter > 0) {
-			Inventory inv = Bukkit.createInventory(null, 54); //Last 9 is for menu buttons.
+			Inventory inv = Bukkit.createInventory(null, 54, ChatColor.GREEN + "Card Binder - Page " + page); //Last 9 is for menu buttons.
+			page ++;
 			
 			//Set bottom line
 
@@ -75,9 +78,15 @@ public class TradingCardManager {
 				inv.setItem(i, filler);
 			}
 			//Set Next button
+			inv.setItem(51, getNextButton());
 			//Set Insert button
+			inv.setItem(49, getInsertItem());
 			//Set Prev button
+			inv.setItem(47, getPrevButton());
 			//Set exit button
+			inv.setItem(54, getExitItem());
+			//Set score button
+			inv.setItem(45, getScoreItem());
 
 			//Load empty cards:
 			for(int i = 0; i <= 44; i++) {
@@ -93,6 +102,48 @@ public class TradingCardManager {
 			
 			emptyInventories.add(inv);
 		}
+	}
+
+	private ItemStack getNextButton() {
+		ItemStack item = new ItemStack(Material.COMPARATOR, 1);
+		ItemMeta itemMeta = item.getItemMeta();
+		itemMeta.setDisplayName(ChatColor.GREEN + "Next Page");
+		item.setItemMeta(itemMeta);
+		return item;
+	}
+
+	private ItemStack getInsertItem() {
+		ItemStack item = new ItemStack(Material.LIME_STAINED_GLASS_PANE, 1);
+		ItemMeta itemMeta = item.getItemMeta();
+		itemMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Add Card");
+		List<String> lore = new ArrayList<String>();
+		lore.add(ChatColor.YELLOW + "Drag a card on to");
+		lore.add(ChatColor.YELLOW + "this slot to add it");
+		lore.add(ChatColor.YELLOW + "to the card binder.");
+		itemMeta.setLore(lore);
+		item.setItemMeta(itemMeta);
+		return item;
+	}
+
+	private ItemStack getPrevButton() {
+		ItemStack item = new ItemStack(Material.REPEATER, 1);
+		ItemMeta itemMeta = item.getItemMeta();
+		itemMeta.setDisplayName(ChatColor.GREEN + "Previous Page");
+		item.setItemMeta(itemMeta);
+		return item;
+	}
+
+	private ItemStack getExitItem() {
+		ItemStack item = new ItemStack(Material.REDSTONE_BLOCK, 1);
+		ItemMeta itemMeta = item.getItemMeta();
+		itemMeta.setDisplayName(ChatColor.GREEN + "EXIT");
+		item.setItemMeta(itemMeta);
+		return item;
+	}
+	
+	private ItemStack getScoreItem() {
+		ItemStack item = new ItemStack(Material.EMERALD_BLOCK, 1);
+		return item;
 	}
 
 	public TradingCardCondition getRandomCondition() {
@@ -313,6 +364,26 @@ public class TradingCardManager {
 			page ++;
 		}
 		return returnList;
+	}
+	
+	public void updateScoreItem(PlayerData pData, Inventory inv) {
+		ItemStack scoreItem = inv.getItem(45);
+		int score = pData.getCardScore();
+		
+		ItemMeta meta = scoreItem.getItemMeta();
+		meta.setDisplayName(ChatColor.GREEN + "Card Score: " + ChatColor.YELLOW + score);
+		scoreItem.setItemMeta(meta);
+	}
+
+	public int getItemScore(ItemStack Item) {
+		NBTItem nbti = new NBTItem(Item);
+		int score = 0;
+		if(nbti.hasNBTData()) {
+			if(nbti.hasKey("TradingCardScore")) {
+				score = nbti.getInteger("TradingCardScore");
+			}
+		}
+		return score;
 	}
 	
 }

@@ -93,7 +93,7 @@ public class TradingCard {
 		nbti.setBoolean("TradingCardShiny", shiny);
 		nbti.setInteger("TradingCardDefaultLoreSize", itemLore.size());
 		nbti.setBoolean("TradingCardSigned", false);
-		nbti.setDouble("TradingCardValue", TradingCardManager.getInstance().getCardValue(rarity,condition,signed,shiny,available));
+		nbti.setDouble("TradingCardScore", TradingCardManager.getInstance().getCardValue(rarity,condition,signed,shiny,available));
 		nbti.setString("TradingCardStorageID", TradingCardManager.getInstance().getCardStorageID(id, shiny, signed, condition, rarity)); //TODO
 		nbti.setLong("TradinCardNoStack", Util.getRandom().nextLong());
 		

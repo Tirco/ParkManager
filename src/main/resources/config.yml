@@ -1,3 +1,5 @@
+debug: true
+debugtoadmins: true
 worldprotection:
  blockbreak_allowed_in:
     - world_thelab

@@ -1,6 +1,5 @@
 package tv.tirco.parkmanager.storage.playerdata;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,6 +10,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import tv.tirco.parkmanager.TradingCards.TradingCardManager;
+import tv.tirco.parkmanager.util.MessageHandler;
 
 public class PlayerProfile {
 
@@ -25,6 +25,8 @@ public class PlayerProfile {
 	//Card stuff
 	private BiMap<Integer, ItemStack> storedCards;
 	private List<Inventory> cardBinderPages;
+	
+	private int cardScore = 0;
 
 	
 	public PlayerProfile(String playerName, UUID uuid) {
@@ -36,7 +38,7 @@ public class PlayerProfile {
 		
 		this.storedCards = HashBiMap.create();
 		this.cardBinderPages = TradingCardManager.getInstance().buildCardBinder(storedCards);
-		
+		this.cardScore = 0;
 		
 	}
 	
@@ -95,6 +97,53 @@ public class PlayerProfile {
 	
 	public List<Inventory> getBinderPages() {
 		return cardBinderPages; 
+	}
+
+	public Inventory getBinderPage(int page) {
+		
+		return cardBinderPages.get(page);
+	}
+
+	public void storeCard(int cardID, ItemStack item) {
+		this.storedCards.put(cardID, item);
+		
+		int page = (int) Math.ceil(cardID / 45);
+		MessageHandler.getInstance().debug("Debug: page = " + page);
+		Inventory insertionInv = getBinderPage(page);
+		insertionInv.setItem(cardID - ((page) * 45), item);
+	}
+
+	public int getBinderPageNumber(Inventory inv) {
+		return cardBinderPages.indexOf(inv);
+	}
+
+	public ItemStack getStoredCard(int cardID) {
+		return this.storedCards.get(cardID);
+	}
+
+	public void removeStoredCard(int cardID, ItemStack unownedCardItem) {
+		if(unownedCardItem != null) {
+			int page = (int) Math.ceil(cardID / 45);
+			Inventory insertionInv = getBinderPage(page);
+			insertionInv.setItem(cardID - ((page) * 45), unownedCardItem);
+		}
+		this.storedCards.remove(cardID);
+	}
+	
+	public int getCardScore() {
+		return this.cardScore;
+	}
+	
+	public void addCardScore(int value) {
+		this.cardScore += value;
+	}
+	
+	public void removeCardScore(int value) {
+		this.cardScore -= value;
+	}
+	
+	public void updateScore(int remove, int add) {
+		this.cardScore = this.cardScore - remove + add;
 	}
 
 
