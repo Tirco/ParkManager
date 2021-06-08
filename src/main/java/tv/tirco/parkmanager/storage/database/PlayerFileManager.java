@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -443,11 +444,11 @@ public class PlayerFileManager implements DatabaseManager {
 					if (uuid == null) {
 						MessageHandler.getInstance().log("UUID of new player is NULL");
 						newUser(playerName, uuid);
-						return new PlayerProfile(playerName, null);
+						return new PlayerProfile(playerName, null, null, 0);
 					}
 
 					newUser(playerName, uuid);
-					return new PlayerProfile(playerName, uuid);
+					return new PlayerProfile(playerName, uuid, null, 0);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -466,10 +467,10 @@ public class PlayerFileManager implements DatabaseManager {
 
 		// Return unloaded profile
 		if (uuid == null) {
-			return new PlayerProfile(playerName, null);
+			return new PlayerProfile(playerName, null, null, 0);
 		}
 
-		return new PlayerProfile(playerName, uuid);
+		return new PlayerProfile(playerName, uuid, null, 0);
 	}
 
 	private PlayerProfile loadFromLine(String[] character) {
@@ -482,7 +483,7 @@ public class PlayerFileManager implements DatabaseManager {
 		String playerName = character[PLAYERNAME_POSITION];
 		
 
-		return new PlayerProfile(playerName, uuid);
+		return new PlayerProfile(playerName, uuid, null, 0);
 	}
 
 	public List<String> getStoredUsers() {
@@ -615,6 +616,18 @@ public class PlayerFileManager implements DatabaseManager {
 	}
 
 	public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create, boolean retry) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public boolean removeUser(UUID uuid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public LinkedHashMap<String, Integer> getTop10() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -3,12 +3,15 @@ package tv.tirco.parkmanager.storage.playerdata;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 
+import net.md_5.bungee.api.ChatColor;
+import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.TradingCards.TradingCardManager;
 import tv.tirco.parkmanager.util.MessageHandler;
 
@@ -22,26 +25,55 @@ public class PlayerProfile {
 	private boolean changed = false;
 	//private volatile boolean changed;
 	
+	private long spamCooldown = 0;
+	private int spamCount = 0;
+	
 	//Card stuff
 	private BiMap<Integer, ItemStack> storedCards;
 	private List<Inventory> cardBinderPages;
 	
 	private int cardScore = 0;
+	
+	private boolean isOpeningPack = false;
 
 	
-	public PlayerProfile(String playerName, UUID uuid) {
+	public PlayerProfile(String playerName, UUID uuid, BiMap<Integer,ItemStack> cards, int score) {
 		this.playerName = playerName;
 		this.uuid = uuid;
 		this.loaded = true;
 		this.rideidentifier = "none";
 		//this.changed = true; //Changed so we get an updated last login.
 		
-		this.storedCards = HashBiMap.create();
+		this.storedCards = cards;
+		this.cardScore = score;
 		this.cardBinderPages = TradingCardManager.getInstance().buildCardBinder(storedCards);
-		this.cardScore = 0;
-		
+		this.cardScore = score;
+		if(this.cardScore < 0) {
+			this.cardScore = 0;
+		}
+		forceUpdateAllCards();
 	}
 	
+	
+	
+	private void forceUpdateAllCards() {
+		int score = 0;
+		for(int cardID : storedCards.keySet()) {
+
+			int page = (int) Math.ceil(cardID / 45);
+			//MessageHandler.getInstance().debug("Debug: page = " + page);
+			Inventory insertionInv = getBinderPage(page);
+			ItemStack cardItem = storedCards.get(cardID);
+			score += TradingCardManager.getInstance().getItemScore(cardItem);
+			insertionInv.setItem(cardID - ((page) * 45), cardItem);
+			
+		}
+		this.cardScore = score;
+		MessageHandler.getInstance().debug("Forceupdated " + storedCards.size() + " to players binder.");
+	}
+
+
+
 	public void startRide(String identifier) {
 		this.rideidentifier = identifier;
 		this.rideStartTime = System.currentTimeMillis();
@@ -65,12 +97,25 @@ public class PlayerProfile {
 	}
 
 	public void save() {
-		// TODO Auto-generated method stub
+		if ((!changed || !loaded)) {
+			MessageHandler.getInstance().debug("Not saving profile for " + playerName + ". Loaded: " + loaded + " Changed:" + changed);
+			return;
+		}
+		
+		
+		MessageHandler.getInstance().debug("Saving PlayerProfile of player " + playerName + " ...");
+		PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, storedCards, cardScore);
+		changed = !ParkManager.db.saveUser(profileCopy);
+
+		if (changed) {
+			MessageHandler.getInstance().log(ChatColor.RED + "PlayerProfile saving failed for player: " + ChatColor.WHITE + playerName
+					+ " , uuid: " + uuid);
+		}
 		
 	}
 	
 	public void scheduleAsyncSave() {
-		// TODO Auto-generated method stub
+		new PlayerProfileSaveTask(this).runTaskAsynchronously(ParkManager.plugin);
 		
 	}
 	
@@ -108,9 +153,10 @@ public class PlayerProfile {
 		this.storedCards.put(cardID, item);
 		
 		int page = (int) Math.ceil(cardID / 45);
-		MessageHandler.getInstance().debug("Debug: page = " + page);
+		//MessageHandler.getInstance().debug("Debug: page = " + page);
 		Inventory insertionInv = getBinderPage(page);
 		insertionInv.setItem(cardID - ((page) * 45), item);
+		this.changed = true;
 	}
 
 	public int getBinderPageNumber(Inventory inv) {
@@ -128,23 +174,78 @@ public class PlayerProfile {
 			insertionInv.setItem(cardID - ((page) * 45), unownedCardItem);
 		}
 		this.storedCards.remove(cardID);
+		this.changed = true;
 	}
 	
 	public int getCardScore() {
 		return this.cardScore;
+		
 	}
 	
 	public void addCardScore(int value) {
 		this.cardScore += value;
+		this.changed = true;
 	}
 	
 	public void removeCardScore(int value) {
 		this.cardScore -= value;
+		this.changed = true;
+		if(this.cardScore < 0) {
+			this.cardScore = 0;
+		}
 	}
 	
 	public void updateScore(int remove, int add) {
 		this.cardScore = this.cardScore - remove + add;
+		this.changed = true;
+		if(this.cardScore < 0) {
+			this.cardScore = 0;
+		}
 	}
+
+	public BiMap<Integer,ItemStack> getStoredCards() {
+		return storedCards;
+	}
+
+
+
+	
+	public void setIsOpeningPack(boolean b) {
+		this.isOpeningPack = b;
+		
+	}
+	
+	public boolean getOpeningPack() {
+		return this.isOpeningPack;
+	}
+
+	public boolean spamCooldown() {
+		boolean spam = ((System.currentTimeMillis() - this.spamCooldown) < 300);
+		if(spam) {
+			this.spamCount ++;
+			if(spamCount >= 20) {
+				Player player = Bukkit.getPlayer(playerName);
+				player.kickPlayer(ChatColor.RED + "I SAID SLOW DOWN!");
+			}
+		} else if ((System.currentTimeMillis() - this.spamCooldown) > 10000) {
+			this.spamCount = 0;
+		}
+		return spam;
+	}
+	
+	public void updateSpamCooldown() {
+		this.spamCooldown = System.currentTimeMillis();
+	}
+
+
+//	public Inventory getCardPackInventory() {
+//		return cardPackInventory;
+//		
+//	}
+//	
+//	public void setCardPackInventory(Inventory inv) {
+//		this.cardPackInventory = inv;
+//	}
 
 
 }

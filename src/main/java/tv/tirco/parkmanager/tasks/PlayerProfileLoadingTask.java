@@ -39,7 +39,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
 		//PlayerProfile profile = ParkManager.db.loadPlayerProfile(player.getName(), player.getUniqueId(), true, true);
 		
-		PlayerProfile profile = new PlayerProfile(player.getName(), player.getUniqueId());
+		PlayerProfile profile = ParkManager.getDB().loadPlayerProfile(player.getName(), player.getUniqueId(), true, true);
 		
 		if (profile.isLoaded()) {
 			MessageHandler.getInstance().debug("Profile is loaded, applying...");

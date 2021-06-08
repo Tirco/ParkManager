@@ -3,6 +3,10 @@ package tv.tirco.parkmanager.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import tv.tirco.parkmanager.ParkManager;
+import tv.tirco.parkmanager.storage.database.DatabaseManager;
+import tv.tirco.parkmanager.storage.database.PlayerFileManager;
+import tv.tirco.parkmanager.storage.database.SQLite.SQLite;
 import tv.tirco.parkmanager.util.MessageHandler;
 
 public class Config extends AutoUpdateConfigLoader {
@@ -83,6 +87,28 @@ public class Config extends AutoUpdateConfigLoader {
 	public int getOldUsersCutoff() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	
+	public String getSQLiteFilename() {
+		return config.getString("SQLite.Filename", "PlayerDatabase");
+	}
+
+	public DatabaseManager getDatabaseType() {
+		String database = config.getString("DatabaseType","SQLite");
+		if(database.equalsIgnoreCase("sqlite")) {
+			SQLite sqlite = new SQLite(ParkManager.parkManager);
+			sqlite.load();
+			return sqlite;
+		} else {
+			return new PlayerFileManager();
+		}
+	}
+
+	
+	public long getSaveInterval() {
+		return config.getInt("saveinterval", 17);
+		
 	}
 	
 

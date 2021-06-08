@@ -1,9 +1,9 @@
 package tv.tirco.parkmanager.TradingCards;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -15,6 +15,7 @@ import com.google.common.collect.HashBiMap;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
+import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.storage.playerdata.PlayerData;
 import tv.tirco.parkmanager.util.MessageHandler;
 import tv.tirco.parkmanager.util.Util;
@@ -39,6 +40,8 @@ public class TradingCardManager {
 	
 	private List<Inventory> emptyInventories;
 	
+	private LinkedHashMap<String, Integer> topTen;
+	
  	public TradingCardManager() {
 		this.allCards = HashBiMap.create();
 		this.legendaryCards = new ArrayList<Integer>();
@@ -48,8 +51,32 @@ public class TradingCardManager {
 		this.commonCards = new ArrayList<Integer>();
 		
 		buildEmptyInventories();
+		
+		this.topTen = new LinkedHashMap<String, Integer>();
+		loadTopTen();
 	}
 	
+	public void loadTopTen() {
+		MessageHandler.getInstance().debug("Scheduling async load of top 10");
+		Bukkit.getScheduler().runTaskLaterAsynchronously(ParkManager.plugin, new Runnable() {
+			@Override
+			public void run() {
+				TradingCardManager.getInstance().setTop10(ParkManager.db.getTop10());
+				
+			}
+		}, 1);
+		
+	}
+
+	public void setTop10(LinkedHashMap<String, Integer> map) {
+		this.topTen = map;
+	}
+	
+	public LinkedHashMap<String, Integer> getTopTen() {
+		return this.topTen;
+	}
+
+
 	private void buildEmptyInventories() {
 		this.emptyInventories = new ArrayList<Inventory>();
 		int maxCards = TradingCardConfig.getInstance().getAmountOfCards();
@@ -66,11 +93,9 @@ public class TradingCardManager {
 		ItemStack cardItem = getUnownedCardItem(1);
 		ItemMeta cardMeta = cardItem.getItemMeta();
 
-		int page = 1;
 		//loop 'em
 		while(remainingCardCounter > 0) {
-			Inventory inv = Bukkit.createInventory(null, 54, ChatColor.GREEN + "Card Binder - Page " + page); //Last 9 is for menu buttons.
-			page ++;
+			Inventory inv = Bukkit.createInventory(null, 54); //Last 9 is for menu buttons.
 			
 			//Set bottom line
 
@@ -84,7 +109,7 @@ public class TradingCardManager {
 			//Set Prev button
 			inv.setItem(47, getPrevButton());
 			//Set exit button
-			inv.setItem(54, getExitItem());
+			inv.setItem(53, getExitItem());
 			//Set score button
 			inv.setItem(45, getScoreItem());
 
@@ -322,7 +347,7 @@ public class TradingCardManager {
 	
 	public Inventory buildCardBinderPage(BiMap<Integer,ItemStack> cards, int page) {
 		ItemStack[] items = emptyInventories.get(page - 1).getContents().clone();
- 		Inventory inv = Bukkit.createInventory(null, 54);
+ 		Inventory inv = Bukkit.createInventory(null, 54,  ChatColor.GREEN + "Card Binder - Page " + page);
  		inv.setContents(items);
 		
  		int startID = 1 + ((page - 1) * 45);
@@ -355,18 +380,20 @@ public class TradingCardManager {
 		cardItem.setItemMeta(cardMeta);
 		return cardItem;
 	}
-
+	
 	public List<Inventory> buildCardBinder(BiMap<Integer, ItemStack> storedCards) {
 		List<Inventory> returnList = new ArrayList<Inventory>();
 		int page = 1;
 		for(@SuppressWarnings("unused") Inventory inv : emptyInventories) { //TODO better loop?
-			returnList.add(buildCardBinderPage(storedCards, page));
+			Inventory inventory = buildCardBinderPage(storedCards, page);
+			returnList.add(inventory);
 			page ++;
 		}
 		return returnList;
 	}
 	
-	public void updateScoreItem(PlayerData pData, Inventory inv) {
+	
+ 	public void updateScoreItem(PlayerData pData, Inventory inv) {
 		ItemStack scoreItem = inv.getItem(45);
 		int score = pData.getCardScore();
 		
@@ -385,5 +412,7 @@ public class TradingCardManager {
 		}
 		return score;
 	}
+
+
 	
 }

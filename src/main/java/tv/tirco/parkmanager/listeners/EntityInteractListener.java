@@ -1,7 +1,9 @@
 package tv.tirco.parkmanager.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.block.data.Levelled;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -19,8 +21,13 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
+import tv.tirco.parkmanager.ParkManager;
+import tv.tirco.parkmanager.TradingCards.TradingCardPackTask;
 import tv.tirco.parkmanager.alias.Alias;
 import tv.tirco.parkmanager.storage.DataStorage;
+import tv.tirco.parkmanager.storage.playerdata.PlayerData;
+import tv.tirco.parkmanager.storage.playerdata.UserManager;
+import tv.tirco.parkmanager.util.MessageHandler;
 import tv.tirco.parkmanager.util.Util;
 
 public class EntityInteractListener implements Listener{
@@ -114,59 +121,172 @@ public class EntityInteractListener implements Listener{
 	}
 	
 	@EventHandler(priority=EventPriority.HIGH)
-	public void onPlayerUse(PlayerInteractEvent event){
-	    Player p = event.getPlayer();
+	public void onPlayerUse(PlayerInteractEvent e){
+		int debug = 0;
+		Player player = e.getPlayer();
+		if(player.getGameMode().equals(GameMode.CREATIVE)) {
+			return;
+		}
+		
+		debug++;
+		MessageHandler.getInstance().debug( debug + " debug!");
+		
+		//Is it okay to click this block?
+		if(e.getClickedBlock() != null && e.getClickedBlock().getType() != Material.AIR) {
+			if(Util.canBeInteracted(e.getClickedBlock().getType())){
+				return;
+			}
+		}
+		
+		debug++;
+		MessageHandler.getInstance().debug( debug + " debug!");
 
-	 
+		
+		//Is clicking blocks allowed in this world?
+		//Needed for some minigames that have doors etc.
+		if(Util.rightClickBlockAllowed(player.getWorld().getName())) {
+			return;
+		}
+		
+		debug++;
+		MessageHandler.getInstance().debug( debug + " debug!");
+		
+		
+		if(!e.getHand().equals(EquipmentSlot.HAND)) {
+			return;
+		}
+		
+		debug++;
+		MessageHandler.getInstance().debug( debug + " debug!");
+		
+		
+		//NO LEFT CLICK ALLOWED
+		if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			//Don't you point that NULL at me!
+			if(e.getClickedBlock() == null) {
+				return;
+			}
+			
+			//Trashcan
+			if(e.getClickedBlock().getType().equals(Material.CAULDRON)) {
+				if(!(player.getInventory().getItemInMainHand() == null ||
+						player.getInventory().getItemInMainHand().getType().equals(Material.AIR))) {
+					player.sendMessage("Please don't hold an item in your hand while trying to interact with this block.");
+				} else {
+					//BlockData data = e.getClickedBlock().getBlockData();
+					Levelled cauldronData = (Levelled) e.getClickedBlock().getBlockData();
+					if(cauldronData.getLevel() == 3) {
+						//Makes a new inventory not stored anywhere.
+						player.openInventory(Bukkit.createInventory(null, 9, ChatColor.translateAlternateColorCodes('&', 
+								"&cTrashcan!")));
+					}
+				}
+				//Clicked cauldron, nothing happened.
+				e.setCancelled(true);
+				return;
+			}
+		}
+		
+		debug++;
+		MessageHandler.getInstance().debug( debug + " debug!");
+		
+		
 	    //Make sure we're doing a right click action
-	    if(event.getAction().equals(Action.RIGHT_CLICK_AIR) 
-	    || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+	    if(e.getAction().equals(Action.RIGHT_CLICK_AIR) 
+	    || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
 	    	
-		    
+	    	debug++;
+			MessageHandler.getInstance().debug( debug + " debug!");
+			
+
 		    //Main hand check
-		    if(!event.getHand().equals(EquipmentSlot.HAND)) {
+		    if(!e.getHand().equals(EquipmentSlot.HAND)) {
 		    	return;
 		    }
-	    	
-	    	if(event.getClickedBlock() != null
-	    	&& 
-	    	event.getClickedBlock().getType() != null 
-	    	&&
-	    	!event.getClickedBlock().getType().equals(Material.AIR)) {
-	    		Material clicked = event.getClickedBlock().getType();
-	    		if(Util.canBeInteracted(clicked)) {
-	    			return;
-	    		}
-	    	}
+		    
+		    debug++;
+			MessageHandler.getInstance().debug( debug + " debug!");
+			
 	    	
 	    	//Use item check - Do we have an item in hand?
-	    	ItemStack item = p.getInventory().getItemInMainHand();
+	    	ItemStack item = player.getInventory().getItemInMainHand();
 	    	if(item == null || item.getType().equals(Material.AIR)) {
 	    		return;
 	    	}
 	    	
+	    	debug++;
+			MessageHandler.getInstance().debug( debug + " debug!");
+			
+	    	
 //NBTI check
 		    NBTItem nbti = new NBTItem(item);
 		    if(nbti.hasNBTData()) {
+		    	
+		    	debug++;
+				MessageHandler.getInstance().debug( debug + " debug!");
+				
 		    	//Check for commands:
 		    	if(nbti.hasKey("alias")) {
 		    		String aliasIdentifer = nbti.getString("alias");
 		    		Alias alias = DataStorage.getInstance().getAlias(aliasIdentifer);
 		    		if(alias == null) {
-		    			p.sendMessage(ChatColor.RED + "There seems to be an issue with your item. Please contact an administrator.");
+		    			player.sendMessage(ChatColor.RED + "There seems to be an issue with your item. Please contact an administrator.");
 		    			return;
 		    		} else {
-		    			if(alias.execute(p, item)) {
-		    				p.sendMessage(ChatColor.GREEN + "Redeemed successfully!");
+		    			if(alias.execute(player, item)) {
+		    				player.sendMessage(ChatColor.GREEN + "Redeemed successfully!");
 		    			} else {
-		    				p.sendMessage(ChatColor.RED + "You can not redeem this item.");
+		    				player.sendMessage(ChatColor.RED + "You can not redeem this item.");
 		    			}
 		    			return;
 		    		}
+		    	} else if(nbti.hasKey("isCardPack")) {
+		    		debug++;
+		    		MessageHandler.getInstance().debug( debug + " debug!");
+		    		
+		    		//Check inv
+		    		if(!UserManager.hasPlayerDataKey(player)) {
+		    			player.sendMessage("Please wait, as your profile is not loaded yet.");
+						return;
+		    		}
+					PlayerData pData = UserManager.getPlayer(player);
+					if(!pData.isLoaded()) {
+						player.sendMessage("Please wait, as your profile is not loaded yet.");
+						return;
+					}
+					if(pData.spamCooldown())  {
+						e.setCancelled(true);
+						player.sendMessage(ChatColor.RED + "Slow down!");
+						return;
+					} else {
+						pData.updateSpamCooldown();
+					}
+					
+					
+					//Has atleast 3 empty slots?
+					  int i = 0;
+				      ItemStack[] cont = player.getInventory().getContents();
+				      for (ItemStack itemStack : cont)
+				        if (itemStack != null && itemStack.getType() != Material.AIR) {
+				          i++;
+				        }
+				      i =  36 - i;
+					  if(i < 3) {
+						  player.sendMessage(ChatColor.RED + "You need at least 3 empty items in your inventory to use this item.");
+						  return;
+					  }
+					
+						ItemStack removeItem = item.clone();
+						removeItem.setAmount(1);
+						player.getInventory().removeItem(removeItem);
+
+					new TradingCardPackTask(ParkManager.parkManager, player, pData);
+					return;
 		    	}
 		    }
 	    	
-	    	
+	    	//Hat item?
+		    
 //GOLDEN AXE   //TODO Gold_Ingot, Iron_Ingot
 		    if(item.getType().equals(Material.GOLDEN_AXE)) {
 	    		if(!item.hasItemMeta()) {
@@ -181,12 +301,12 @@ public class EntityInteractListener implements Listener{
 	    			return;
 	    		}
 
-	    		if(p.getInventory().getHelmet() == null || p.getInventory().getHelmet().getType().equals(Material.AIR)) {
-	    			p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-	    			p.getInventory().setItem(EquipmentSlot.HEAD, item);
+	    		if(player.getInventory().getHelmet() == null || player.getInventory().getHelmet().getType().equals(Material.AIR)) {
+	    			player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+	    			player.getInventory().setItem(EquipmentSlot.HEAD, item);
 	    			return;
 	    		} else {
-	    			p.sendMessage(ChatColor.RED + "Your are already wearing a hat.");
+	    			player.sendMessage(ChatColor.RED + "Your are already wearing a hat.");
 	    			return;
 	    		}
 	    	}

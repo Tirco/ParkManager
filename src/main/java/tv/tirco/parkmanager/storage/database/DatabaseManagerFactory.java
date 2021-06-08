@@ -1,10 +1,11 @@
 package tv.tirco.parkmanager.storage.database;
 
+import tv.tirco.parkmanager.config.Config;
+
 public class DatabaseManagerFactory {
 
 	public static DatabaseManager getDatabaseManager() {
-		return new PlayerFileManager();
-		//return Config.getInstance().getUseMySQL() ? new SQLDatabaseManager() : new PlayerFileManager();
+		return Config.getInstance().getDatabaseType();
 	}
 
 	public static DatabaseManager createDatabaseManager(DatabaseType type) {

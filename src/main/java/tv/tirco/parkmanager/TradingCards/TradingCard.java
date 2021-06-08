@@ -23,6 +23,7 @@ public class TradingCard {
 	boolean available;
 	TradingCardType type;
 	int modelData;
+	String signerUUID;
 
 	/**
 	 * 
@@ -45,6 +46,12 @@ public class TradingCard {
 		this.type = cardType;
 		this.available = available;
 		this.modelData = modelData;
+		if(UUID == null) {
+			this.signerUUID = "None";
+		} else {
+			this.signerUUID = UUID;
+		}
+		
 	}
 	
 	public ItemStack buildCardItem(TradingCardCondition condition, Boolean signed, Boolean shiny) {
@@ -77,6 +84,11 @@ public class TradingCard {
 		itemLore.add(ChatColor.translateAlternateColorCodes('&', "&f"));
 		for(String s : lore) {
 			itemLore.add(ChatColor.translateAlternateColorCodes('&', s));
+		}
+		if(signed) {
+			lore.add("");
+			lore.add(ChatColor.translateAlternateColorCodes('&',
+					TradingCardConfig.getInstance().getSignature(signerUUID)));
 		}
 		
 		meta.setLore(itemLore);
@@ -111,6 +123,11 @@ public class TradingCard {
 
 	public boolean isAvailable() {
 		return available;
+	}
+
+	
+	public String getSignerUUID() {
+		return this.signerUUID;
 	}
 }
 

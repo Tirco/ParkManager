@@ -1,5 +1,7 @@
 package tv.tirco.parkmanager.TradingCards;
 
+import org.bukkit.Sound;
+
 public enum TradingCardRarity {
 	COMMON,
 	UNCOMMON,
@@ -102,6 +104,24 @@ public enum TradingCardRarity {
 			return LEGENDARY;
 		default:
 			return COMMON;
+		}
+	}
+
+	
+	public Sound getSound() {
+		switch(this) {
+		case COMMON:
+			return Sound.BLOCK_NOTE_BLOCK_BANJO;
+		case UNCOMMON:
+			return Sound.BLOCK_NOTE_BLOCK_BELL;
+		case RARE:
+			return Sound.ITEM_FIRECHARGE_USE;
+		case EPIC:
+			return Sound.ENTITY_WITHER_AMBIENT;
+		case LEGENDARY:
+			return Sound.ENTITY_ENDER_DRAGON_GROWL;
+		default:
+			return Sound.BLOCK_NOTE_BLOCK_BANJO;
 		}
 	}
 

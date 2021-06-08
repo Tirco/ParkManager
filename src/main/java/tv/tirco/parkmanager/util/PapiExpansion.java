@@ -1,10 +1,12 @@
 package tv.tirco.parkmanager.util;
 
+import java.util.LinkedHashMap;
 import org.bukkit.entity.Player;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.ParkManager;
+import tv.tirco.parkmanager.TradingCards.TradingCardManager;
 import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.Ride;
 import tv.tirco.parkmanager.storage.playerdata.PlayerData;
@@ -149,10 +151,77 @@ public class PapiExpansion extends PlaceholderExpansion {
         	}
             return ChatColor.translateAlternateColorCodes('&', "Riding: " + ride.getName());
         }
+        
+        if(identifier.equals("player_card_score")) {
+        	if(player == null) {
+        		return "Loading...";
+        	}
+        	if(!UserManager.hasPlayerDataKey(player)) {
+        		return "Loading...";
+        	}
+        	PlayerData pData = UserManager.getPlayer(player);
+        	
+        	int score = pData.getCardScore();
+
+            return "" + score;
+        }
+        if(identifier.equals("player_card_stored")) {
+        	if(player == null) {
+        		return "Loading...";
+        	}
+        	if(!UserManager.hasPlayerDataKey(player)) {
+        		return "Loading...";
+        	}
+        	PlayerData pData = UserManager.getPlayer(player);
+        	
+        	int amount = pData.getStoredCardAmount();
+
+            return "" + amount;
+        }
+        if(identifier.matches("cards_top_name_[0-9][0-9]*")) {
+        	//MessageHandler.getInstance().debug(ChatColor.GOLD + " -- Sending PlaceHolder Data");
+        	int number = Integer.valueOf(identifier.split("_")[3]) - 1;
+        	//MessageHandler.getInstance().debug(ChatColor.GOLD + " -- Number = " + number);
+        	String name = getByIndex(TradingCardManager.getInstance().getTopTen(), number);
+        	if(name == null) {
+        		name = "Unknown";
+        	}
+
+        	//MessageHandler.getInstance().debug(ChatColor.GOLD + " -- UUID was not null. " + uuid.toString());
+        	return name;
+        }
+        if(identifier.matches("cards_top_score_[0-9][0-9]*")) {
+        	//MessageHandler.getInstance().debug(ChatColor.GOLD + " -- Sending PlaceHolder Data");
+        	int number = Integer.valueOf(identifier.split("_")[3]) - 1;
+        	//MessageHandler.getInstance().debug(ChatColor.GOLD + " -- Number = " + number);
+        	String name = "" + getScoreByIndex(TradingCardManager.getInstance().getTopTen(), number);
+
+        	//MessageHandler.getInstance().debug(ChatColor.GOLD + " -- UUID was not null. " + uuid.toString());
+        	return name;
+        }
  
         // We return null if an invalid placeholder (f.e. %someplugin_placeholder3%) 
         // was provided
         return null;
     }
+        
+        private String getByIndex(LinkedHashMap<String, Integer> hMap, int index){
+        	if(hMap == null) {
+        		return "";
+        	}
+        	if(index > hMap.size()-1) {
+        		return "";
+        	}
+     	   return (String) hMap.keySet().toArray()[index];
+     	}
+        private int getScoreByIndex(LinkedHashMap<String, Integer> hMap, int index){
+        	if(hMap == null) {
+        		return 0;
+        	}
+        	if(index > hMap.size()-1) {
+        		return 0;
+        	}
+      	   return (int) hMap.values().toArray()[index];
+      	}
 
 }

@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import tv.tirco.parkmanager.ParkManager;
+import tv.tirco.parkmanager.storage.playerdata.PlayerData;
+import tv.tirco.parkmanager.storage.playerdata.UserManager;
 import tv.tirco.parkmanager.tasks.PlayerProfileLoadingTask;
 
 public class JoinLeaveListener implements Listener{
@@ -38,6 +40,11 @@ public class JoinLeaveListener implements Listener{
 		World world = Bukkit.getWorld("world"); //TODO Config?
 		Location spawn = new Location(world, -29.5, 65, 161.5, 0f, 0f);
 		player.teleport(spawn, TeleportCause.PLUGIN);
+		
+		if(UserManager.hasPlayerDataKey(player)) {
+			PlayerData pData = UserManager.getPlayer(player);
+			pData.save();
+		}
 	}
 	
 	@EventHandler

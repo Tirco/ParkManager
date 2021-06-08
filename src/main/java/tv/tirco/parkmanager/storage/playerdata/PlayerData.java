@@ -142,5 +142,34 @@ public class PlayerData {
 		profile.updateScore(remove, add);
 		
 	}
+
+	
+	public void setIsOpeningPack(boolean b) {
+		profile.setIsOpeningPack(b);
+		
+	}
+
+	public boolean isOpeningPack() {
+		return profile.getOpeningPack();
+	}
+	
+	public boolean spamCooldown() {
+		return profile.spamCooldown();
+	}
+	
+	public void updateSpamCooldown() {
+		profile.updateSpamCooldown();
+	}
+//	public Inventory getCardPackInventory() {
+//		profile.getCardPackInventory();
+//	}
+//	
+//	public void setCardPackInventory() {
+//		profile.setCardPackInventory();
+//	}
+
+	public int getStoredCardAmount() {
+		return profile.getStoredCards().size();
+	}
 	
 }

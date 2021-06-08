@@ -1,6 +1,9 @@
 package tv.tirco.parkmanager.storage.database;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import tv.tirco.parkmanager.config.Config;
@@ -27,7 +30,7 @@ public interface DatabaseManager {
 	 * @param playerName The name of the user to remove.
 	 * @return true if the user was successfully removed, false if not.
 	 */
-	public boolean removeUser(String playerName);
+	public boolean removeUser(UUID uuid);
 
 	/**
 	 * Save a user to the database.
@@ -86,4 +89,6 @@ public interface DatabaseManager {
 	 * @return
 	 */
 	PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create, boolean retry);
+
+	public LinkedHashMap<String, Integer> getTop10();
 }

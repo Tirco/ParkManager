@@ -74,5 +74,10 @@ commands:
         aliases: [signcard]
         permission: parkmanager.tradingcard.admin
         usage: /<command>
+    tradingcardbinder:
+        description: Opens your binder.
+        aliases: [binder,cardbinder]
+        permission: parkmanager.tradingcard.binder
+        usage: /<command>
 
 permissions: {}

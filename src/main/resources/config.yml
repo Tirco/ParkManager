@@ -1,5 +1,10 @@
 debug: true
 debugtoadmins: true
+saveinterval: 17
+DatabaseType: SQLite
+MySQL: {}
+SQLite:
+    Filename: "PlayerDatabase"
 worldprotection:
  blockbreak_allowed_in:
     - world_thelab

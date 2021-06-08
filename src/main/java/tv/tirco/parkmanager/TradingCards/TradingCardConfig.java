@@ -175,6 +175,11 @@ public class TradingCardConfig extends AutoUpdateConfigLoader {
 	public int getAmountOfCards() {
 		return config.getConfigurationSection("cards").getKeys(false).size();
 	}
+
+	
+	public String getSignature(String signerUUID) {
+		return config.getString("signatures."+signerUUID,"&7Signed by Unknown Player.");
+	}
 	
 
 

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +19,7 @@ import tv.tirco.parkmanager.Inventories.ItemModifierListener;
 import tv.tirco.parkmanager.TradingCards.TradingCardBinderListener;
 import tv.tirco.parkmanager.TradingCards.TradingCardConfig;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardAdminCommand;
+import tv.tirco.parkmanager.TradingCards.commands.TradingCardBinderCommand;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardEvaluateCommand;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardSignCommand;
 import tv.tirco.parkmanager.commands.AliasCommand;
@@ -42,6 +44,8 @@ import tv.tirco.parkmanager.listeners.RideMenuListener;
 import tv.tirco.parkmanager.listeners.ShulkerBoxListener;
 import tv.tirco.parkmanager.storage.database.DatabaseManager;
 import tv.tirco.parkmanager.storage.database.DatabaseManagerFactory;
+import tv.tirco.parkmanager.storage.database.SaveTimerTask;
+import tv.tirco.parkmanager.storage.playerdata.UserManager;
 import tv.tirco.parkmanager.traincarts.CmdTrainListener;
 import tv.tirco.parkmanager.traincarts.RideTrainListener;
 import tv.tirco.parkmanager.util.MessageHandler;
@@ -111,6 +115,7 @@ public class ParkManager extends JavaPlugin {
         getCommand("tradingcardadmin").setExecutor(new TradingCardAdminCommand());
         getCommand("tradingcardevaluate").setExecutor(new TradingCardEvaluateCommand());
         getCommand("tradingcardsign").setExecutor(new TradingCardSignCommand());
+        getCommand("tradingcardbinder").setExecutor(new TradingCardBinderCommand());
         
         MessageHandler.getInstance().log("Loading database...");
         db = DatabaseManagerFactory.getDatabaseManager();
@@ -144,12 +149,20 @@ public class ParkManager extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CommandStopper(), this);
         Bukkit.getPluginManager().registerEvents(new TradingCardBinderListener(), this);
         
+        
+        MessageHandler.getInstance().log("Scheduling tasks...");
+        
+        scheduleTasks();
+        
         MessageHandler.getInstance().log("Parkmanager has been Enabled!");
     }
     
     @Override
     public void onDisable() {
+    	
     	MessageHandler.getInstance().log("Preparing to disable!");
+    	MessageHandler.getInstance().log("Saving all users...!");
+    	UserManager.saveAll();
         // Don't log disabling, Spigot does that for you automatically!
     	MessageHandler.getInstance().log("Saving all rides...");
     	RidesConfig.getInstance().saveRides();
@@ -160,6 +173,10 @@ public class ParkManager extends JavaPlugin {
     	SignAction.unregister(cmdTrainListener);
     	SignAction.unregister(rideTrainListener);
     	
+        MessageHandler.getInstance().log("Canceling all tasks...");
+        getServer().getScheduler().cancelTasks(this); // This removes our tasks
+        MessageHandler.getInstance().log("Unregister all events...");
+        HandlerList.unregisterAll(this); // Cancel event registrations
     }
     
     private boolean setupEconomy() {
@@ -183,6 +200,15 @@ public class ParkManager extends JavaPlugin {
 		return in == null ? null : new InputStreamReader(in, Charsets.UTF_8);
 	}
 
+	private void scheduleTasks() {
+		
+		long saveInterval = Config.getInstance().getSaveInterval();
+		if(saveInterval != 0) {
+			long saveIntervalTicks = saveInterval * 1200; //1200 = 1 minute
+			new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
+		}
+
+	}
 	
 	private void loadConfig() {
 		Config.getInstance();
@@ -214,5 +240,10 @@ public class ParkManager extends JavaPlugin {
 	private void fixFilePaths() {
 		File currentFlatfilePath = new File(userFileDirectory);
 		currentFlatfilePath.mkdirs();
+	}
+
+	
+	public static DatabaseManager getDB() {
+		return db;
 	}
 }
