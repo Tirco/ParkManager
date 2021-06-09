@@ -109,7 +109,7 @@ cards:
         name: '&fTirco'
         lore: 
             - "&aNeeds filling."
-        signer: NONE
+        signer: "e0192f77-2fff-4887-aede-b1bcec23bb62"
     '10':
         type: STAFFMEMBER
         rarity: RARE

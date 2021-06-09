@@ -156,8 +156,7 @@ public abstract class SQLiteDatabase implements DatabaseManager{
         		}
         	}
         }
-        MessageHandler.getInstance().debug("Created Cards string. String is:");
-        MessageHandler.getInstance().debug(cards);
+
         try {
             conn = getSQLConnection();
             ps = conn.prepareStatement("REPLACE INTO " + table + " (uuid,player,score,cards) VALUES(?,?,?,?)"); // IMPORTANT. In SQLite class, We made 3 colums. player, Kills, Total.
@@ -291,6 +290,7 @@ public abstract class SQLiteDatabase implements DatabaseManager{
     }
 	
 	public LinkedHashMap<String, Integer> getTop10(){
+		MessageHandler.getInstance().log("Fetching top 10 from SQL");
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -300,7 +300,6 @@ public abstract class SQLiteDatabase implements DatabaseManager{
             //ps.setString(1, uuid.toString());
    
             rs = ps.executeQuery();
-        	MessageHandler.getInstance().debug("Got result - sending List.");
         	return getTop10FromResult(rs);
 
         } catch (SQLException ex) {
@@ -329,11 +328,6 @@ public abstract class SQLiteDatabase implements DatabaseManager{
 		} catch (SQLException ex){
 			MessageHandler.getInstance().log(Level.SEVERE, "Error when fetching top 10" );
 			ex.printStackTrace();
-		}
-		
-		int i = 1;
-		for(String s : map.keySet()) {
-			MessageHandler.getInstance().log(i + " " + s + " " + map.get(s));
 		}
 		
 		if(map.isEmpty()) {

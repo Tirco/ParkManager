@@ -84,6 +84,14 @@ public class TradingCardBinderListener implements Listener{
 			player.sendMessage("If the issue persists, please relogg.");
 		}
 		PlayerData pData = UserManager.getPlayer(player);
+		if(!pData.isLoaded()) {
+			player.sendMessage(ChatColor.RED + "Your profile appears to not be loaded.");
+			player.sendMessage(ChatColor.RED + "Please contact an administrator.");
+			e.setCancelled(true);
+			return;
+		}
+
+		
 		if(pData.getBinderPages().contains(e.getClickedInventory())) {
 			if(pData.spamCooldown())  {
 				e.setCancelled(true);
@@ -176,7 +184,7 @@ public class TradingCardBinderListener implements Listener{
 						return;
 				}
 				
-				int cardID = e.getSlot() + (45 * pData.getBinderPageNumber(inv));
+				int cardID = (e.getSlot() + 1) + (45 * pData.getBinderPageNumber(inv));
 				ItemStack storedItem = pData.getStoredCard(cardID);
 				if(storedItem != null) {
 					pData.removeStoredCard(cardID, TradingCardManager.getInstance().getUnownedCardItem(cardID));

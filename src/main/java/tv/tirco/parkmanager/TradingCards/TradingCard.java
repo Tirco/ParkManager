@@ -54,6 +54,13 @@ public class TradingCard {
 		
 	}
 	
+	/**
+	 * 
+	 * @param condition
+	 * @param signed
+	 * @param shiny
+	 * @return
+	 */
 	public ItemStack buildCardItem(TradingCardCondition condition, Boolean signed, Boolean shiny) {
 		//Card Data
 		//Name
@@ -86,8 +93,8 @@ public class TradingCard {
 			itemLore.add(ChatColor.translateAlternateColorCodes('&', s));
 		}
 		if(signed) {
-			lore.add("");
-			lore.add(ChatColor.translateAlternateColorCodes('&',
+			itemLore.add("");
+			itemLore.add(ChatColor.translateAlternateColorCodes('&',
 					TradingCardConfig.getInstance().getSignature(signerUUID)));
 		}
 		
@@ -104,7 +111,7 @@ public class TradingCard {
 		nbti.setString("TradingCardCondition", condition.toString());
 		nbti.setBoolean("TradingCardShiny", shiny);
 		nbti.setInteger("TradingCardDefaultLoreSize", itemLore.size());
-		nbti.setBoolean("TradingCardSigned", false);
+		nbti.setBoolean("TradingCardSigned", signed);
 		nbti.setDouble("TradingCardScore", TradingCardManager.getInstance().getCardValue(rarity,condition,signed,shiny,available));
 		nbti.setString("TradingCardStorageID", TradingCardManager.getInstance().getCardStorageID(id, shiny, signed, condition, rarity)); //TODO
 		nbti.setLong("TradinCardNoStack", Util.getRandom().nextLong());

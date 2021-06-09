@@ -44,6 +44,12 @@ public class TradingCardPackTask {
 		 cardOne = TradingCardManager.getInstance().drawTradingCard();
 		 cardTwo = TradingCardManager.getInstance().drawTradingCard();
 		 cardThree = TradingCardManager.getInstance().drawTradingCard();
+		 
+		MessageHandler.getInstance().debug("Starting opening of CardPack for player" + player.getName());
+		MessageHandler.getInstance().debug("Player will get " + 
+		cardOne.getID() + ", "+
+		cardTwo.getID() + ", "+
+		cardThree.getID() + ". ");
 	
 		counterItems = new ArrayList<ItemStack>();
 		
@@ -53,7 +59,6 @@ public class TradingCardPackTask {
 
 		this.task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
-				MessageHandler.getInstance().debug("Card pack is ticking - Loop Counter: " + loopCounter + " Cycle: " + cycle);
 
 				if(cycle < 3) {
 					ItemStack i = inv.getItem(3);
@@ -115,6 +120,10 @@ public class TradingCardPackTask {
 		Bukkit.getScheduler().cancelTask(task);
 		if(!player.isOnline()) {
 			MessageHandler.getInstance().log("Player " + player.getName() + " disconnected while opening card pack.");
+			MessageHandler.getInstance().log("Player should have  gotten " + 
+					cardOne.getID() + ", "+
+					cardTwo.getID() + ", "+
+					cardThree.getID() + ". ");
 		}
 	}
 	

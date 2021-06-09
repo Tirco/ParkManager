@@ -122,14 +122,10 @@ public class EntityInteractListener implements Listener{
 	
 	@EventHandler(priority=EventPriority.HIGH)
 	public void onPlayerUse(PlayerInteractEvent e){
-		int debug = 0;
 		Player player = e.getPlayer();
 		if(player.getGameMode().equals(GameMode.CREATIVE)) {
 			return;
 		}
-		
-		debug++;
-		MessageHandler.getInstance().debug( debug + " debug!");
 		
 		//Is it okay to click this block?
 		if(e.getClickedBlock() != null && e.getClickedBlock().getType() != Material.AIR) {
@@ -137,9 +133,6 @@ public class EntityInteractListener implements Listener{
 				return;
 			}
 		}
-		
-		debug++;
-		MessageHandler.getInstance().debug( debug + " debug!");
 
 		
 		//Is clicking blocks allowed in this world?
@@ -148,17 +141,9 @@ public class EntityInteractListener implements Listener{
 			return;
 		}
 		
-		debug++;
-		MessageHandler.getInstance().debug( debug + " debug!");
-		
-		
 		if(!e.getHand().equals(EquipmentSlot.HAND)) {
 			return;
 		}
-		
-		debug++;
-		MessageHandler.getInstance().debug( debug + " debug!");
-		
 		
 		//NO LEFT CLICK ALLOWED
 		if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
@@ -187,26 +172,14 @@ public class EntityInteractListener implements Listener{
 			}
 		}
 		
-		debug++;
-		MessageHandler.getInstance().debug( debug + " debug!");
-		
-		
 	    //Make sure we're doing a right click action
 	    if(e.getAction().equals(Action.RIGHT_CLICK_AIR) 
 	    || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
-	    	
-	    	debug++;
-			MessageHandler.getInstance().debug( debug + " debug!");
-			
 
 		    //Main hand check
 		    if(!e.getHand().equals(EquipmentSlot.HAND)) {
 		    	return;
 		    }
-		    
-		    debug++;
-			MessageHandler.getInstance().debug( debug + " debug!");
-			
 	    	
 	    	//Use item check - Do we have an item in hand?
 	    	ItemStack item = player.getInventory().getItemInMainHand();
@@ -214,17 +187,10 @@ public class EntityInteractListener implements Listener{
 	    		return;
 	    	}
 	    	
-	    	debug++;
-			MessageHandler.getInstance().debug( debug + " debug!");
-			
-	    	
 //NBTI check
 		    NBTItem nbti = new NBTItem(item);
 		    if(nbti.hasNBTData()) {
 		    	
-		    	debug++;
-				MessageHandler.getInstance().debug( debug + " debug!");
-				
 		    	//Check for commands:
 		    	if(nbti.hasKey("alias")) {
 		    		String aliasIdentifer = nbti.getString("alias");
@@ -241,8 +207,6 @@ public class EntityInteractListener implements Listener{
 		    			return;
 		    		}
 		    	} else if(nbti.hasKey("isCardPack")) {
-		    		debug++;
-		    		MessageHandler.getInstance().debug( debug + " debug!");
 		    		
 		    		//Check inv
 		    		if(!UserManager.hasPlayerDataKey(player)) {
@@ -272,7 +236,7 @@ public class EntityInteractListener implements Listener{
 				        }
 				      i =  36 - i;
 					  if(i < 3) {
-						  player.sendMessage(ChatColor.RED + "You need at least 3 empty items in your inventory to use this item.");
+						  player.sendMessage(ChatColor.RED + "Error: " + ChatColor.GOLD + "You need at least 3 empty slots in your inventory to open a card pack.");
 						  return;
 					  }
 					

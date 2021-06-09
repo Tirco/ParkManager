@@ -48,6 +48,7 @@ public class TradingCardSignCommand implements CommandExecutor{
 		TradingCard card = TradingCardManager.getInstance().getCardByID(id);
 		if(!card.getSignerUUID().equalsIgnoreCase(player.getUniqueId().toString())) {
 			player.sendMessage(ChatColor.RED + "You can't sign this card.");
+			return true;
 		} else {
 			signed = true;
 		}
@@ -56,7 +57,8 @@ public class TradingCardSignCommand implements CommandExecutor{
 		TradingCardCondition condition = TradingCardCondition.valueOf(nbti.getString("TradingCardCondition"));
 		
 		ItemStack newCard = card.buildCardItem(condition, signed, shiny);
-		item = newCard;
+		player.getInventory().remove(item);
+		player.getInventory().addItem(newCard);
 		
 		player.sendMessage("You have signed the card.");
 		

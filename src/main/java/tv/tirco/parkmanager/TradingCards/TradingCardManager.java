@@ -224,15 +224,20 @@ public class TradingCardManager {
 	 * @return
 	 */
 	public ItemStack updateCondition(TradingCardCondition condition, ItemStack item) {
-		ItemStack returnItem = item.clone();
-		ItemMeta meta = item.getItemMeta();
-		String conditionString = condition.getAsString();
-		List<String> lore = meta.getLore();
-		lore.set(3,ChatColor.translateAlternateColorCodes('&', "&aCondition:&7 " + conditionString));
+		NBTItem nbti = new NBTItem(item);
+		if(!nbti.hasNBTData() || !nbti.hasKey("TradingCardID")) {
+		}
+		boolean signed = false;
+		if(nbti.hasKey("TradingCardSigned")) {
+			signed = nbti.getBoolean("TradingCardSigned");
+		}
+		int id = nbti.getInteger("TradingCardID");
+		TradingCard card = TradingCardManager.getInstance().getCardByID(id);
 		
-		meta.setLore(lore);
-		returnItem.setItemMeta(meta);
-		return returnItem;
+		Boolean shiny = nbti.getBoolean("TradingCardShiny");
+		
+		ItemStack newCard = card.buildCardItem(condition, signed, shiny);
+		return newCard;
 	}
 
 	//TODO rename to score / points
@@ -312,6 +317,7 @@ public class TradingCardManager {
 	}
 	
 	public ItemStack getCardItemFromCode(String cardCode) {
+		MessageHandler.getInstance().debug("Loading card from code - " + cardCode);
 		String[] cardString = cardCode.split(":");
 		if(cardString.length < 4) {
 			MessageHandler.getInstance().debug("Error when loading card from id - not enough arguments.");
@@ -329,6 +335,9 @@ public class TradingCardManager {
 		Boolean signed = cardString[2].equals("1");
 		TradingCardCondition cond = TradingCardCondition.getCondFromCode(cardString[3]);
 		//TradingCardRarity rarity = TradingCardRarity.getRarityFromCode(cardString[4]);
+		MessageHandler.getInstance().debug("Shiny: " + shiny);
+		MessageHandler.getInstance().debug("Signed: " + signed);
+		MessageHandler.getInstance().debug("Condition: " + cond.toString());
 		
 		TradingCard card = getCardByID(cardID);
 		if(card == null) {

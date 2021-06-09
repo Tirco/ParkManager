@@ -1,5 +1,6 @@
 package tv.tirco.parkmanager.storage.database;
 
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import tv.tirco.parkmanager.ParkManager;
@@ -23,6 +24,17 @@ public class SaveTimerTask extends BukkitRunnable {
 			MessageHandler.getInstance().debug("AutoSave - Saved " + (count - 1) + " players");
 		}
 		
-		TradingCardManager.getInstance().loadTopTen();
+		//Load our top 10 later.
+		Bukkit.getScheduler().runTaskLaterAsynchronously(ParkManager.plugin, new Runnable() {
+
+			@Override
+			public void run() {
+				MessageHandler.getInstance().debug("Loading top 10...");
+				TradingCardManager.getInstance().setTop10(ParkManager.db.getTop10());
+				MessageHandler.getInstance().debug("Done!");
+			}
+			
+		}, 20 + count);
+
 	}
 }

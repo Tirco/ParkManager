@@ -40,7 +40,7 @@ public class PlayerProfile {
 	public PlayerProfile(String playerName, UUID uuid, BiMap<Integer,ItemStack> cards, int score) {
 		this.playerName = playerName;
 		this.uuid = uuid;
-		this.loaded = true;
+
 		this.rideidentifier = "none";
 		//this.changed = true; //Changed so we get an updated last login.
 		
@@ -52,23 +52,29 @@ public class PlayerProfile {
 			this.cardScore = 0;
 		}
 		forceUpdateAllCards();
+		this.loaded = true;
 	}
 	
 	
 	
 	private void forceUpdateAllCards() {
-		int score = 0;
-		for(int cardID : storedCards.keySet()) {
+		try {
+			int score = 0;
+			for(int cardID : storedCards.keySet()) {
 
-			int page = (int) Math.ceil(cardID / 45);
-			//MessageHandler.getInstance().debug("Debug: page = " + page);
-			Inventory insertionInv = getBinderPage(page);
-			ItemStack cardItem = storedCards.get(cardID);
-			score += TradingCardManager.getInstance().getItemScore(cardItem);
-			insertionInv.setItem(cardID - ((page) * 45), cardItem);
-			
+				int page = (int) Math.ceil(cardID / 46); //Error found?
+				//MessageHandler.getInstance().debug("Debug: page = " + page);
+				Inventory insertionInv = getBinderPage(page);
+				ItemStack cardItem = storedCards.get(cardID);
+				score += TradingCardManager.getInstance().getItemScore(cardItem);
+				int insertionSpot = (cardID - 1) - ((page) * 45);
+				MessageHandler.getInstance().debug("Insertion Spot = " + insertionSpot + " cardID " + cardID);
+				insertionInv.setItem(insertionSpot,  cardItem);
+			}
+			this.cardScore = score;
+		} catch (ArrayIndexOutOfBoundsException ex){
+			ex.printStackTrace();
 		}
-		this.cardScore = score;
 		MessageHandler.getInstance().debug("Forceupdated " + storedCards.size() + " to players binder.");
 	}
 
@@ -152,10 +158,10 @@ public class PlayerProfile {
 	public void storeCard(int cardID, ItemStack item) {
 		this.storedCards.put(cardID, item);
 		
-		int page = (int) Math.ceil(cardID / 45);
+		int page = (int) Math.ceil(cardID / 46);
 		//MessageHandler.getInstance().debug("Debug: page = " + page);
 		Inventory insertionInv = getBinderPage(page);
-		insertionInv.setItem(cardID - ((page) * 45), item);
+		insertionInv.setItem(cardID-1 - ((page) * 45), item);
 		this.changed = true;
 	}
 
@@ -169,9 +175,9 @@ public class PlayerProfile {
 
 	public void removeStoredCard(int cardID, ItemStack unownedCardItem) {
 		if(unownedCardItem != null) {
-			int page = (int) Math.ceil(cardID / 45);
+			int page = (int) Math.ceil(cardID / 46);
 			Inventory insertionInv = getBinderPage(page);
-			insertionInv.setItem(cardID - ((page) * 45), unownedCardItem);
+			insertionInv.setItem((cardID -1 ) - ((page) * 45), unownedCardItem);
 		}
 		this.storedCards.remove(cardID);
 		this.changed = true;

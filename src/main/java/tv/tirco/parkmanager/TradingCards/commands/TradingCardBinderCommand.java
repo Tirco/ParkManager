@@ -23,7 +23,7 @@ public class TradingCardBinderCommand implements CommandExecutor{
 		if(!UserManager.hasPlayerDataKey(player)) {
 			player.sendMessage(ChatColor.RED + "Please wait, your binder is not loaded yet.");
 			return true;
-		}
+		}		
 		
 		PlayerData pData = UserManager.getPlayer(player);
 
