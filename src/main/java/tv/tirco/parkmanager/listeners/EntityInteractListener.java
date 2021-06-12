@@ -27,7 +27,6 @@ import tv.tirco.parkmanager.alias.Alias;
 import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.playerdata.PlayerData;
 import tv.tirco.parkmanager.storage.playerdata.UserManager;
-import tv.tirco.parkmanager.util.MessageHandler;
 import tv.tirco.parkmanager.util.Util;
 
 public class EntityInteractListener implements Listener{
@@ -40,9 +39,10 @@ public class EntityInteractListener implements Listener{
 			if(!player.getGameMode().equals(GameMode.CREATIVE) || player.isSneaking()) {
 				
 				//Cancel if not 
-				if(!(clicked.getType().equals(EntityType.MINECART) ||
-						clicked.getType().equals(EntityType.ARMOR_STAND)
-						|| clicked.getType().equals(EntityType.PLAYER))) {
+				if(!(clicked.getType().equals(EntityType.MINECART) 
+						|| clicked.getType().equals(EntityType.ARMOR_STAND)
+						|| clicked.getType().equals(EntityType.PLAYER)
+						|| Util.isNPC(clicked))) {
 					e.setCancelled(true);	
 				}
 				

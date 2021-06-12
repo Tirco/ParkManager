@@ -3,6 +3,8 @@ package tv.tirco.parkmanager.util;
 import java.util.Random;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.NPC;
 
 import tv.tirco.parkmanager.config.Config;
 
@@ -12,6 +14,10 @@ public class Util {
     
     public static Random getRandom() {
     	return rand;
+    }
+    
+    public static boolean isNPC(Entity entity) {
+        return (entity == null || entity.hasMetadata("NPC") || entity instanceof NPC || entity.getClass().getName().equalsIgnoreCase("cofh.entity.PlayerFake"));
     }
 	
  	public static boolean canBeInteracted(Material mat) {
@@ -76,4 +82,6 @@ public class Util {
 	public static boolean rightClickBlockAllowed(String name) {
 		return Config.getInstance().rightClickBlockAllowedWorlds().contains(name);
 	}
+
+
 }

@@ -13,7 +13,7 @@ import tv.tirco.parkmanager.alias.Alias;
 import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.util.MessageHandler;
 
-public class CmdTrainListener extends SignAction{
+public class CmdTrainSignAction extends SignAction{
 
 	
 	@Override

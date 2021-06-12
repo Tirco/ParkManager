@@ -1,5 +1,4 @@
 settings:
-    shinychance: 0.05
     shinychance: 0.05 #chance of card being enchanted.
     rarity:
         chances:

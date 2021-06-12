@@ -43,10 +43,10 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 			needSave = true;
 		}
 
-		for (String key : oldKeys) {
-			//MessageHandler.getInstance().debug("Detected potentially unused key: " + key);
-			// config.set(key, null);
-		}
+//		for (String key : oldKeys) {
+//			//MessageHandler.getInstance().debug("Detected potentially unused key: " + key);
+//			// config.set(key, null);
+//		}
 
 		for (String key : newKeys) {
 			MessageHandler.getInstance().debug("Adding new key: " + key + " = " + internalConfig.get(key));

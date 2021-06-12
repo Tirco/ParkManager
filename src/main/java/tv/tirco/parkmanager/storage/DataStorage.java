@@ -46,9 +46,9 @@ public class DataStorage {
 		RidesConfig.getInstance().saveRides();
 		this.rides.clear();
 		if(inv != null) {
-			for(HumanEntity e :inv.getViewers()) {
-				e.getOpenInventory().close();
-				e.sendMessage("We had to close this inventory as it is being reloaded.");
+			for (HumanEntity viewer : new ArrayList<>(inv.getViewers())) {
+			    viewer.closeInventory();
+				viewer.sendMessage("We had to close this inventory as it is being reloaded.");
 			}
 		}
 		this.rideMenu = null;

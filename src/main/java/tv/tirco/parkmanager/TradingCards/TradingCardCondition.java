@@ -16,23 +16,23 @@ public enum TradingCardCondition {
 	public String getAsString() {
 		switch(this){
 		case GEM_MINT:
-			return "Gem Mint";
+			return "&dGem Mint";
 		case MINT:
-			return "Mint";
+			return "&5Mint";
 		case NEAR_MINT:
-			return "Near Mint";
+			return "&6Near Mint";
 		case EXCELLENT:
-			return "Excellent";
+			return "&eExcellent";
 		case VERY_GOOD:
-			return "Very Good";
+			return "&aVery Good";
 		case GOOD:
-			return "Good";
+			return "&2Good";
 		case FAIR:
-			return "Fair";
+			return "&fFair";
 		case POOR:
-			return "Poor";
+			return "&7Poor";
 		default:
-			return "Unknown";
+			return "&7Unknown";
 		}
 	}
 	

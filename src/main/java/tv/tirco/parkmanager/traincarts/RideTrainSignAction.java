@@ -13,7 +13,7 @@ import com.bergerkiller.bukkit.tc.utils.SignBuildOptions;
 import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.Ride;
 
-public class RideTrainListener extends SignAction{
+public class RideTrainSignAction extends SignAction{
 
 	
 	@Override

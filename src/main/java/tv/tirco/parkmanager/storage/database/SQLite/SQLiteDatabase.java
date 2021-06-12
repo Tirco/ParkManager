@@ -176,6 +176,8 @@ public abstract class SQLiteDatabase implements DatabaseManager{
             return true;
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+            MessageHandler.getInstance().log("Error while saving TradingCards for player " + profile.getPlayerName());
+            MessageHandler.getInstance().log("SaveString should have been: " + cards);
         } finally {
             try {
                 if (ps != null)
@@ -191,7 +193,7 @@ public abstract class SQLiteDatabase implements DatabaseManager{
 
 	@Override
 	public void newUser(String playerName, UUID uuid) {
-		// TODO Auto-generated method stub
+		//return new PlayerProfile(playerName, uuid, map, 0);
 		
 	}
 

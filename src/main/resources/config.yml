@@ -3,15 +3,23 @@ debugtoadmins: true
 saveinterval: 17
 DatabaseType: SQLite
 MySQL: {}
+GlobalModifier: 1.0 ##Change this when you want a global increase. (Events etc.)
+RankModifiers: ##Add ranks, the top rank will be checked first, if they have it, it won't check the rest.
+    Immortal: 1.85
+    Phantom: 1.65
+    Dragon: 1.50
+    Wither: 1.35
+    Guardian: 1.20
+    Blaze: 1.10
 SQLite:
     Filename: "PlayerDatabase"
 worldprotection:
  blockbreak_allowed_in:
-    - world_thelab
+    - world_TheLab
     - murder
  blockplace_allowed_in:
-    - world_thelab
+    - world_TheLab
     - murder
  rightclickblock_allowed_in:
-    - world_thelab
+    - world_TheLab
     - murder

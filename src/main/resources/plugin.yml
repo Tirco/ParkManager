@@ -6,7 +6,7 @@ website: ${url}
 api-version: 1.16
 
 main: ${mainClass}
-depend: [Train_Carts,PlaceholderAPI]
+depend: [Train_Carts,PlaceholderAPI,Citizens]
 
 commands:
     example:

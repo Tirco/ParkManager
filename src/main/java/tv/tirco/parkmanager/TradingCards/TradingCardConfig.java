@@ -141,7 +141,7 @@ public class TradingCardConfig extends AutoUpdateConfigLoader {
 	}
 	
 	public void loadAllCards() {
-		TradingCardManager.getInstance().clearLists();
+		TradingCardManager.getInstance().clearLists(false);
 		for(String key : config.getConfigurationSection("cards").getKeys(false)) {
 			try {
 				int id = Integer.parseInt(key);
@@ -174,6 +174,10 @@ public class TradingCardConfig extends AutoUpdateConfigLoader {
 
 	public int getAmountOfCards() {
 		return config.getConfigurationSection("cards").getKeys(false).size();
+	}
+	
+	public boolean isEvaluatorNPC(int id) {
+		return config.getIntegerList("settings.CardEvaluatorNPCs").contains(id);
 	}
 
 	

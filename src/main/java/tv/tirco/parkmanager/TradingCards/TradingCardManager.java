@@ -69,7 +69,12 @@ public class TradingCardManager {
 	}
 
 	public void setTop10(LinkedHashMap<String, Integer> map) {
-		this.topTen = map;
+		if(map != null && !map.isEmpty()) {
+			this.topTen = map;
+		} else {
+			MessageHandler.getInstance().debug("Did not update top10 as the top10 map was empty.");
+		}
+
 	}
 	
 	public LinkedHashMap<String, Integer> getTopTen() {
@@ -175,8 +180,15 @@ public class TradingCardManager {
 		return TradingCardConfig.getInstance().getRandomCondition();
 	}
 
-	public void clearLists() {
-		TradingCardManager.instance = new TradingCardManager();
+	public void clearLists(boolean force) {
+		if(!this.allCards.isEmpty() || force) {
+			this.allCards = HashBiMap.create();
+			this.legendaryCards = new ArrayList<Integer>();
+			this.epicCards = new ArrayList<Integer>();
+			this.rareCards = new ArrayList<Integer>();
+			this.uncommonCards = new ArrayList<Integer>();
+			this.commonCards = new ArrayList<Integer>();
+		}
 	}
 	
 	/**

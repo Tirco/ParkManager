@@ -1,6 +1,8 @@
 package tv.tirco.parkmanager.storage.database;
 
+import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.config.Config;
+import tv.tirco.parkmanager.storage.database.SQLite.SQLite;
 
 public class DatabaseManagerFactory {
 
@@ -13,8 +15,8 @@ public class DatabaseManagerFactory {
 		case FLATFILE:
 			return new PlayerFileManager();
 
-		/*case SQL:
-			return new SQLDatabaseManager(); */
+		case SQL:
+			return new SQLite(ParkManager.parkManager);
 
 		default:
 			return null;

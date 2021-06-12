@@ -14,10 +14,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.bergerkiller.bukkit.tc.signactions.SignAction;
 import com.google.common.base.Charsets;
 
+import net.citizensnpcs.api.trait.TraitInfo;
 import net.milkbowl.vault.economy.Economy;
 import tv.tirco.parkmanager.Inventories.ItemModifierListener;
 import tv.tirco.parkmanager.TradingCards.TradingCardBinderListener;
 import tv.tirco.parkmanager.TradingCards.TradingCardConfig;
+import tv.tirco.parkmanager.TradingCards.TradingCardEvaluatorNPC;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardAdminCommand;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardBinderCommand;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardEvaluateCommand;
@@ -37,6 +39,7 @@ import tv.tirco.parkmanager.config.AliasesConfig;
 import tv.tirco.parkmanager.config.Config;
 import tv.tirco.parkmanager.config.RidesConfig;
 import tv.tirco.parkmanager.listeners.CommandStopper;
+import tv.tirco.parkmanager.listeners.ConsumeListener;
 import tv.tirco.parkmanager.listeners.EntityInteractListener;
 import tv.tirco.parkmanager.listeners.JoinLeaveListener;
 import tv.tirco.parkmanager.listeners.ProtectionListener;
@@ -46,8 +49,9 @@ import tv.tirco.parkmanager.storage.database.DatabaseManager;
 import tv.tirco.parkmanager.storage.database.DatabaseManagerFactory;
 import tv.tirco.parkmanager.storage.database.SaveTimerTask;
 import tv.tirco.parkmanager.storage.playerdata.UserManager;
-import tv.tirco.parkmanager.traincarts.CmdTrainListener;
-import tv.tirco.parkmanager.traincarts.RideTrainListener;
+import tv.tirco.parkmanager.traincarts.CmdTrainSignAction;
+import tv.tirco.parkmanager.traincarts.RideTrainSignAction;
+import tv.tirco.parkmanager.traincarts.TpTrainSignAction;
 import tv.tirco.parkmanager.util.MessageHandler;
 import tv.tirco.parkmanager.util.PapiExpansion;
 
@@ -58,8 +62,9 @@ public class ParkManager extends JavaPlugin {
 
 	public boolean noErrorsInConfigFiles = true;
 	
-	public final CmdTrainListener cmdTrainListener = new CmdTrainListener();
-	public final RideTrainListener rideTrainListener = new RideTrainListener();
+	public final CmdTrainSignAction cmdTrainSignAction = new CmdTrainSignAction();
+	public final RideTrainSignAction rideTrainSignAction = new RideTrainSignAction();
+	public final TpTrainSignAction tpTrainSignAction = new TpTrainSignAction();
 	
     public static ParkManager parkManager;
     
@@ -92,6 +97,18 @@ public class ParkManager extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+        
+    	//check if Citizens is present and enabled.
+        MessageHandler.getInstance().log("Hooking into Citizens...");
+		if(getServer().getPluginManager().getPlugin("Citizens") == null || getServer().getPluginManager().getPlugin("Citizens").isEnabled() == false) {
+			getLogger().log(Level.SEVERE, "Citizens 2.0 not found or not enabled");
+			getServer().getPluginManager().disablePlugin(this);	
+			return;
+		}	
+
+		//Register your trait with Citizens.   
+		MessageHandler.getInstance().log("Registering Citizens trait ...");
+		net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(TradingCardEvaluatorNPC.class).withName("tradingcardevaluator"));
 		
         MessageHandler.getInstance().log("Fixing file paths...");
     	setupFilePaths();
@@ -100,7 +117,6 @@ public class ParkManager extends JavaPlugin {
 
         MessageHandler.getInstance().log("Registering commands...");
         // Commands enabled with following method must have entries in plugin.yml
-        getCommand("example").setExecutor(new ExampleCommand(this));
         getCommand("sit").setExecutor(new SitCommand());
         getCommand("hideiteminfo").setExecutor(new HideItemInfoCommand());
         getCommand("bench").setExecutor(new BenchCommand());
@@ -123,8 +139,9 @@ public class ParkManager extends JavaPlugin {
         //Register carts
         if(Bukkit.getPluginManager().getPlugin("Train_Carts") != null) {
         	MessageHandler.getInstance().log("Hooking into Train_Carts...");
-        	SignAction.register(cmdTrainListener);
-        	SignAction.register(rideTrainListener);
+        	SignAction.register(cmdTrainSignAction);
+        	SignAction.register(rideTrainSignAction);
+        	SignAction.register(tpTrainSignAction);
         } else {
         	MessageHandler.getInstance().log("Could not find the Train_Carts plugin... Ignoring");
         }
@@ -148,6 +165,7 @@ public class ParkManager extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RideMenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new CommandStopper(), this);
         Bukkit.getPluginManager().registerEvents(new TradingCardBinderListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ConsumeListener(), this);
         
         
         MessageHandler.getInstance().log("Scheduling tasks...");
@@ -170,8 +188,9 @@ public class ParkManager extends JavaPlugin {
     	AliasesConfig.getInstance().saveAllAliases();
     	
     	MessageHandler.getInstance().log("Unregistering TrainCarts signs...");
-    	SignAction.unregister(cmdTrainListener);
-    	SignAction.unregister(rideTrainListener);
+    	SignAction.unregister(cmdTrainSignAction);
+    	SignAction.unregister(rideTrainSignAction);
+    	SignAction.unregister(tpTrainSignAction);
     	
         MessageHandler.getInstance().log("Canceling all tasks...");
         getServer().getScheduler().cancelTasks(this); // This removes our tasks

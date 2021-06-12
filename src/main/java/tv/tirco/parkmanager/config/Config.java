@@ -3,6 +3,9 @@ package tv.tirco.parkmanager.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+
 import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.storage.database.DatabaseManager;
 import tv.tirco.parkmanager.storage.database.PlayerFileManager;
@@ -109,6 +112,40 @@ public class Config extends AutoUpdateConfigLoader {
 	public long getSaveInterval() {
 		return config.getInt("saveinterval", 17);
 		
+	}
+
+	
+	
+	public static List<ConfigurationSection> getSections(ConfigurationSection source) {
+	    List<ConfigurationSection> nodes = new ArrayList<ConfigurationSection>();
+	    for (String key : source.getKeys(false)) {
+	        if (source.isConfigurationSection(key)) {
+	            nodes.add(source.getConfigurationSection(key));
+	        }
+	    }
+	    return nodes;
+	}
+	
+	public Double getPlayerBonus(Player player) {
+		MessageHandler.getInstance().debug("Running test for getPlayerBonus");
+		ConfigurationSection keyNode = config.getConfigurationSection("RankModifiers");
+		if(keyNode == null)  {
+			MessageHandler.getInstance().log("Could not find ConfigurationSection RankModifiers");
+			return 1.0;
+			
+		} else {
+			for(String s : keyNode.getKeys(false)) {
+				if(player.hasPermission("parkmanager.rankmodifier." + s)) {
+					return config.getDouble("RankModifiers." + s);
+				}
+			}
+			return 1.00;
+		}
+
+	}
+
+	public Double getGlobalBonus() {
+		return config.getDouble("Rides.GlobalModifier",1.0);
 	}
 	
 

@@ -12,7 +12,6 @@ import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.TradingCards.TradingCard;
 import tv.tirco.parkmanager.TradingCards.TradingCardCondition;
 import tv.tirco.parkmanager.TradingCards.TradingCardManager;
-import tv.tirco.parkmanager.util.Util;
 
 public class TradingCardSignCommand implements CommandExecutor{
 

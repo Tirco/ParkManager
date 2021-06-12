@@ -8,10 +8,13 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.advancements.AdvancementUtil;
+import tv.tirco.parkmanager.config.Config;
 import tv.tirco.parkmanager.storage.playerdata.PlayerData;
 import tv.tirco.parkmanager.storage.playerdata.UserManager;
 import tv.tirco.parkmanager.util.MessageHandler;
@@ -28,6 +31,7 @@ public class Ride {
 	ItemStack icon;
 	double minPay = 1.0;
 	boolean hasAdvancement = false;
+	boolean enabled = false;
 
 	/**
 	 * 
@@ -37,20 +41,52 @@ public class Ride {
 	 * @param description - The description of the ride, that players will see.
 	 * @param defaultPayPerMinute - How much does it pay pr minute?
 	 * @param changed - Is this changed / new?
-	 */	public Ride(String identifier, double maxPayout, String name, List<String> description, Double defaultPayPerMinute, ItemStack icon, String warp, boolean hasAdvancement, boolean changed){
+	 */	
+	public Ride(
+			String identifier, double maxPayout, String name, List<String> description, 
+			Double defaultPayPerMinute, String warp, boolean hasAdvancement, boolean changed, boolean enabled, 
+			Material material, int modeldata){
 		this.identifier = identifier;
 		this.maxPayout = maxPayout;
 		this.name = name;
 		this.description = description;
 		this.defaultPayPerMinute = defaultPayPerMinute;
 		this.warpName = warp;
-		this.icon = icon;
 		this.hasAdvancement = hasAdvancement;
 		this.changed = changed;
+		this.enabled = enabled;
+		buildIcon(material, modeldata);
 	}
 	
 	
-	 public Ride(String identifier) {
+	 private void buildIcon(Material mat, int modeldata) {
+			if(mat == null || mat.equals(Material.AIR)) {
+				mat = Material.MINECART;
+			}
+			
+			ItemStack item = new ItemStack(mat);
+			NBTItem nbtItem = new NBTItem(item);
+			nbtItem.setString("RideIdentifier", identifier);
+			item = nbtItem.getItem();
+
+			
+			ItemMeta meta = item.getItemMeta();
+			meta.setCustomModelData(modeldata);
+			meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+			List<String> LoreList = new ArrayList<String>();
+			LoreList.add(ChatColor.translateAlternateColorCodes('&', (enabled ? "&aEnabled" : "&cDisabled")));
+			LoreList.add("");
+			for(String s : description) {
+				LoreList.add(ChatColor.translateAlternateColorCodes('&', s));
+			}
+			meta.setLore(LoreList);
+			item.setItemMeta(meta);
+
+			this.icon = item;
+	}
+
+
+	public Ride(String identifier) {
 		this.identifier = identifier;
 		this.maxPayout = 100.0;
 		this.name = identifier;
@@ -60,6 +96,7 @@ public class Ride {
 		this.hasAdvancement = false;
 		this.warpName = "Unknown";
 		this.changed = true;
+		this.enabled = false;
 	}
 	 
 	public boolean hasAdvancement() {
@@ -152,8 +189,8 @@ public class Ride {
 				payout = maxPayout;
 			}
 			
-			Double playerMultiplier = 1.00;
-			Double globalBonus = 1.00;
+			Double playerMultiplier = Config.getInstance().getPlayerBonus(player);
+			Double globalBonus = Config.getInstance().getGlobalBonus();
 			
 			Double totalMultiplier = playerMultiplier * globalBonus;
 			
@@ -170,7 +207,7 @@ public class Ride {
 			player.sendMessage("----- " + ChatColor.GOLD + "Ride Ended"+ ChatColor.WHITE + " ----- ");
 			
 			
-			ParkManager.getEconomy().depositPlayer(player, payout);
+			ParkManager.getEconomy().depositPlayer(player, totalPayout);
 			pData.endRide();
 			
 			//Advancement

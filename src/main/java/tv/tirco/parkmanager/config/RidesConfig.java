@@ -7,8 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.Ride;
 
@@ -41,10 +39,13 @@ public class RidesConfig extends AutoUpdateConfigLoader {
 			double maxPayout = config.getDouble("rides." + s + ".maxPayout", 100.00);
 			double defaultPayPerMinute = config.getDouble("rides." + s + ".defaultPayPerMinute", 100.00);
 			String warp = config.getString("rides." + s + ".warp", "Unknown");
-			ItemStack icon = buildIconItem(identifier,name,description);
 			Boolean hasAdvancement = config.getBoolean("rides." + s + ".hasAdvancement", false);
+			Boolean isEnabled = config.getBoolean("rides." + s + ".enabled", true);
+			Material mat = Material.getMaterial(config.getString("rides."+identifier+".item.material", "Minecart"));
 			
-			Ride ride = new Ride(identifier, maxPayout, name, description, defaultPayPerMinute, icon, warp, hasAdvancement, false);
+			int modeldata = config.getInt("rides."+identifier+".item.modeldata",0);
+			
+			Ride ride = new Ride(identifier, maxPayout, name, description, defaultPayPerMinute, warp, hasAdvancement, false, isEnabled, mat, modeldata);
 			DataStorage.getInstance().addRide(ride);
 		}
 	}
@@ -102,32 +103,9 @@ public class RidesConfig extends AutoUpdateConfigLoader {
 	public boolean isSet(String key) {
 		return config.isSet(key);
 	}
-	
-	private ItemStack buildIconItem(String identifier, String name, List<String> description) {
-		Material mat = Material.getMaterial(config.getString("rides."+identifier+".item.material", "Minecart"));
-		if(mat == null || mat.equals(Material.AIR)) {
-			mat = Material.MINECART;
-		}
-		
-		ItemStack item = new ItemStack(mat);
-		NBTItem nbtItem = new NBTItem(item);
-		nbtItem.setString("RideIdentifier", identifier);
-		item = nbtItem.getItem();
-		
-		int modeldata = config.getInt("rides."+identifier+".item.modeldata",0);
-		
-		ItemMeta meta = item.getItemMeta();
-		meta.setCustomModelData(modeldata);
-		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-		List<String> LoreList = new ArrayList<String>();
-		for(String s : description) {
-			LoreList.add(ChatColor.translateAlternateColorCodes('&', s));
-		}
-		meta.setLore(LoreList);
-		item.setItemMeta(meta);
 
-		return item;
-	}
+	
+	
 	
 
 

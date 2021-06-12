@@ -80,8 +80,9 @@ public class TradingCardBinderListener implements Listener{
 		
 		if(!UserManager.hasPlayerDataKey(player)) {
 			e.setCancelled(true);
-			player.sendMessage("An error has occured. Please close this inventory and try again.");
-			player.sendMessage("If the issue persists, please relogg.");
+			player.closeInventory();
+			player.sendMessage("Please wait until your profile has loaded.");
+			return;
 		}
 		PlayerData pData = UserManager.getPlayer(player);
 		if(!pData.isLoaded()) {

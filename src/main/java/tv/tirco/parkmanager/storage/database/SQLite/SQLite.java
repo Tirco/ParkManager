@@ -10,7 +10,6 @@ import java.util.logging.Level;
 
 import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.config.Config;
-import tv.tirco.parkmanager.util.MessageHandler;
 
 
 public class SQLite extends SQLiteDatabase{
@@ -60,7 +59,6 @@ public class SQLite extends SQLiteDatabase{
             Statement s = connection.createStatement();
             s.executeUpdate(SQLiteCreateCardsTable);
             s.close();
-            MessageHandler.getInstance().log("SQLite Loaded with prepared statement.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
