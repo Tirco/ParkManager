@@ -139,6 +139,9 @@ public class EntityInteractListener implements Listener{
 		//Needed for some minigames that have doors etc.
 		if(Util.rightClickBlockAllowed(player.getWorld().getName())) {
 			return;
+		} else {
+			//Cancel the click
+			e.setCancelled(true);
 		}
 		
 		if(!e.getHand().equals(EquipmentSlot.HAND)) {

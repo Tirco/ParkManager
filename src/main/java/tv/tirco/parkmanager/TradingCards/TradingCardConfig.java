@@ -88,14 +88,22 @@ public class TradingCardConfig extends AutoUpdateConfigLoader {
 		return config.isSet(key);
 	}
 	
-	public TradingCardRarity getRandomRarity() {
+	/**
+	 * Modifier should be 0.01 to 0.02
+	 * @param modifier Negative values increase chance.
+	 * @return
+	 */
+	public TradingCardRarity getRandomRarity(double modifier) {
 		//Double CommonRarityChance = config.getDouble("settings.rarity.chances.COMMON", 0.40);
 		Double UncommonRarityChance = config.getDouble("settings.rarity.chances.UNCOMMON", 0.34);
 		Double RareRarityChance = config.getDouble("settings.rarity.chances.RARE", 0.20);
 		Double EpicRarityChance = config.getDouble("settings.rarity.chances.EPIC", 0.05);
 		Double LegendaryRarityChance = config.getDouble("settings.rarity.chances.LEGENDARY", 0.01);
 		
-		Double random = Math.random();
+		Double random = Math.random() + modifier;
+		if(random < 0.000001) {
+			random = 0.000001;
+		}
 			if(LegendaryRarityChance > random) {
 				return TradingCardRarity.LEGENDARY;
 			} else if(EpicRarityChance > random) {

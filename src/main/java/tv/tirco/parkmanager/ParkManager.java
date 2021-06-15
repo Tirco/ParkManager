@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -15,11 +17,12 @@ import com.bergerkiller.bukkit.tc.signactions.SignAction;
 import com.google.common.base.Charsets;
 
 import net.citizensnpcs.api.trait.TraitInfo;
+import net.clownercraft.ccRides.ccRidesPlugin;
 import net.milkbowl.vault.economy.Economy;
-import tv.tirco.parkmanager.Inventories.ItemModifierListener;
+import tv.tirco.parkmanager.NPC.FortuneTellerNPC;
+import tv.tirco.parkmanager.NPC.TradingCardEvaluatorNPC;
 import tv.tirco.parkmanager.TradingCards.TradingCardBinderListener;
 import tv.tirco.parkmanager.TradingCards.TradingCardConfig;
-import tv.tirco.parkmanager.TradingCards.TradingCardEvaluatorNPC;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardAdminCommand;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardBinderCommand;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardEvaluateCommand;
@@ -69,7 +72,13 @@ public class ParkManager extends JavaPlugin {
     public static ParkManager parkManager;
     
 	public PapiExpansion placeholders;
+	
+	public static ccRidesPlugin ccRides;
+	public static boolean ccRidesEnabled = false;
+	
 	public boolean papi = false;
+	
+	public Location spawn;
     
 	
 	// File Manager setup bulk
@@ -88,6 +97,8 @@ public class ParkManager extends JavaPlugin {
     public void onEnable() {
 		plugin = this;
 		parkManager = this;
+		
+		this.spawn = new Location(Bukkit.getWorld("world"), -29.5, 65, 161.5, 0f, 0f);
         
 		MessageHandler.getInstance().log("Setting up economy...");
 		
@@ -104,11 +115,12 @@ public class ParkManager extends JavaPlugin {
 			getLogger().log(Level.SEVERE, "Citizens 2.0 not found or not enabled");
 			getServer().getPluginManager().disablePlugin(this);	
 			return;
-		}	
+		}
 
 		//Register your trait with Citizens.   
-		MessageHandler.getInstance().log("Registering Citizens trait ...");
+		MessageHandler.getInstance().log("Registering Citizens traits...");
 		net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(TradingCardEvaluatorNPC.class).withName("tradingcardevaluator"));
+		net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(FortuneTellerNPC.class).withName("fortuneteller"));
 		
         MessageHandler.getInstance().log("Fixing file paths...");
     	setupFilePaths();
@@ -156,8 +168,16 @@ public class ParkManager extends JavaPlugin {
 			MessageHandler.getInstance().log("PlaceholderAPI not found... Ignoring");
 		}
         
+        //PAPI
+        if(Bukkit.getPluginManager().getPlugin("ccRides") != null){
+        	MessageHandler.getInstance().log("Hooking into ccRides...");
+			ccRides = ccRidesPlugin.getInstance();
+            ParkManager.ccRidesEnabled = true;
+		} else {
+			MessageHandler.getInstance().log("PlaceholderAPI not found... Ignoring");
+		}
+        
         MessageHandler.getInstance().log("Setting up EventListeners...");
-        Bukkit.getPluginManager().registerEvents(new ItemModifierListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new ProtectionListener(), this);
         Bukkit.getPluginManager().registerEvents(new JoinLeaveListener(), this);
@@ -226,6 +246,18 @@ public class ParkManager extends JavaPlugin {
 			long saveIntervalTicks = saveInterval * 1200; //1200 = 1 minute
 			new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 		}
+		
+	    plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+	        public void run() {
+	            for (Player player : Bukkit.getWorld("world").getPlayers()) {
+	                if (player.getLocation().getY() < 0) {
+	                	
+	                    player.teleport(spawn);
+	                    MessageHandler.getInstance().log("Saved " + player.getName() + " from eternal falling.");
+	                }
+	            }
+	        }
+	    },10*20, 10*20); //Every 10 seconds.
 
 	}
 	
@@ -260,9 +292,16 @@ public class ParkManager extends JavaPlugin {
 		File currentFlatfilePath = new File(userFileDirectory);
 		currentFlatfilePath.mkdirs();
 	}
-
 	
 	public static DatabaseManager getDB() {
 		return db;
+	}
+	
+	public static ccRidesPlugin ccRides() {
+		return ccRides;
+	}
+	
+	public static boolean ccRidesEnabled() {
+		return ccRidesEnabled;
 	}
 }

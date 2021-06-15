@@ -36,7 +36,7 @@ public class CommandStopper implements Listener {
 				if(message.startsWith("/exitride")
 						||message.startsWith("/exit")
 						||message.startsWith("/leaveride")) {
-					
+					//Do nothing
 				} else {
 					e.setCancelled(true);
 					player.sendMessage(ChatColor.YELLOW + "You can not use that command while on a ride.");

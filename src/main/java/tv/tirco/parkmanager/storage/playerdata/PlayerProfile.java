@@ -68,14 +68,14 @@ public class PlayerProfile {
 				ItemStack cardItem = storedCards.get(cardID);
 				score += TradingCardManager.getInstance().getItemScore(cardItem);
 				int insertionSpot = (cardID - 1) - ((page) * 45);
-				MessageHandler.getInstance().debug("Insertion Spot = " + insertionSpot + " cardID " + cardID);
+				//MessageHandler.getInstance().debug("Insertion Spot = " + insertionSpot + " cardID " + cardID);
 				insertionInv.setItem(insertionSpot,  cardItem);
 			}
 			this.cardScore = score;
 		} catch (ArrayIndexOutOfBoundsException ex){
 			ex.printStackTrace();
 		}
-		MessageHandler.getInstance().debug("Forceupdated " + storedCards.size() + " to players binder.");
+		MessageHandler.getInstance().debug("Updated " + storedCards.size() + " cards to " + playerName + "'s binder.");
 	}
 
 

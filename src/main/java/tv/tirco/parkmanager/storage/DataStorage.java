@@ -1,11 +1,14 @@
 package tv.tirco.parkmanager.storage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.alias.Alias;
@@ -18,6 +21,7 @@ public class DataStorage {
 	List<Ride> rides;
 	List<Alias> aliases;
 	Inventory rideMenu; //Storing it here as it shouldn't change.
+	HashMap<UUID, List<ItemStack>> owedItems;
 	
 	
 	public Inventory getRideMenu() {
@@ -43,7 +47,7 @@ public class DataStorage {
 	
 	public void rebuildRideMenu() {
 		Inventory inv = rideMenu;
-		RidesConfig.getInstance().saveRides();
+		//RidesConfig.getInstance().saveRides();
 		this.rides.clear();
 		if(inv != null) {
 			for (HumanEntity viewer : new ArrayList<>(inv.getViewers())) {
@@ -72,6 +76,7 @@ public class DataStorage {
 	public DataStorage() {
 		this.rides = new ArrayList<Ride>();
 		this.aliases = new ArrayList<Alias>();
+		this.owedItems = new HashMap<UUID, List<ItemStack>>();
 	}
 	
 
@@ -144,6 +149,36 @@ public class DataStorage {
 
 	public List<Alias> getAliases() {
 		return aliases;
+	}
+
+	
+	public void addPlayerOwedItems(UUID uniqueId, List<ItemStack> items) {
+		if(this.owedItems.containsKey(uniqueId)) {
+			List<ItemStack> newItems = owedItems.get(uniqueId);
+			newItems.addAll(items);
+			owedItems.put(uniqueId, items);
+			return;
+		} else {
+			owedItems.put(uniqueId, items);
+		}
+	}
+	
+	public void clearPlayerOwedItems(UUID uniqueId) {
+		if(this.owedItems.containsKey(uniqueId)) {
+			this.owedItems.remove(uniqueId);
+		}
+	}
+	
+	public List<ItemStack> owedItems(UUID uniqueId) {
+		if(this.owedItems.containsKey(uniqueId)) {
+			return owedItems.get(uniqueId);
+		} else {
+			return null;
+		}
+	}
+
+	public boolean isOwedItems(UUID uuid) {
+		return owedItems.containsKey(uuid);
 	}
 
 

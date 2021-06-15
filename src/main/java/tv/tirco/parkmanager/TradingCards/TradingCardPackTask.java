@@ -11,8 +11,11 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
+
 import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.ParkManager;
+import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.playerdata.PlayerData;
 import tv.tirco.parkmanager.util.MessageHandler;
 import tv.tirco.parkmanager.util.Util;
@@ -27,8 +30,6 @@ public class TradingCardPackTask {
 	TradingCard cardTwo;
 	TradingCard cardThree;
 	
-	List<ItemStack> counterItems;
-	
 	Inventory inv;
 
 	int task;
@@ -40,18 +41,26 @@ public class TradingCardPackTask {
 		this.plugin = plugin;
 		this.player = player;
 		this.pData = pData;
+		
+		double modifier = 0.000;
+		if(player.hasPotionEffect(PotionEffectType.LUCK)) {
+			modifier = -0.01 * (player.getPotionEffect(PotionEffectType.LUCK).getAmplifier() + 1);
+		} else if(player.hasPotionEffect(PotionEffectType.UNLUCK)) {
+			modifier = 0.01 * (player.getPotionEffect(PotionEffectType.UNLUCK).getAmplifier() + 1);
+		}
+		
+		
 		pData.setIsOpeningPack(true);
-		 cardOne = TradingCardManager.getInstance().drawTradingCard();
-		 cardTwo = TradingCardManager.getInstance().drawTradingCard();
-		 cardThree = TradingCardManager.getInstance().drawTradingCard();
+		 cardOne = TradingCardManager.getInstance().drawTradingCard(modifier);
+		 cardTwo = TradingCardManager.getInstance().drawTradingCard(modifier);
+		 cardThree = TradingCardManager.getInstance().drawTradingCard(modifier);
 		 
 		MessageHandler.getInstance().debug("Starting opening of CardPack for player" + player.getName());
+		MessageHandler.getInstance().debug("They have a picking bonus of " + modifier);
 		MessageHandler.getInstance().debug("Player will get " + 
 		cardOne.getID() + ", "+
 		cardTwo.getID() + ", "+
 		cardThree.getID() + ". ");
-	
-		counterItems = new ArrayList<ItemStack>();
 		
 		player.openInventory(getInventory());
 		
@@ -75,7 +84,7 @@ public class TradingCardPackTask {
 				
 				
 				if(!player.isOnline()) {
-					Finish();
+					Finish(true);
 				}
 				
 				loopCounter ++;
@@ -104,8 +113,7 @@ public class TradingCardPackTask {
 						if(shiny) {
 							player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.3f, 2);
 						}
-						counterItems.clear();
-						Finish();
+						Finish(false);
 					} 
 				} else {
 						player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 0.2f, 2.0f);
@@ -115,15 +123,30 @@ public class TradingCardPackTask {
  		}, 8l, 8l);
 	}
 	
-	private void Finish() {
+	private void Finish(boolean early) {
 		pData.setIsOpeningPack(false);
 		Bukkit.getScheduler().cancelTask(task);
-		if(!player.isOnline()) {
+		if(early) {
 			MessageHandler.getInstance().log("Player " + player.getName() + " disconnected while opening card pack.");
 			MessageHandler.getInstance().log("Player should have  gotten " + 
 					cardOne.getID() + ", "+
 					cardTwo.getID() + ", "+
 					cardThree.getID() + ". ");
+			
+			inv.clear();
+			List<ItemStack> owedItems = new ArrayList<ItemStack>();
+			boolean shiny = TradingCardConfig.getInstance().getShinyRandom();
+			owedItems.add(cardOne.buildCardItem(TradingCardCondition.UNKNOWN, false, shiny));
+			shiny = TradingCardConfig.getInstance().getShinyRandom();
+			owedItems.add(cardTwo.buildCardItem(TradingCardCondition.UNKNOWN, false, shiny));
+			shiny = TradingCardConfig.getInstance().getShinyRandom();
+			owedItems.add(cardThree.buildCardItem(TradingCardCondition.UNKNOWN, false, shiny));
+			
+			if(!owedItems.isEmpty()) { //Will probably never be empty.
+				MessageHandler.getInstance().log("If they log back in before the server reboots, they will get their cards.");
+				DataStorage.getInstance().addPlayerOwedItems(player.getUniqueId(),owedItems);
+			}
+			
 		}
 	}
 	
@@ -134,9 +157,6 @@ public class TradingCardPackTask {
 		item.setItemMeta(getItemMeta(item));
 		ItemStack itemTwo = item.clone();
 		ItemStack itemThree = item.clone();
-		counterItems.add(item);
-		counterItems.add(itemTwo);
-		counterItems.add(itemThree);
 		inv.setItem(1, item);
 		inv.setItem(2, itemTwo);
 		inv.setItem(3, itemThree);

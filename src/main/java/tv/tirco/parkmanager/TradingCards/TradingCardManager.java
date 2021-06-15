@@ -304,7 +304,11 @@ public class TradingCardManager {
 	}
 	
 	public TradingCard drawTradingCard() {
-		TradingCardRarity rarity = TradingCardConfig.getInstance().getRandomRarity();
+		return drawTradingCard(0.00);
+	}
+	
+	public TradingCard drawTradingCard(double modifier) {
+		TradingCardRarity rarity = TradingCardConfig.getInstance().getRandomRarity(modifier);
 		return drawTradingCard(rarity);
 	}
 	
@@ -329,17 +333,17 @@ public class TradingCardManager {
 	}
 	
 	public ItemStack getCardItemFromCode(String cardCode) {
-		MessageHandler.getInstance().debug("Loading card from code - " + cardCode);
+		//MessageHandler.getInstance().debug("Loading card from code - " + cardCode);
 		String[] cardString = cardCode.split(":");
 		if(cardString.length < 4) {
-			MessageHandler.getInstance().debug("Error when loading card from id - not enough arguments.");
+			MessageHandler.getInstance().log("Error when loading card from id - not enough arguments. " + cardCode);
 			return null;
 		}
 		int cardID = 0;
 		try {
 			cardID = Integer.parseInt(cardString[0]);
 		} catch(NumberFormatException ex) {
-			MessageHandler.getInstance().debug("Error when loading card from id - ID was not a number.");
+			MessageHandler.getInstance().log("Error when loading card from id - ID was not a number. " + cardCode);
 			return null;
 		}
 		
@@ -347,9 +351,9 @@ public class TradingCardManager {
 		Boolean signed = cardString[2].equals("1");
 		TradingCardCondition cond = TradingCardCondition.getCondFromCode(cardString[3]);
 		//TradingCardRarity rarity = TradingCardRarity.getRarityFromCode(cardString[4]);
-		MessageHandler.getInstance().debug("Shiny: " + shiny);
-		MessageHandler.getInstance().debug("Signed: " + signed);
-		MessageHandler.getInstance().debug("Condition: " + cond.toString());
+		//MessageHandler.getInstance().debug("Shiny: " + shiny);
+		//MessageHandler.getInstance().debug("Signed: " + signed);
+		//MessageHandler.getInstance().debug("Condition: " + cond.toString());
 		
 		TradingCard card = getCardByID(cardID);
 		if(card == null) {

@@ -1,32 +1,44 @@
 settings:
-    shinychance: 0.05 #chance of card being enchanted.
+    shinychance: 0.075
     rarity:
         chances:
-            COMMON: 0.4
-            UNCOMMON: 0.34
+            COMMON: 0.35
+            UNCOMMON: 0.3
             RARE: 0.2
-            EPIC: 0.05
-            LEGENDARY: 0.01
+            EPIC: 0.1
+            LEGENDARY: 0.05
     condition:
         chances:
-            POOR: 0.15
-            FAIR: 0.25
-            GOOD: 0.369
-            VERY_GOOD: 0.1
-            EXCELLENT: 0.08
-            NEAR_MINT: 0.04
-            MINT: 0.01
-            GEM_MINT: 0.001
-        chances: ##Should add up to 1.00 if not, remaining points will be added to POOR, excess points will be removed from poor and up. Basically it checks if it's GEM first, then MINT, etc.
-            POOR: 0.15 #15/100 
-            FAIR: 0.25 #25/100 1/4 
-            GOOD: 0.369 #369/1000 ~ 37/100 Default value.
-            VERY_GOOD: 0.10 #10/100 - 1/10
-            EXCELLENT: 0.08 #8/100 - 2/25
-            NEAR_MINT: 0.04 #4/100 - 1/25
-            MINT: 0.01 #1/100
-            GEM_MINT: 0.001 #1/1000
-signatures: {}
+            POOR: 0.1
+            FAIR: 0.2
+            GOOD: 0.3
+            VERY_GOOD: 0.2
+            EXCELLENT: 0.1
+            NEAR_MINT: 0.05
+            MINT: 0.045
+            GEM_MINT: 0.005
+signatures:
+    e0192f77-2fff-4887-aede-b1bcec23bb62: "&7Fine, I'll sign it. -&6Tirco&7."
+    765acb40-1a23-45fd-9b60-a91e9669bb39: '&eThis card needed more yellow! -&6YaboiTrademark.'
+    15fa9242-e990-4ae1-96ae-0b4348e7ee81: '&7Eat the rich! -&6__Provalitee_.'
+    9b512419-553a-47b3-8dd2-51e0a5db9d42: '&7No comment. -&6SkaiWolfe_.'
+    d20f5371-94dd-4af0-9949-4be4f96ce289: '&7No comment. -&6StephCury.'
+    93fd3a2c-373d-4deb-aeb4-634acf3d611e: '&7No comment. -&6WhiteWalz.'
+    34ce6605-0f6c-408a-94e6-5a226796edb3: '&7No comment. -&6Ty60586.'
+    ddec5c87-e8e0-4bf1-ace6-9af26ac27dbb: '&7No comment. -&6Rezhz.'
+    e30f1565-2534-49c5-9444-6d874f9b332a: '&6Without &5Darkness&6, there can be no &fLight&6. &7-&6Jakk.'
+    95e0f333-5d63-4734-b2f9-316319a8a044: '&7No comment. -&6Miluiel.'
+    c91a7e94-a52d-4b1c-8021-2d12a7a74f18: '&7Hi stinky! -&6DJP130.'
+    283502a2-4134-454c-bb47-39c3875b0dd4: '&7No comment. -&6SkyNetCloud.'
+    cb58ebb9-dc48-40c2-8926-6db184a27178: '&2#Snorry&6Not&2Snorry&7. -&6SnorryPotter.'
+    4d6ffd5a-b963-4688-ab8d-1163345d8161: '&7Haud yer weesht, take this. -&6CelticPixie.'
+    f62460d3-279d-4ab9-8950-49846dbfbf53: '&7No comment. -&6Xyaafol.'
+    0871db2b-c816-4f61-84fc-4de03b19425c: '&bWarm hugs &c<3 &7-&6HeartKay.'
+    f8fa4e57-971d-4fe5-a642-5668de6c3755: '&7No comment. -&6iBjqrn.'
+    465b3ed8-5ad9-4be5-84b6-ab4e30066bc1: '&7Cadaverific B) -&6DerpyCatman.'
+    7ed96df3-4951-4b57-bec0-f9fa1c2e131e: '&ecooofffeeee - brb &7-&6king_cobrex.'
+    245d2f30-61fb-4840-9cd3-298b3920f4a4: '&7What, you got me - you muppet! -&6cobrex.'
+    00000000-0000-0000-0009-01f5f84e8f5b: '&7Consider yourself lucky! -&6b_kingcobrex.'
 cards:
     '1':
         type: STAFFMEMBER
@@ -34,145 +46,169 @@ cards:
         available: true
         modeldata: 7
         name: '&fYaBoiTrademark'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eIncredibly kind.'
+        - '&eShe loves bumblebees'
+        - '&eand the color yellow.'
+        signer: 765acb40-1a23-45fd-9b60-a91e9669bb39
     '2':
         type: STAFFMEMBER
         rarity: UNCOMMON
         available: true
         modeldata: 15
         name: '&f__Provalitee_'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eA recipient of numerous awards'
+        - '&ein the field of photography.'
+        signer: 15fa9242-e990-4ae1-96ae-0b4348e7ee81
     '3':
         type: STAFFMEMBER
         rarity: UNCOMMON
         available: true
         modeldata: 17
         name: '&fSkaiWolfe'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eUnbelievably accident prone and has'
+        - '&ebroken 17 bones. Also one of our'
+        - '&eincredible building talents!'
+        signer: 9b512419-553a-47b3-8dd2-51e0a5db9d42
     '4':
         type: STAFFMEMBER
         rarity: UNCOMMON
         available: true
         modeldata: 19
         name: '&fStephCury'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eNa na na na na na na na na'
+        - '&ena na na na na na na Superman!'
+        signer: d20f5371-94dd-4af0-9949-4be4f96ce289
     '5':
         type: STAFFMEMBER
         rarity: UNCOMMON
         available: true
         modeldata: 22
         name: '&fWhiteWalz'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eSome nerd who likes programming,'
+        - '&emath and chemistry. &c<3'
+        signer: 93fd3a2c-373d-4deb-aeb4-634acf3d611e
     '6':
         type: STAFFMEMBER
         rarity: UNCOMMON
         available: true
         modeldata: 21
-        name: '&fTy60686'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        name: '&fTy60586'
+        lore:
+        - '&eThis dude builds battle bots!'
+        - '&eHow sick is that? Pretty jazzy on'
+        - '&ethe saxophone too.'
+        signer: 34ce6605-0f6c-408a-94e6-5a226796edb3
     '7':
         type: STAFFMEMBER
         rarity: UNCOMMON
         available: true
         modeldata: 16
         name: '&fRezhz'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&e- Cheese.'
+        - '&a- Cheese?'
+        - '&e- Yupp, Cheese.'
+        signer: ddec5c87-e8e0-4bf1-ace6-9af26ac27dbb
     '8':
         type: STAFFMEMBER
         rarity: UNCOMMON
         available: true
         modeldata: 20
         name: '&fTheRealJakk'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eGot his first college degree before'
+        - '&egraduating high school. Also an'
+        - '&earchery enthusiast. Still has not'
+        - '&elearned a trade.'
+        signer: e30f1565-2534-49c5-9444-6d874f9b332a
     '9':
         type: STAFFMEMBER
         rarity: RARE
         available: true
         modeldata: 6
         name: '&fTirco'
-        lore: 
-            - "&aNeeds filling."
-        signer: "e0192f77-2fff-4887-aede-b1bcec23bb62"
+        lore:
+        - '&eThe developer of &aPark-Age&e!'
+        - '&eHe''s a very cool and funny person!'
+        - '&eAnd... Clearly he made these cards.'
+        signer: e0192f77-2fff-4887-aede-b1bcec23bb62
     '10':
         type: STAFFMEMBER
         rarity: RARE
         available: true
         modeldata: 14
         name: '&fMiluiel'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eA wonderful baker, who'
+        - '&ewould love to share her'
+        - '&ecreations with the world.'
+        signer: 95e0f333-5d63-4734-b2f9-316319a8a044
     '11':
         type: STAFFMEMBER
         rarity: RARE
         available: true
         modeldata: 10
         name: '&fDJP130'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eThe stinkiest staff member.'
+        signer: c91a7e94-a52d-4b1c-8021-2d12a7a74f18
     '12':
         type: STAFFMEMBER
         rarity: RARE
         available: true
         modeldata: 18
         name: '&fSkyNetCloud'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eOur website engineer!'
+        signer: 283502a2-4134-454c-bb47-39c3875b0dd4
     '13':
         type: STAFFMEMBER
         rarity: RARE
         available: true
         modeldata: 24
         name: '&fSnorryPotter'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eLoves all things water'
+        - '&eespecially Scuba Diving'
+        - '&eand the aquatic update!'
+        signer: cb58ebb9-dc48-40c2-8926-6db184a27178
     '14':
         type: STAFFMEMBER
         rarity: EPIC
         available: true
         modeldata: 8
         name: '&fCelticPixie'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eThe fiery Scottish Admin. A great'
+        - '&ebuilder, but loves to chill with a'
+        - '&enice cool Irn Bru.'
+        signer: 4d6ffd5a-b963-4688-ab8d-1163345d8161
     '15':
         type: STAFFMEMBER
         rarity: EPIC
         available: true
         modeldata: 23
         name: '&fXyaafol'
-        lore: 
-            - "&aNeeds filling."
-        signer: NONE
+        lore:
+        - '&eAlways logical, emotions'
+        - '&erarely get in the way of this'
+        - '&ecool-headed Admin.'
+        signer: f62460d3-279d-4ab9-8950-49846dbfbf53
     '16':
         type: MONSTER
         rarity: LEGENDARY
         available: true
         modeldata: 11
         name: '&dEnder Dragon'
-        lore: 
-            - "&eThe final boss of the game!"
-            - "&eIt is a true achievement"
-            - "&eto defeat it!"
+        lore:
+        - '&eThe final boss of the game!'
+        - '&eIt is a true achievement'
+        - '&eto defeat it!'
         signer: NONE
     '17':
         type: ANIMAL
@@ -180,8 +216,8 @@ cards:
         available: true
         modeldata: 25
         name: '&fBat'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '18':
         type: ANIMAL
@@ -189,8 +225,8 @@ cards:
         available: true
         modeldata: 26
         name: '&fCat'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '19':
         type: ANIMAL
@@ -198,8 +234,8 @@ cards:
         available: true
         modeldata: 27
         name: '&fChicken'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '20':
         type: ANIMAL
@@ -207,8 +243,8 @@ cards:
         available: true
         modeldata: 28
         name: '&fCow'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '21':
         type: ANIMAL
@@ -216,8 +252,8 @@ cards:
         available: true
         modeldata: 29
         name: '&fPig'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '22':
         type: MONSTER
@@ -225,8 +261,8 @@ cards:
         available: true
         modeldata: 30
         name: '&fPiglin'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '23':
         type: ANIMAL
@@ -234,8 +270,8 @@ cards:
         available: true
         modeldata: 31
         name: '&fPufferfish'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '24':
         type: ANIMAL
@@ -243,8 +279,8 @@ cards:
         available: true
         modeldata: 32
         name: '&fRabbit'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '25':
         type: ANIMAL
@@ -252,8 +288,8 @@ cards:
         available: true
         modeldata: 33
         name: '&fSheep'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '26':
         type: ANIMAL
@@ -261,8 +297,8 @@ cards:
         available: true
         modeldata: 34
         name: '&fSquid'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '27':
         type: ANIMAL
@@ -270,8 +306,8 @@ cards:
         available: true
         modeldata: 35
         name: '&fTurtle'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '28':
         type: ANIMAL
@@ -279,8 +315,8 @@ cards:
         available: true
         modeldata: 36
         name: '&fVillager'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '29':
         type: ANIMAL
@@ -288,8 +324,8 @@ cards:
         available: true
         modeldata: 37
         name: '&fBee'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '30':
         type: STAFFMEMBER
@@ -297,35 +333,38 @@ cards:
         available: true
         modeldata: 12
         name: '&fHeartKay'
-        lore: 
-            - "&eNeeds filling!"
-        signer: NONE
+        lore:
+        - '&eOur pink loving Head Builder!'
+        - '&eShe loves to travel with friends'
+        - '&eand is always looking for her next project!'
+        signer: 0871db2b-c816-4f61-84fc-4de03b19425c
     '31':
         type: STAFFMEMBER
         rarity: UNCOMMON
         available: true
         modeldata: 13
         name: '&fiBjqrn'
-        lore: 
-            - "&eNeeds filling!"
-        signer: NONE
+        lore:
+        - '&eNeeds filling!'
+        signer: f8fa4e57-971d-4fe5-a642-5668de6c3755
     '32':
         type: STAFFMEMBER
         rarity: UNCOMMON
         available: true
         modeldata: 9
         name: '&fDerpyCatman'
-        lore: 
-            - "&eNeeds filling!"
-        signer: NONE
+        lore:
+        - '&eThe Pope of the'
+        - '&eesteemed Church of Wheat!'
+        signer: 465b3ed8-5ad9-4be5-84b6-ab4e30066bc1
     '33':
         type: ANIMAL
         rarity: COMMON
         available: true
         modeldata: 38
         name: '&fDolphin'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '34':
         type: MONSTER
@@ -333,8 +372,8 @@ cards:
         available: true
         modeldata: 39
         name: '&fEnderman'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '35':
         type: ANIMAL
@@ -342,8 +381,8 @@ cards:
         available: true
         modeldata: 40
         name: '&fIron Golem'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '36':
         type: MONSTER
@@ -351,8 +390,8 @@ cards:
         available: true
         modeldata: 41
         name: '&fBlaze'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '37':
         type: MONSTER
@@ -360,8 +399,8 @@ cards:
         available: true
         modeldata: 42
         name: '&fCreeper'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '38':
         type: MONSTER
@@ -369,8 +408,8 @@ cards:
         available: true
         modeldata: 43
         name: '&fDrowned'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '39':
         type: MONSTER
@@ -378,8 +417,8 @@ cards:
         available: true
         modeldata: 44
         name: '&fHoglin'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '40':
         type: MONSTER
@@ -387,8 +426,8 @@ cards:
         available: true
         modeldata: 45
         name: '&fHusk'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '41':
         type: MONSTER
@@ -396,8 +435,8 @@ cards:
         available: true
         modeldata: 46
         name: '&fSkeleton'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '42':
         type: MONSTER
@@ -405,8 +444,8 @@ cards:
         available: true
         modeldata: 47
         name: '&fStray'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '43':
         type: MONSTER
@@ -414,8 +453,8 @@ cards:
         available: true
         modeldata: 48
         name: '&fZombie'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '44':
         type: MONSTER
@@ -423,8 +462,8 @@ cards:
         available: true
         modeldata: 49
         name: '&fGuardian'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '45':
         type: ANIMAL
@@ -432,8 +471,8 @@ cards:
         available: true
         modeldata: 50
         name: '&fDonkey'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '46':
         type: ANIMAL
@@ -441,8 +480,8 @@ cards:
         available: true
         modeldata: 51
         name: '&fFox'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '47':
         type: ANIMAL
@@ -450,8 +489,8 @@ cards:
         available: true
         modeldata: 52
         name: '&fOcelot'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '48':
         type: ANIMAL
@@ -459,8 +498,8 @@ cards:
         available: true
         modeldata: 53
         name: '&fPolar Bear'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '49':
         type: ANIMAL
@@ -468,8 +507,8 @@ cards:
         available: true
         modeldata: 54
         name: '&fLlama'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '50':
         type: ANIMAL
@@ -477,8 +516,8 @@ cards:
         available: true
         modeldata: 55
         name: '&fWolf'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '51':
         type: MONSTER
@@ -486,8 +525,8 @@ cards:
         available: true
         modeldata: 56
         name: '&fGhast'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '52':
         type: ANIMAL
@@ -495,8 +534,8 @@ cards:
         available: true
         modeldata: 57
         name: '&fMooshroom'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '53':
         type: ANIMAL
@@ -504,8 +543,8 @@ cards:
         available: true
         modeldata: 58
         name: '&fPanda'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '54':
         type: MONSTER
@@ -513,8 +552,8 @@ cards:
         available: true
         modeldata: 59
         name: '&fPiglin Brute'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '55':
         type: MONSTER
@@ -522,8 +561,8 @@ cards:
         available: true
         modeldata: 60
         name: '&fVindicator'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '56':
         type: MONSTER
@@ -531,8 +570,8 @@ cards:
         available: true
         modeldata: 61
         name: '&fWitch'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '57':
         type: ANIMAL
@@ -540,8 +579,8 @@ cards:
         available: true
         modeldata: 62
         name: '&fSkeleton Horse'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '58':
         type: ANIMAL
@@ -549,8 +588,8 @@ cards:
         available: true
         modeldata: 63
         name: '&fWandering Trader'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '59':
         type: MONSTER
@@ -558,8 +597,8 @@ cards:
         available: true
         modeldata: 64
         name: '&fElder Guardian'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '60':
         type: MONSTER
@@ -567,8 +606,8 @@ cards:
         available: true
         modeldata: 65
         name: '&fRavager'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '61':
         type: MONSTER
@@ -576,8 +615,8 @@ cards:
         available: true
         modeldata: 66
         name: '&fVex'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '62':
         type: MONSTER
@@ -585,8 +624,8 @@ cards:
         available: true
         modeldata: 67
         name: '&fWither Skeleton'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '63':
         type: MONSTER
@@ -594,8 +633,8 @@ cards:
         available: true
         modeldata: 68
         name: '&fEvoker'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '64':
         type: MONSTER
@@ -603,8 +642,8 @@ cards:
         available: true
         modeldata: 69
         name: '&fWither'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '65':
         type: MONSTER
@@ -612,8 +651,8 @@ cards:
         available: true
         modeldata: 70
         name: '&fGiant'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
     '66':
         type: ANIMAL
@@ -621,6 +660,42 @@ cards:
         available: true
         modeldata: 71
         name: '&fFlying Pig'
-        lore: 
-            - "&eNeeds filling!"
+        lore:
+        - '&eNeeds filling!'
         signer: NONE
+    '67':
+        type: STAFFMEMBER
+        rarity: EPIC
+        available: true
+        modeldata: 72
+        name: '&fking_cobrex'
+        lore:
+        - '&eThe most revered and'
+        - '&eregal of all the Cobrex-'
+        - '&eversions. He could use'
+        - '&ea visit to Classy Carl''s though...'
+        signer: 7ed96df3-4951-4b57-bec0-f9fa1c2e131e
+    '68':
+        type: STAFFMEMBER
+        rarity: EPIC
+        available: true
+        modeldata: 73
+        name: '&fcobrex'
+        lore:
+        - '&eThe Industrial version'
+        - '&eof Cobrex! Why is'
+        - '&ethis the one with a Crown?'
+        signer: 245d2f30-61fb-4840-9cd3-298b3920f4a4
+    '69':
+        type: STAFFMEMBER
+        rarity: LEGENDARY
+        available: true
+        modeldata: 74
+        name: '&fb_kingcobrex'
+        lore:
+        - '&eThe bedrock variety of'
+        - '&eCobrex! Mainly seen when'
+        - '&ecross-platform compatability'
+        - '&eneeds testing. Good luck on'
+        - '&egetting a signature from this one.'
+        signer: 00000000-0000-0000-0009-01f5f84e8f5b

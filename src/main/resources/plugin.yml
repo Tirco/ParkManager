@@ -7,6 +7,7 @@ api-version: 1.16
 
 main: ${mainClass}
 depend: [Train_Carts,PlaceholderAPI,Citizens]
+softdepend: [ccRides]
 
 commands:
     example:
@@ -72,7 +73,7 @@ commands:
     tradingcardsign:
         description: creates and modifies aliases.
         aliases: [signcard]
-        permission: parkmanager.tradingcard.admin
+        permission: parkmanager.tradingcard.sign
         usage: /<command>
     tradingcardbinder:
         description: Opens your binder.
