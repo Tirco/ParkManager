@@ -1,17 +1,10 @@
 package tv.tirco.parkmanager.NPC;
 
-import java.util.List;
-
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.google.common.collect.ImmutableList;
-
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.Trait;
@@ -19,9 +12,6 @@ import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import tv.tirco.parkmanager.ParkManager;
-import tv.tirco.parkmanager.TradingCards.TradingCardCondition;
-import tv.tirco.parkmanager.TradingCards.TradingCardConfig;
-import tv.tirco.parkmanager.TradingCards.TradingCardManager;
 import tv.tirco.parkmanager.util.MessageHandler;
 import tv.tirco.parkmanager.util.Util;
 
@@ -75,8 +65,9 @@ public class FortuneTellerNPC extends Trait{
             	sendMessage(npc,player,"&eCome back when you can pay me!");
             	return;
             }
-            
-            sendMessage(npc, player, String.format("I have taken %s from your wallet. Let's get started!", econ.format(r.amount)));
+            player.sendMessage(" ");
+            sendMessage(npc, player, String.format("I have taken %s from your wallet.", econ.format(r.amount)));
+            sendMessage(npc, player, "&eNow let's see what the spirits say...");
             player.sendMessage(" ");
             int result = Util.getRandom().nextInt(10); //0, 1, 2, 3, 4, 5, 6, 7, 8, 9
             switch(result) {
@@ -91,7 +82,7 @@ public class FortuneTellerNPC extends Trait{
             case 4:
             	//Level 2
             	player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, 60*20*30, 1));
-            	sendMessage(npc, player, "&2The spirits are very pleased today! They have blessed you with great fortune!");
+            	sendMessage(npc, player, "&aThe spirits are very pleased today! They have blessed you with great fortune!");
             	return;
             case 5:
             	//Bad 2
