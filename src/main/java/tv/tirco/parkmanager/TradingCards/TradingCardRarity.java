@@ -47,17 +47,17 @@ public enum TradingCardRarity {
 	public double getBaseValue() {
 		switch(this) {
 		case COMMON:
-			return 1.0;
+			return 10.0;
 		case UNCOMMON:
-			return 5.0;
-		case RARE:
 			return 25.0;
+		case RARE:
+			return 50.0;
 		case EPIC:
 			return 100.0;
 		case LEGENDARY:
 			return 200.0;
 		default: 
-			return 1.0;
+			return 10.0;
 		}
 	}
 	/*

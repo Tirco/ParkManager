@@ -28,6 +28,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="//DESKTOP-JRH9JBK/Minecraft Waterfall Network/Server B - Park-Age 1333/plugins/ccRides-1.6.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Morten/git/ccRides-1.6.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -5,7 +5,13 @@ import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.NPC;
+import org.bukkit.entity.Player;
+import org.geysermc.connector.GeyserConnector;
+import org.geysermc.connector.network.session.GeyserSession;
 
+import com.viaversion.viaversion.api.Via;
+
+import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.config.Config;
 
 public class Util {
@@ -81,6 +87,33 @@ public class Util {
 	
 	public static boolean rightClickBlockAllowed(String name) {
 		return Config.getInstance().rightClickBlockAllowedWorlds().contains(name);
+	}
+
+	public static boolean isGeyser(Player player) {
+		if(ParkManager.geyserEnabled) {
+			GeyserConnector connector = GeyserConnector.getInstance();
+			if(connector != null) {
+				GeyserSession session = connector.getPlayerByUuid(player.getUniqueId());
+				if(session == null) {
+					return false;//geyserStatus = "Not a geyser player.";
+					
+				} else {
+					return true;
+					//geyserStatus = "Is a geyser player.";
+				}
+			}
+		} return false;
+	}
+
+	public static int getVersion(Player player) {
+		int versionID = 0;
+		try {
+			versionID = Via.getManager().getPlatform().getApi().getPlayerVersion(player.getUniqueId());
+		} catch (Exception ex) {
+			MessageHandler.getInstance().log("Exception while fetching API version of " + player.getName());
+			ex.printStackTrace();
+		}
+		return versionID;
 	}
 
 

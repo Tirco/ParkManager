@@ -33,7 +33,7 @@ public class DataStorage {
 		
 		if(inv == null) {
 			inv = Bukkit.createInventory(null, 45, ChatColor.translateAlternateColorCodes('&', "&6&lAvailable Rides"));
-			for(Ride r : DataStorage.getInstance().getRides()) {
+			for(Ride r : rides) {
 				inv.addItem(r.getIcon());
 			}
 			setRideMenu(inv);
@@ -48,17 +48,14 @@ public class DataStorage {
 	public void rebuildRideMenu() {
 		Inventory inv = rideMenu;
 		//RidesConfig.getInstance().saveRides();
-		this.rides.clear();
 		if(inv != null) {
 			for (HumanEntity viewer : new ArrayList<>(inv.getViewers())) {
 			    viewer.closeInventory();
 				viewer.sendMessage("We had to close this inventory as it is being reloaded.");
 			}
 		}
-		this.rideMenu = null;
-		RidesConfig.getInstance().loadKeys();
+		inv.clear();
 		inv = getRideInventory();
-		
 	}
 	
 	public void setRideMenu(Inventory menu) {

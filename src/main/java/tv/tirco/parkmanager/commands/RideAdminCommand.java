@@ -79,7 +79,8 @@ public class RideAdminCommand implements CommandExecutor,TabCompleter{
 					return true;
 				} else {
 					ride.setIcon(item);
-					player.sendMessage("Item added. Server will need a reboot before it is enabled.");
+					DataStorage.getInstance().rebuildRideMenu();
+					player.sendMessage("Item added. RideMenu is getting an update!");
 					return true;
 				}
 			} else {

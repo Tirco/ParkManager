@@ -33,11 +33,13 @@ import tv.tirco.parkmanager.commands.ExitRideCommand;
 import tv.tirco.parkmanager.commands.GadgetsCommand;
 import tv.tirco.parkmanager.commands.HideItemInfoCommand;
 import tv.tirco.parkmanager.commands.ModelDataCommand;
+import tv.tirco.parkmanager.commands.ParkmanagerCommand;
 import tv.tirco.parkmanager.commands.RandomrideCommand;
 import tv.tirco.parkmanager.commands.ResourcePackCommand;
 import tv.tirco.parkmanager.commands.RideAdminCommand;
 import tv.tirco.parkmanager.commands.RidesCommand;
 import tv.tirco.parkmanager.commands.SitCommand;
+import tv.tirco.parkmanager.commands.SpawnCommand;
 import tv.tirco.parkmanager.config.AliasesConfig;
 import tv.tirco.parkmanager.config.Config;
 import tv.tirco.parkmanager.config.RidesConfig;
@@ -76,6 +78,8 @@ public class ParkManager extends JavaPlugin {
 	public static ccRidesPlugin ccRides;
 	public static boolean ccRidesEnabled = false;
 	
+	public static boolean geyserEnabled = false;
+	
 	public boolean papi = false;
 	
 	public Location spawn;
@@ -92,6 +96,7 @@ public class ParkManager extends JavaPlugin {
 	
 	//Economy
 	private static Economy econ = null;
+
 
 	@Override
     public void onEnable() {
@@ -144,6 +149,8 @@ public class ParkManager extends JavaPlugin {
         getCommand("tradingcardevaluate").setExecutor(new TradingCardEvaluateCommand());
         getCommand("tradingcardsign").setExecutor(new TradingCardSignCommand());
         getCommand("tradingcardbinder").setExecutor(new TradingCardBinderCommand());
+        getCommand("spawn").setExecutor(new SpawnCommand());
+        getCommand("parkmanager").setExecutor(new ParkmanagerCommand());
         
         MessageHandler.getInstance().log("Loading database...");
         db = DatabaseManagerFactory.getDatabaseManager();
@@ -175,6 +182,14 @@ public class ParkManager extends JavaPlugin {
             ParkManager.ccRidesEnabled = true;
 		} else {
 			MessageHandler.getInstance().log("PlaceholderAPI not found... Ignoring");
+		}
+        
+        //PAPI
+        if(Bukkit.getPluginManager().getPlugin("Geyser") != null){
+        	MessageHandler.getInstance().log("Hooking into Geyser...");
+            ParkManager.geyserEnabled = true;
+		} else {
+			MessageHandler.getInstance().log("Geyser not found... Ignoring");
 		}
         
         MessageHandler.getInstance().log("Setting up EventListeners...");

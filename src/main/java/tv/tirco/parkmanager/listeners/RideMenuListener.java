@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.geysermc.connector.common.ChatColor;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import tv.tirco.parkmanager.storage.DataStorage;
@@ -45,8 +46,13 @@ public class RideMenuListener implements Listener{
 					String identifier = nbti.getString("RideIdentifier");
 					Ride ride = DataStorage.getInstance().getRide(identifier);
 					if(ride != null) {
-						player.performCommand("warp " + ride.getWarp());
-						player.closeInventory();
+						if(ride.isEnabled()) {
+							player.performCommand("warp " + ride.getWarp());
+							player.closeInventory();
+						} else {
+							player.sendMessage(ChatColor.RED + "That ride is currently disabled.");
+							player.closeInventory();
+						}
 					}
 				}
 			}

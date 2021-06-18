@@ -55,11 +55,11 @@ public class Ride {
 		this.hasAdvancement = hasAdvancement;
 		this.changed = changed;
 		this.enabled = enabled;
-		buildIcon(material, modeldata);
+		this.icon = buildIcon(material, modeldata);
 	}
 	
 	
-	 private void buildIcon(Material mat, int modeldata) {
+	public ItemStack buildIcon(Material mat, int modeldata) {
 			if(mat == null || mat.equals(Material.AIR)) {
 				mat = Material.MINECART;
 			}
@@ -82,7 +82,7 @@ public class Ride {
 			meta.setLore(LoreList);
 			item.setItemMeta(meta);
 
-			this.icon = item;
+			return icon;
 	}
 
 
@@ -255,12 +255,20 @@ public class Ride {
 
 	
 	public void setIcon(ItemStack icon) {
-		this.icon = icon;
+		ItemMeta meta = icon.getItemMeta();
+		int modelData = 0;
+		if(meta.hasCustomModelData()) modelData = meta.getCustomModelData();
+		this.icon = buildIcon(icon.getType(), modelData);
 		this.changed = true;
 	}
 	
 	public ItemStack getIcon() {
 		return icon;
+	}
+
+
+	public boolean isEnabled() {
+		return this.enabled;
 	}
 	
 	

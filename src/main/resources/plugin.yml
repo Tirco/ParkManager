@@ -7,7 +7,7 @@ api-version: 1.16
 
 main: ${mainClass}
 depend: [Train_Carts,PlaceholderAPI,Citizens]
-softdepend: [ccRides]
+softdepend: [ccRides, Geyser]
 
 commands:
     example:
@@ -79,6 +79,16 @@ commands:
         description: Opens your binder.
         aliases: [binder,cardbinder]
         permission: parkmanager.tradingcard.binder
+        usage: /<command>
+    spawn:
+        description: Takes you to spawn.
+        permission: parkmanager.spawn
+        aliases: []
+        usage: /<command>
+    parkmanager:
+        description: Opens your binder.
+        aliases: []
+        permission: parkmanager.admin
         usage: /<command>
 
 permissions: {}
