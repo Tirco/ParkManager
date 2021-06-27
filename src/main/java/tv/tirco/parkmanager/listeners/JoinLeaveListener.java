@@ -56,6 +56,7 @@ public class JoinLeaveListener implements Listener{
 			if(!stillOwedItems.isEmpty()) {
 				DataStorage.getInstance().addPlayerOwedItems(uuid, stillOwedItems);
 				player.sendMessage(ChatColor.YELLOW + "We could not add all of your missing items to your inventory. There are still " + stillOwedItems.size() + " item(s) left.");
+				player.sendMessage(ChatColor.YELLOW + "Please use the command " + ChatColor.GREEN + "/oweditems " + ChatColor.YELLOW + "to reclaim them.");
 			}
 		}
 		

@@ -438,6 +438,27 @@ public class TradingCardManager {
 		return score;
 	}
 
-
+	public ItemStack getCardPackItem() {
+		ItemStack item = new ItemStack(Material.PAPER, 1);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Trading Card Pack");
+		List<String> lore = new ArrayList<String>();
+		lore.add(ChatColor.GREEN + "Card Pack");
+		lore.add("");
+		lore.add(ChatColor.YELLOW + "Open this pack to");
+		lore.add(ChatColor.YELLOW + "receive 3 random");
+		lore.add(ChatColor.YELLOW + "Trading Cards.");
+		lore.add("");
+		lore.add(ChatColor.GRAY + "<Right-Click to Open>");
+		meta.setLore(lore);
+		meta.setCustomModelData(1);
+		item.setItemMeta(meta);
+		
+		NBTItem nbti = new NBTItem(item);
+		nbti.setBoolean("isCardPack", true);
+		
+		item = nbti.getItem();
+		return item;
+	}
 	
 }

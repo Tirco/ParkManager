@@ -18,23 +18,24 @@ settings:
             MINT: 0.045
             GEM_MINT: 0.005
 signatures:
-    e0192f77-2fff-4887-aede-b1bcec23bb62: "&7Fine, I'll sign it. -&6Tirco&7."
+    e0192f77-2fff-4887-aede-b1bcec23bb62: '&7Fine, I''ll sign it. -&6Tirco&7.'
     765acb40-1a23-45fd-9b60-a91e9669bb39: '&eThis card needed more yellow! -&6YaboiTrademark.'
     15fa9242-e990-4ae1-96ae-0b4348e7ee81: '&7Eat the rich! -&6__Provalitee_.'
-    9b512419-553a-47b3-8dd2-51e0a5db9d42: '&7No comment. -&6SkaiWolfe_.'
-    d20f5371-94dd-4af0-9949-4be4f96ce289: '&7No comment. -&6StephCury.'
-    93fd3a2c-373d-4deb-aeb4-634acf3d611e: '&7No comment. -&6WhiteWalz.'
-    34ce6605-0f6c-408a-94e6-5a226796edb3: '&7No comment. -&6Ty60586.'
-    ddec5c87-e8e0-4bf1-ace6-9af26ac27dbb: '&7No comment. -&6Rezhz.'
-    e30f1565-2534-49c5-9444-6d874f9b332a: '&6Without &5Darkness&6, there can be no &fLight&6. &7-&6Jakk.'
-    95e0f333-5d63-4734-b2f9-316319a8a044: '&7No comment. -&6Miluiel.'
+    9b512419-553a-47b3-8dd2-51e0a5db9d42: '&7Signed, -&6SkaiWolfe_.'
+    d20f5371-94dd-4af0-9949-4be4f96ce289: '&7Signed, -&6StephCury.'
+    93fd3a2c-373d-4deb-aeb4-634acf3d611e: '&7Signed, -&6WhiteWalz.'
+    34ce6605-0f6c-408a-94e6-5a226796edb3: '&7Signed, -&6Ty60586.'
+    ddec5c87-e8e0-4bf1-ace6-9af26ac27dbb: '&7Cheeese. -&6Rezhz.'
+    e30f1565-2534-49c5-9444-6d874f9b332a: '&6Without &5Darkness&6, there can be no &fLight&6.
+        &7-&6Jakk.'
+    95e0f333-5d63-4734-b2f9-316319a8a044: '&7Bone Apple Tea! -&6Miluiel.'
     c91a7e94-a52d-4b1c-8021-2d12a7a74f18: '&7Hi stinky! -&6DJP130.'
-    283502a2-4134-454c-bb47-39c3875b0dd4: '&7No comment. -&6SkyNetCloud.'
+    283502a2-4134-454c-bb47-39c3875b0dd4: '&7Signed, -&6SkyNetCloud.'
     cb58ebb9-dc48-40c2-8926-6db184a27178: '&2#Snorry&6Not&2Snorry&7. -&6SnorryPotter.'
     4d6ffd5a-b963-4688-ab8d-1163345d8161: '&7Haud yer weesht, take this. -&6CelticPixie.'
-    f62460d3-279d-4ab9-8950-49846dbfbf53: '&7No comment. -&6Xyaafol.'
+    f62460d3-279d-4ab9-8950-49846dbfbf53: '&7Signed, -&6Xyaafol.'
     0871db2b-c816-4f61-84fc-4de03b19425c: '&bWarm hugs &c<3 &7-&6HeartKay.'
-    f8fa4e57-971d-4fe5-a642-5668de6c3755: '&7No comment. -&6iBjqrn.'
+    f8fa4e57-971d-4fe5-a642-5668de6c3755: '&7Signed, -&6iBjqrn.'
     465b3ed8-5ad9-4be5-84b6-ab4e30066bc1: '&7Cadaverific B) -&6DerpyCatman.'
     7ed96df3-4951-4b57-bec0-f9fa1c2e131e: '&ecooofffeeee - brb &7-&6king_cobrex.'
     245d2f30-61fb-4840-9cd3-298b3920f4a4: '&7What, you got me - you muppet! -&6cobrex.'
@@ -174,8 +175,8 @@ cards:
         name: '&fSnorryPotter'
         lore:
         - '&eLoves all things water'
-        - '&eespecially Scuba Diving'
-        - '&eand the aquatic update!'
+        - '&eespecially scuba diving and'
+        - '&ethe aquatic update!'
         signer: cb58ebb9-dc48-40c2-8926-6db184a27178
     '14':
         type: STAFFMEMBER
@@ -217,7 +218,7 @@ cards:
         modeldata: 25
         name: '&fBat'
         lore:
-        - '&eNeeds filling!'
+        - "&ePlease don't eat me."
         signer: NONE
     '18':
         type: ANIMAL
@@ -226,7 +227,7 @@ cards:
         modeldata: 26
         name: '&fCat'
         lore:
-        - '&eNeeds filling!'
+        - '&eHow purrr-fect, you found the cat.'
         signer: NONE
     '19':
         type: ANIMAL
@@ -235,7 +236,9 @@ cards:
         modeldata: 27
         name: '&fChicken'
         lore:
-        - '&eNeeds filling!'
+        - '&eWhy does everybody'
+        - '&ealways ask me'
+        - '&ewhy I crossed the road?'
         signer: NONE
     '20':
         type: ANIMAL
@@ -244,7 +247,7 @@ cards:
         modeldata: 28
         name: '&fCow'
         lore:
-        - '&eNeeds filling!'
+        - '&eNothing to see here, keep it moo-ving.'
         signer: NONE
     '21':
         type: ANIMAL
@@ -253,7 +256,7 @@ cards:
         modeldata: 29
         name: '&fPig'
         lore:
-        - '&eNeeds filling!'
+        - '&eBringing home the bacon.'
         signer: NONE
     '22':
         type: MONSTER
@@ -262,7 +265,7 @@ cards:
         modeldata: 30
         name: '&fPiglin'
         lore:
-        - '&eNeeds filling!'
+        - '&eThe pig bang theory.'
         signer: NONE
     '23':
         type: ANIMAL
@@ -271,7 +274,7 @@ cards:
         modeldata: 31
         name: '&fPufferfish'
         lore:
-        - '&eNeeds filling!'
+        - '&eFish you were here.'
         signer: NONE
     '24':
         type: ANIMAL
@@ -280,7 +283,7 @@ cards:
         modeldata: 32
         name: '&fRabbit'
         lore:
-        - '&eNeeds filling!'
+        - '&eSpeedy boi.'
         signer: NONE
     '25':
         type: ANIMAL
@@ -289,7 +292,7 @@ cards:
         modeldata: 33
         name: '&fSheep'
         lore:
-        - '&eNeeds filling!'
+        - '&eLook before you sheep.'
         signer: NONE
     '26':
         type: ANIMAL
@@ -298,7 +301,7 @@ cards:
         modeldata: 34
         name: '&fSquid'
         lore:
-        - '&eNeeds filling!'
+        - '&eDont die like I squid.'
         signer: NONE
     '27':
         type: ANIMAL
@@ -307,7 +310,7 @@ cards:
         modeldata: 35
         name: '&fTurtle'
         lore:
-        - '&eNeeds filling!'
+        - '&eI am not a tortoise!'
         signer: NONE
     '28':
         type: ANIMAL
@@ -316,7 +319,7 @@ cards:
         modeldata: 36
         name: '&fVillager'
         lore:
-        - '&eNeeds filling!'
+        - '&etrading = STONKS!'
         signer: NONE
     '29':
         type: ANIMAL
@@ -325,7 +328,7 @@ cards:
         modeldata: 37
         name: '&fBee'
         lore:
-        - '&eNeeds filling!'
+        - '&eAlways busy!'
         signer: NONE
     '30':
         type: STAFFMEMBER
@@ -345,7 +348,7 @@ cards:
         modeldata: 13
         name: '&fiBjqrn'
         lore:
-        - '&eNeeds filling!'
+        - '&eEuh... &a- iBjorn, 2021'
         signer: f8fa4e57-971d-4fe5-a642-5668de6c3755
     '32':
         type: STAFFMEMBER
@@ -364,7 +367,7 @@ cards:
         modeldata: 38
         name: '&fDolphin'
         lore:
-        - '&eNeeds filling!'
+        - '&eBeauty is only fin deep!'
         signer: NONE
     '34':
         type: MONSTER
@@ -373,7 +376,8 @@ cards:
         modeldata: 39
         name: '&fEnderman'
         lore:
-        - '&eNeeds filling!'
+        - '&eNever start a'
+        - '&estaring contest.'
         signer: NONE
     '35':
         type: ANIMAL
@@ -382,7 +386,8 @@ cards:
         modeldata: 40
         name: '&fIron Golem'
         lore:
-        - '&eNeeds filling!'
+        - '&eAccidently hit me'
+        - '&eand thou shall be yeeted.'
         signer: NONE
     '36':
         type: MONSTER
@@ -391,7 +396,7 @@ cards:
         modeldata: 41
         name: '&fBlaze'
         lore:
-        - '&eNeeds filling!'
+        - "&eI've seen better blaze."
         signer: NONE
     '37':
         type: MONSTER
@@ -400,7 +405,7 @@ cards:
         modeldata: 42
         name: '&fCreeper'
         lore:
-        - '&eNeeds filling!'
+        - '&eCreeper goes BOOM!!'
         signer: NONE
     '38':
         type: MONSTER
@@ -409,7 +414,7 @@ cards:
         modeldata: 43
         name: '&fDrowned'
         lore:
-        - '&eNeeds filling!'
+        - '&eWe drowned love in a hopeless place.'
         signer: NONE
     '39':
         type: MONSTER
@@ -418,7 +423,7 @@ cards:
         modeldata: 44
         name: '&fHoglin'
         lore:
-        - '&eNeeds filling!'
+        - '&eBetween a hog and a hard place.'
         signer: NONE
     '40':
         type: MONSTER
@@ -427,7 +432,7 @@ cards:
         modeldata: 45
         name: '&fHusk'
         lore:
-        - '&eNeeds filling!'
+        - '&eFrom husk til dawn.'
         signer: NONE
     '41':
         type: MONSTER
@@ -436,7 +441,7 @@ cards:
         modeldata: 46
         name: '&fSkeleton'
         lore:
-        - '&eNeeds filling!'
+        - '&eBetter aim than a Storm Trooper!'
         signer: NONE
     '42':
         type: MONSTER
@@ -445,7 +450,7 @@ cards:
         modeldata: 47
         name: '&fStray'
         lore:
-        - '&eNeeds filling!'
+        - '&eDont stray away from me!'
         signer: NONE
     '43':
         type: MONSTER
@@ -454,7 +459,7 @@ cards:
         modeldata: 48
         name: '&fZombie'
         lore:
-        - '&eNeeds filling!'
+        - '&eBRAINZZZ!'
         signer: NONE
     '44':
         type: MONSTER
@@ -463,7 +468,7 @@ cards:
         modeldata: 49
         name: '&fGuardian'
         lore:
-        - '&eNeeds filling!'
+        - '&eI am most certainly not a guardian angel.'
         signer: NONE
     '45':
         type: ANIMAL
@@ -472,7 +477,7 @@ cards:
         modeldata: 50
         name: '&fDonkey'
         lore:
-        - '&eNeeds filling!'
+        - "&eDon't make an ass out of me!"
         signer: NONE
     '46':
         type: ANIMAL
@@ -481,7 +486,7 @@ cards:
         modeldata: 51
         name: '&fFox'
         lore:
-        - '&eNeeds filling!'
+        - '&eThinking outside the fox.'
         signer: NONE
     '47':
         type: ANIMAL
@@ -490,7 +495,7 @@ cards:
         modeldata: 52
         name: '&fOcelot'
         lore:
-        - '&eNeeds filling!'
+        - '&eThis cat is out the bag.'
         signer: NONE
     '48':
         type: ANIMAL
@@ -499,7 +504,7 @@ cards:
         modeldata: 53
         name: '&fPolar Bear'
         lore:
-        - '&eNeeds filling!'
+        - "&eI can't bear to be without you."
         signer: NONE
     '49':
         type: ANIMAL
@@ -508,7 +513,7 @@ cards:
         modeldata: 54
         name: '&fLlama'
         lore:
-        - '&eNeeds filling!'
+        - '&eIm a one-spit wonder.'
         signer: NONE
     '50':
         type: ANIMAL
@@ -517,7 +522,7 @@ cards:
         modeldata: 55
         name: '&fWolf'
         lore:
-        - '&eNeeds filling!'
+        - '&eMans best friend.'
         signer: NONE
     '51':
         type: MONSTER
@@ -526,7 +531,7 @@ cards:
         modeldata: 56
         name: '&fGhast'
         lore:
-        - '&eNeeds filling!'
+        - '&eAnd I thought I was the ghastly one!'
         signer: NONE
     '52':
         type: ANIMAL
@@ -535,7 +540,7 @@ cards:
         modeldata: 57
         name: '&fMooshroom'
         lore:
-        - '&eNeeds filling!'
+        - '&efor shroom the bell tolls.'
         signer: NONE
     '53':
         type: ANIMAL
@@ -544,7 +549,7 @@ cards:
         modeldata: 58
         name: '&fPanda'
         lore:
-        - '&eNeeds filling!'
+        - '&eIm utterly bamboozled.'
         signer: NONE
     '54':
         type: MONSTER
@@ -553,7 +558,7 @@ cards:
         modeldata: 59
         name: '&fPiglin Brute'
         lore:
-        - '&eNeeds filling!'
+        - '&eAsk your dentist about brute canal.'
         signer: NONE
     '55':
         type: MONSTER
@@ -562,7 +567,7 @@ cards:
         modeldata: 60
         name: '&fVindicator'
         lore:
-        - '&eNeeds filling!'
+        - '&eVindicate? Dont put the blame on me.'
         signer: NONE
     '56':
         type: MONSTER
@@ -571,7 +576,7 @@ cards:
         modeldata: 61
         name: '&fWitch'
         lore:
-        - '&eNeeds filling!'
+        - '&eWitch witch is Witch?'
         signer: NONE
     '57':
         type: ANIMAL
@@ -580,7 +585,7 @@ cards:
         modeldata: 62
         name: '&fSkeleton Horse'
         lore:
-        - '&eNeeds filling!'
+        - '&eIve got a bone to pick with you.'
         signer: NONE
     '58':
         type: ANIMAL
@@ -589,7 +594,7 @@ cards:
         modeldata: 63
         name: '&fWandering Trader'
         lore:
-        - '&eNeeds filling!'
+        - '&eTrade runner?'
         signer: NONE
     '59':
         type: MONSTER
@@ -598,7 +603,7 @@ cards:
         modeldata: 64
         name: '&fElder Guardian'
         lore:
-        - '&eNeeds filling!'
+        - '&eA guard man is good to find.'
         signer: NONE
     '60':
         type: MONSTER
@@ -607,7 +612,7 @@ cards:
         modeldata: 65
         name: '&fRavager'
         lore:
-        - '&eNeeds filling!'
+        - '&eJust stay out my way.'
         signer: NONE
     '61':
         type: MONSTER
@@ -616,7 +621,7 @@ cards:
         modeldata: 66
         name: '&fVex'
         lore:
-        - '&eNeeds filling!'
+        - '&eIm crazier than your vex.'
         signer: NONE
     '62':
         type: MONSTER
@@ -625,7 +630,7 @@ cards:
         modeldata: 67
         name: '&fWither Skeleton'
         lore:
-        - '&eNeeds filling!'
+        - "&eYou can't get blood out of a bone."
         signer: NONE
     '63':
         type: MONSTER
@@ -634,7 +639,7 @@ cards:
         modeldata: 68
         name: '&fEvoker'
         lore:
-        - '&eNeeds filling!'
+        - '&eI can evoke and invoke, fancy that.'
         signer: NONE
     '64':
         type: MONSTER
@@ -643,7 +648,7 @@ cards:
         modeldata: 69
         name: '&fWither'
         lore:
-        - '&eNeeds filling!'
+        - '&eULTIMATE POWAHHHHH!'
         signer: NONE
     '65':
         type: MONSTER
@@ -652,7 +657,7 @@ cards:
         modeldata: 70
         name: '&fGiant'
         lore:
-        - '&eNeeds filling!'
+        - '&eho-ho-ho green giant.'
         signer: NONE
     '66':
         type: ANIMAL
@@ -661,7 +666,7 @@ cards:
         modeldata: 71
         name: '&fFlying Pig'
         lore:
-        - '&eNeeds filling!'
+        - '&eWhen pigs fly.'
         signer: NONE
     '67':
         type: STAFFMEMBER

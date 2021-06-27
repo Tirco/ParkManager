@@ -24,6 +24,7 @@ public class TradingCardBinderListener implements Listener{
 	//Updating score will be done by adding the value to the already known score and removing the score from the item taken out.
 	//Full score and item reset will be done on load. Loading will be async.
 	
+	//Add all items in inventory to players inventory.
 	@EventHandler
 	public void onPlayerCloseInventory(InventoryCloseEvent e) {
 		if(e.getInventory().getType().equals(InventoryType.HOPPER) && e.getView().getTitle().equalsIgnoreCase("Card Pack")){
@@ -142,7 +143,8 @@ public class TradingCardBinderListener implements Listener{
 					//Remove their cursor item, store their card, send a message.
 					player.setItemOnCursor(new ItemStack(Material.AIR));
 					pData.storeCard(cardID, itemInHand);
-					pData.updateScore(storedScore, TradingCardManager.getInstance().getItemScore(itemInHand));
+					int newItemScore = TradingCardManager.getInstance().getItemScore(itemInHand);
+					pData.updateScore(storedScore, newItemScore);
 					player.playSound(player.getLocation(), Sound.UI_LOOM_TAKE_RESULT, 0.4f, 1f);
 					TradingCardManager.getInstance().updateScoreItem(pData, inv);
 				}
@@ -239,7 +241,8 @@ public class TradingCardBinderListener implements Listener{
 					e.getClickedInventory().setItem(e.getSlot(), new ItemStack(Material.AIR));
 
 					pData.storeCard(cardID, itemInHand);
-					pData.updateScore(storedScore, TradingCardManager.getInstance().getItemScore(itemInHand));
+					int newItemScore = TradingCardManager.getInstance().getItemScore(itemInHand);
+					pData.updateScore(storedScore, newItemScore);
 					player.playSound(player.getLocation(), Sound.UI_LOOM_TAKE_RESULT, 0.4f, 1f);
 					TradingCardManager.getInstance().updateScoreItem(pData, e.getView().getTopInventory());
 					player.updateInventory();

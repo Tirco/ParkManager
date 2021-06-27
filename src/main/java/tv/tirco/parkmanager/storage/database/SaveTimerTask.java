@@ -5,6 +5,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.TradingCards.TradingCardManager;
+import tv.tirco.parkmanager.config.OwedItemsConfig;
+import tv.tirco.parkmanager.config.StoredItemsConfig;
+import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.playerdata.PlayerData;
 import tv.tirco.parkmanager.storage.playerdata.PlayerProfileSaveTask;
 import tv.tirco.parkmanager.storage.playerdata.UserManager;
@@ -34,6 +37,14 @@ public class SaveTimerTask extends BukkitRunnable {
 				
 			}, 20 + count);
 
+		}
+		if(DataStorage.getInstance().isOwedItemsChanged()) {
+			OwedItemsConfig.getInstance().saveAllItems();
+			DataStorage.getInstance().setOwedItemsChanged(false);
+		}
+		if(DataStorage.getInstance().isStoredItemsChanged()) {
+			StoredItemsConfig.getInstance().saveAllItems();
+			DataStorage.getInstance().setStoredItemsChanged(false);
 		}
 	}
 		

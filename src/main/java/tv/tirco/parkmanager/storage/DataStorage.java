@@ -3,6 +3,7 @@ package tv.tirco.parkmanager.storage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -12,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 
 import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.alias.Alias;
-import tv.tirco.parkmanager.config.RidesConfig;
 
 public class DataStorage {
 
@@ -21,7 +21,10 @@ public class DataStorage {
 	List<Ride> rides;
 	List<Alias> aliases;
 	Inventory rideMenu; //Storing it here as it shouldn't change.
-	HashMap<UUID, List<ItemStack>> owedItems;
+	HashMap<UUID, List<ItemStack>> owedItems; //Owed Items - Items that are supposed to be given out to players.
+	Boolean owedItemsChanged;
+	HashMap<String, ItemStack> storedItems; //Stored Items - Items that can be handed out with commands.
+	Boolean storedItemsChanged;
 	
 	
 	public Inventory getRideMenu() {
@@ -53,9 +56,10 @@ public class DataStorage {
 			    viewer.closeInventory();
 				viewer.sendMessage("We had to close this inventory as it is being reloaded.");
 			}
+			inv.clear();
 		}
-		inv.clear();
-		inv = getRideInventory();
+		this.rideMenu = null;
+		this.rideMenu = getRideInventory();
 	}
 	
 	public void setRideMenu(Inventory menu) {
@@ -74,6 +78,7 @@ public class DataStorage {
 		this.rides = new ArrayList<Ride>();
 		this.aliases = new ArrayList<Alias>();
 		this.owedItems = new HashMap<UUID, List<ItemStack>>();
+		this.storedItems = new HashMap<String,ItemStack>();
 	}
 	
 
@@ -153,14 +158,32 @@ public class DataStorage {
 		if(this.owedItems.containsKey(uniqueId)) {
 			List<ItemStack> newItems = owedItems.get(uniqueId);
 			newItems.addAll(items);
-			owedItems.put(uniqueId, items);
+			owedItems.put(uniqueId, newItems);
 			return;
 		} else {
 			owedItems.put(uniqueId, items);
 		}
 	}
 	
+	public void setPlayerOwedItems(UUID uniqueId, List<ItemStack> items) {
+		this.owedItemsChanged = true;
+		owedItems.put(uniqueId, items);
+	}
+	
+	public void addPlayerOwedItem(UUID uniqueId, ItemStack item) {
+		this.owedItemsChanged = true;
+		List<ItemStack> items;
+		if(this.owedItems.containsKey(uniqueId)) {
+			items = owedItems.get(uniqueId);
+		} else {
+			items = new ArrayList<ItemStack>();
+		}
+		items.add(item);
+		owedItems.put(uniqueId, items);
+	}
+	
 	public void clearPlayerOwedItems(UUID uniqueId) {
+		this.owedItemsChanged = true;
 		if(this.owedItems.containsKey(uniqueId)) {
 			this.owedItems.remove(uniqueId);
 		}
@@ -170,12 +193,71 @@ public class DataStorage {
 		if(this.owedItems.containsKey(uniqueId)) {
 			return owedItems.get(uniqueId);
 		} else {
-			return null;
+			return new ArrayList<ItemStack>();
 		}
 	}
 
 	public boolean isOwedItems(UUID uuid) {
 		return owedItems.containsKey(uuid);
+	}
+	public boolean isOwedItemsChanged() {
+		return owedItemsChanged;
+	}
+
+	public HashMap<UUID, List<ItemStack>> getAllOwedItems() {
+		return owedItems;
+	}
+
+	//Stored Items
+	public void setStoredItems(HashMap<String, ItemStack> storedItems) {
+		this.storedItems = storedItems;
+		this.storedItemsChanged = true;
+	}
+	
+	/**
+	 * Store an item in the system.
+	 * @param identifier - The name of the item. Will be made lowercase.
+	 * @param item - The item to store.
+	 * @return True if it replaced an item, false if no item was set.
+	 */
+	public boolean storeItem(String identifier, ItemStack item) {
+		this.storedItemsChanged = true;
+		return this.storedItems.put(identifier.toLowerCase(), item) != null;
+		
+	}
+	
+	public boolean isStoredItem(String identifier) {
+		return this.storedItems.containsKey(identifier.toLowerCase());
+	}
+	
+	/**
+	 * Delete a stored item.
+	 * @param identifier
+	 * @return false if item didn't exist, true if it exsisted.
+	 */
+	public boolean removeStoredItem(String identifier) {
+		this.storedItemsChanged = true;
+		return this.storedItems.remove(identifier.toLowerCase()) != null;
+	}
+	
+	public ItemStack getStoredItem(String identifier) {
+		return this.storedItems.get(identifier.toLowerCase());
+	}
+
+	public Set<String> getStoredItemNames() {
+		return storedItems.keySet();
+	}
+	
+	public boolean isStoredItemsChanged() {
+		return storedItemsChanged;
+	}
+	
+	public void setStoredItemsChanged(boolean state) {
+		this.storedItemsChanged = state;
+	}
+
+	public void setOwedItemsChanged(boolean b) {
+		this.owedItemsChanged = b;
 	}
 
 

@@ -7,9 +7,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.geysermc.connector.common.ChatColor;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.storage.Ride;
 

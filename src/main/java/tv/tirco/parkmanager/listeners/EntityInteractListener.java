@@ -140,8 +140,24 @@ public class EntityInteractListener implements Listener{
 		if(Util.rightClickBlockAllowed(player.getWorld().getName())) {
 			return;
 		} else {
-			//Cancel the click
-			e.setCancelled(true);
+			if(e.getHand().equals(EquipmentSlot.HAND) && (player.getInventory().getItemInMainHand().getType().isEdible() || Util.isAllowedToUse(player.getInventory().getItemInMainHand().getType()))) {
+				//Don't cancel, it's food!
+				//Only when clicking air tho.  && e.getAction().equals(Action.RIGHT_CLICK_AIR)
+				//Check if player is hungry enough to eat
+//				if(player.getInventory().getItemInMainHand().getType().isEdible() && player.getFoodLevel() >= 20.0) { //Not hungry, so no food.
+//					e.setCancelled(true);
+//				}
+				
+				if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+					if(e.getClickedBlock().getType().isInteractable()) {
+						e.setCancelled(true);
+					}
+				}
+			}  else {
+				//Cancel here, might need to uncancel later...
+				e.setCancelled(true);
+			}
+
 		}
 		
 		if(!e.getHand().equals(EquipmentSlot.HAND)) {
@@ -273,7 +289,7 @@ public class EntityInteractListener implements Listener{
 	    			player.getInventory().setItem(EquipmentSlot.HEAD, item);
 	    			return;
 	    		} else {
-	    			player.sendMessage(ChatColor.RED + "Your are already wearing a hat.");
+	    			player.sendMessage(ChatColor.RED + "You are already wearing a hat.");
 	    			return;
 	    		}
 	    	}

@@ -197,14 +197,17 @@ public class PlayerProfile {
 		this.cardScore -= value;
 		this.changed = true;
 		if(this.cardScore < 0) {
+			MessageHandler.getInstance().debug("Trading card issue for "+ playerName + " - Players score was somehow in the negatives?");
 			this.cardScore = 0;
 		}
 	}
 	
 	public void updateScore(int remove, int add) {
-		this.cardScore = this.cardScore - remove + add;
+		this.cardScore -= remove;
+		this.cardScore += add;
 		this.changed = true;
 		if(this.cardScore < 0) {
+			MessageHandler.getInstance().debug("Trading card issue for "+ playerName + " - Players score was somehow in the negatives?");
 			this.cardScore = 0;
 		}
 	}

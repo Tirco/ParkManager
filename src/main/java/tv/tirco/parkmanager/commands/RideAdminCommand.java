@@ -22,7 +22,7 @@ import tv.tirco.parkmanager.storage.Ride;
 
 public class RideAdminCommand implements CommandExecutor,TabCompleter{
 	
-	List<String> commands = ImmutableList.of("help","create","setname","setwarp","setdescription","setitem","setmaxpayout","setdefaultpayperminute","startride","stopride","save","reloadrides");
+	List<String> commands = ImmutableList.of("help","create","loadconfig","setname","setwarp","setdescription","setitem","setmaxpayout","setdefaultpayperminute","startride","stopride","save","reloadrides");
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		//help
@@ -43,6 +43,11 @@ public class RideAdminCommand implements CommandExecutor,TabCompleter{
 		} else if(args[0].equalsIgnoreCase("reloadrides")) {
 			DataStorage.getInstance().rebuildRideMenu();
 			sender.sendMessage("Reloaded all rides!");
+			return true;
+		} else if(args[0].equalsIgnoreCase("loadconfig")) {
+			RidesConfig.getInstance().newInstance();
+			RidesConfig.getInstance().loadKeys();
+			sender.sendMessage("Loaded all rides!");
 			return true;
 		}
 		

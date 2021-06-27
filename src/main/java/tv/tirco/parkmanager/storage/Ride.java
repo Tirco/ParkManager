@@ -56,6 +56,10 @@ public class Ride {
 		this.changed = changed;
 		this.enabled = enabled;
 		this.icon = buildIcon(material, modeldata);
+		
+		if(this.icon == null) {
+			MessageHandler.getInstance().log("Error: Icon for ride " + identifier + " was NULL");
+		}
 	}
 	
 	
@@ -82,7 +86,7 @@ public class Ride {
 			meta.setLore(LoreList);
 			item.setItemMeta(meta);
 
-			return icon;
+			return item;
 	}
 
 

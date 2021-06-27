@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.bergerkiller.bukkit.tc.signactions.SignAction;
 import com.google.common.base.Charsets;
 
+
 import net.citizensnpcs.api.trait.TraitInfo;
 import net.clownercraft.ccRides.ccRidesPlugin;
 import net.milkbowl.vault.economy.Economy;
@@ -33,6 +34,7 @@ import tv.tirco.parkmanager.commands.ExitRideCommand;
 import tv.tirco.parkmanager.commands.GadgetsCommand;
 import tv.tirco.parkmanager.commands.HideItemInfoCommand;
 import tv.tirco.parkmanager.commands.ModelDataCommand;
+import tv.tirco.parkmanager.commands.OwedItemsCommand;
 import tv.tirco.parkmanager.commands.ParkmanagerCommand;
 import tv.tirco.parkmanager.commands.RandomrideCommand;
 import tv.tirco.parkmanager.commands.ResourcePackCommand;
@@ -42,7 +44,9 @@ import tv.tirco.parkmanager.commands.SitCommand;
 import tv.tirco.parkmanager.commands.SpawnCommand;
 import tv.tirco.parkmanager.config.AliasesConfig;
 import tv.tirco.parkmanager.config.Config;
+import tv.tirco.parkmanager.config.OwedItemsConfig;
 import tv.tirco.parkmanager.config.RidesConfig;
+import tv.tirco.parkmanager.config.StoredItemsConfig;
 import tv.tirco.parkmanager.listeners.CommandStopper;
 import tv.tirco.parkmanager.listeners.ConsumeListener;
 import tv.tirco.parkmanager.listeners.EntityInteractListener;
@@ -78,13 +82,12 @@ public class ParkManager extends JavaPlugin {
 	public static ccRidesPlugin ccRides;
 	public static boolean ccRidesEnabled = false;
 	
-	public static boolean geyserEnabled = false;
+//	public static boolean geyserEnabled = false;
 	
 	public boolean papi = false;
 	
 	public Location spawn;
-    
-	
+
 	// File Manager setup bulk
 	File mainFile;
 	static String mainDirectory;
@@ -151,6 +154,7 @@ public class ParkManager extends JavaPlugin {
         getCommand("tradingcardbinder").setExecutor(new TradingCardBinderCommand());
         getCommand("spawn").setExecutor(new SpawnCommand());
         getCommand("parkmanager").setExecutor(new ParkmanagerCommand());
+        getCommand("oweditems").setExecutor(new OwedItemsCommand());
         
         MessageHandler.getInstance().log("Loading database...");
         db = DatabaseManagerFactory.getDatabaseManager();
@@ -175,21 +179,13 @@ public class ParkManager extends JavaPlugin {
 			MessageHandler.getInstance().log("PlaceholderAPI not found... Ignoring");
 		}
         
-        //PAPI
+        //ccRides
         if(Bukkit.getPluginManager().getPlugin("ccRides") != null){
         	MessageHandler.getInstance().log("Hooking into ccRides...");
 			ccRides = ccRidesPlugin.getInstance();
             ParkManager.ccRidesEnabled = true;
 		} else {
-			MessageHandler.getInstance().log("PlaceholderAPI not found... Ignoring");
-		}
-        
-        //PAPI
-        if(Bukkit.getPluginManager().getPlugin("Geyser") != null){
-        	MessageHandler.getInstance().log("Hooking into Geyser...");
-            ParkManager.geyserEnabled = true;
-		} else {
-			MessageHandler.getInstance().log("Geyser not found... Ignoring");
+			MessageHandler.getInstance().log("ccRides not found... Ignoring");
 		}
         
         MessageHandler.getInstance().log("Setting up EventListeners...");
@@ -207,7 +203,7 @@ public class ParkManager extends JavaPlugin {
         
         scheduleTasks();
         
-        MessageHandler.getInstance().log("Parkmanager has been Enabled!");
+        MessageHandler.getInstance().log("Parkmanager has been Enabled! ...");
     }
     
     @Override
@@ -221,6 +217,12 @@ public class ParkManager extends JavaPlugin {
     	RidesConfig.getInstance().saveRides();
     	MessageHandler.getInstance().log("Saving all aliases...");
     	AliasesConfig.getInstance().saveAllAliases();
+    	MessageHandler.getInstance().log("Saving all owed items...");
+    	OwedItemsConfig.getInstance().saveAllItems();
+    	MessageHandler.getInstance().log("Saving all stored items...");
+    	StoredItemsConfig.getInstance().saveAllItems();
+    	
+    	
     	
     	MessageHandler.getInstance().log("Unregistering TrainCarts signs...");
     	SignAction.unregister(cmdTrainSignAction);
@@ -281,6 +283,7 @@ public class ParkManager extends JavaPlugin {
 		AliasesConfig.getInstance().loadAllAliases();;
 		RidesConfig.getInstance().loadKeys();
 		TradingCardConfig.getInstance().loadAllCards();
+		OwedItemsConfig.getInstance().loadAllItems();
 	}
 	
 	public static String getMainDirectory() {
@@ -319,4 +322,6 @@ public class ParkManager extends JavaPlugin {
 	public static boolean ccRidesEnabled() {
 		return ccRidesEnabled;
 	}
+
+
 }

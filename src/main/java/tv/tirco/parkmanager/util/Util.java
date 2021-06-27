@@ -1,18 +1,16 @@
 package tv.tirco.parkmanager.util;
 
 import java.util.Random;
+import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.NPC;
 import org.bukkit.entity.Player;
-import org.geysermc.connector.GeyserConnector;
-import org.geysermc.connector.network.session.GeyserSession;
+import org.bukkit.inventory.ItemStack;
 
-import com.viaversion.viaversion.api.Via;
-
-import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.config.Config;
+import tv.tirco.parkmanager.connections.ViaConnection;
 
 public class Util {
 
@@ -90,30 +88,70 @@ public class Util {
 	}
 
 	public static boolean isGeyser(Player player) {
-		if(ParkManager.geyserEnabled) {
-			GeyserConnector connector = GeyserConnector.getInstance();
-			if(connector != null) {
-				GeyserSession session = connector.getPlayerByUuid(player.getUniqueId());
-				if(session == null) {
-					return false;//geyserStatus = "Not a geyser player.";
-					
-				} else {
-					return true;
-					//geyserStatus = "Is a geyser player.";
-				}
-			}
-		} return false;
+		UUID uuid = player.getUniqueId();
+		String uuidString = uuid.toString();
+		if(uuidString.startsWith("00000000-0000-0000")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public static int getVersion(Player player) {
 		int versionID = 0;
 		try {
-			versionID = Via.getManager().getPlatform().getApi().getPlayerVersion(player.getUniqueId());
+			ViaConnection via = new ViaConnection();
+			if(via.isValid()) {
+				versionID = via.getProtocol(player).getId();
+			}
 		} catch (Exception ex) {
-			MessageHandler.getInstance().log("Exception while fetching API version of " + player.getName());
-			ex.printStackTrace();
+			MessageHandler.getInstance().log("Exception while fetching API version of " + player.getName() + "Not loaded. Returning 0");
+			//ex.printStackTrace();
 		}
 		return versionID;
+	}
+	
+
+	public static String getVersionString(Player player) {
+		String versionID = "Unknown";
+		try {
+			ViaConnection via = new ViaConnection();
+			if(via.isValid()) {
+				versionID = via.getProtocol(player).getName();
+			}
+		} catch (Exception ex) {
+			MessageHandler.getInstance().log("Exception while fetching API version of " + player.getName() + "Not loaded. Returning Unknown");
+			//ex.printStackTrace();
+		}
+		return versionID;
+	}
+
+	
+	public static boolean isAllowedToUse(Material type) {
+		switch(type){
+			case POTION:
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	
+	/**
+	 * Check if the player has enough empty slots.
+	 * @param player The player to check
+	 * @param amount The amount of empty slots needed
+	 * @return true if the player has at least that amount of slots, false if not
+	 */
+	public static boolean hasEmptySlots(Player player, int amount) {
+		  int i = 0;
+	      ItemStack[] cont = player.getInventory().getContents();
+	      for (ItemStack itemStack : cont)
+	        if (itemStack != null && itemStack.getType() != Material.AIR) {
+	          i++;
+	        }
+	      i =  36 - i;
+		  return i >= amount;
 	}
 
 

@@ -41,7 +41,7 @@ public class RidesConfig extends AutoUpdateConfigLoader {
 			String warp = config.getString("rides." + s + ".warp", "Unknown");
 			Boolean hasAdvancement = config.getBoolean("rides." + s + ".hasAdvancement", false);
 			Boolean isEnabled = config.getBoolean("rides." + s + ".enabled", true);
-			Material mat = Material.getMaterial(config.getString("rides."+identifier+".item.material", "Minecart"));
+			Material mat = Material.getMaterial(config.getString("rides."+identifier+".item.material", "MINECART"));
 			
 			int modeldata = config.getInt("rides."+identifier+".item.modeldata",0);
 			
@@ -102,6 +102,11 @@ public class RidesConfig extends AutoUpdateConfigLoader {
 	
 	public boolean isSet(String key) {
 		return config.isSet(key);
+	}
+
+	
+	public void newInstance() {
+		instance = new RidesConfig();
 	}
 
 	

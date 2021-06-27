@@ -7,32 +7,32 @@ api-version: 1.16
 
 main: ${mainClass}
 depend: [Train_Carts,PlaceholderAPI,Citizens]
-softdepend: [ccRides, Geyser]
+softdepend: [ccRides, ViaVersion, ViaBackwards, ViaRewind]
 
 commands:
-    example:
-        description: An example command
-        permission: spigotplugin.example
-        usage: /<command>
     sit:
         description: plunk that butt down on the ground
         permission: parkmanager.sit
         usage: /<command>
     hideiteminfo:
         description: hides all the flags on the item in hand.
-        permission: parkmanager.hideiteminfo
+        permission: parkmanager.command.hideiteminfo
+        usage: /<command>
+    oweditems:
+        description: Gives the player all the items they are owed.
+        permission: parkmanager.command.oweditems
         usage: /<command>
     bench:
         description: Makes a bench at your position
-        permission: parkmanager.bench
+        permission: parkmanager.command.bench
         usage: /<command>
     modeldata:
         description: edits the data of the item in hand.
-        permission: parkmanager.modeldata
+        permission: parkmanager.command.modeldata
         usage: /<command>
     alias:
         description: creates and modifies aliases.
-        permission: parkmanager.alias
+        permission: parkmanager.command.alias
         usage: /<command>
     rides:
         description: gives the player a list of available rides.
@@ -60,33 +60,34 @@ commands:
         description: takes you to a random ride!
         aliases: [rr]
         usage: /<command>
+        permission: parkmanager.command.randomride
     tradingcardadmin:
-        description: creates and modifies aliases.
+        description: admin related command for tradingcard.
         aliases: []
         permission: parkmanager.tradingcard.admin
-        usage: /<command>
+        usage: /<command> argument
     tradingcardevaluate:
-        description: creates and modifies aliases.
+        description: evaluates a tradingcard.
         aliases: [evaluatecard]
         permission: parkmanager.tradingcard.admin
         usage: /<command>
     tradingcardsign:
-        description: creates and modifies aliases.
+        description: signs a tradingcard.
         aliases: [signcard]
-        permission: parkmanager.tradingcard.sign
+        permission: parkmanager.command.signcard
         usage: /<command>
     tradingcardbinder:
         description: Opens your binder.
         aliases: [binder,cardbinder]
-        permission: parkmanager.tradingcard.binder
+        permission: parkmanager.command.binder
         usage: /<command>
     spawn:
         description: Takes you to spawn.
-        permission: parkmanager.spawn
+        permission: parkmanager.command.spawn
         aliases: []
         usage: /<command>
     parkmanager:
-        description: Opens your binder.
+        description: Default admin command.
         aliases: []
         permission: parkmanager.admin
         usage: /<command>

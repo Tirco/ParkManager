@@ -1,6 +1,8 @@
 package tv.tirco.parkmanager.TradingCards.commands;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -58,7 +60,7 @@ public class TradingCardSignCommand implements CommandExecutor{
 		ItemStack newCard = card.buildCardItem(condition, signed, shiny);
 		player.getInventory().remove(item);
 		player.getInventory().addItem(newCard);
-		
+		player.getWorld().playSound(player.getLocation(), Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.PLAYERS, 1f, 1f);
 		player.sendMessage("You have signed the card.");
 		
 //		nbti.setInteger("TradingCardID", id);
