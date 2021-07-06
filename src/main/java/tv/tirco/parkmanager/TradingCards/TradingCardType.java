@@ -8,7 +8,8 @@ public enum TradingCardType {
 	MONSTER,
 	ITEM,
 	BLOCK,
-	UNKNOWN;
+	UNKNOWN,
+	SPECIAL;
 
 	String getString() {
 		switch(this) {
@@ -26,6 +27,8 @@ public enum TradingCardType {
 			return "&fItem";
 		case BLOCK:
 			return "&fBlock";
+		case SPECIAL:
+			return "&aSpecial";
 		case UNKNOWN:
 		default:
 			return "&fUnknown";

@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.util.MessageHandler;
 
@@ -31,7 +32,7 @@ public abstract class ConfigLoader {
 
 	protected void loadFile() {
 		if (!configFile.exists()) {
-			MessageHandler.getInstance().debug("Creating Lottery " + fileName + " File...");
+			MessageHandler.getInstance().debug(ChatColor.YELLOW + "Creating New File - Parkmanager -> " + fileName + "...");
 
 			try {
 				plugin.saveResource(fileName, false); // Normal files
@@ -40,7 +41,7 @@ public abstract class ConfigLoader {
 																												// files
 			}
 		} else {
-			MessageHandler.getInstance().debug("Loading Lottery " + fileName + " File...");
+			MessageHandler.getInstance().debug(ChatColor.GREEN + "Loading Parkmanager " + fileName + " File...");
 		}
 
 		config = YamlConfiguration.loadConfiguration(configFile);

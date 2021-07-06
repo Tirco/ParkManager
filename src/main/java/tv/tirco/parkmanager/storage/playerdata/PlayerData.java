@@ -171,5 +171,8 @@ public class PlayerData {
 	public int getStoredCardAmount() {
 		return profile.getStoredCards().size();
 	}
+
+	
+
 	
 }

@@ -206,7 +206,7 @@ public class Ride {
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', 
 					"  " + name));
 			player.sendMessage("  Ride Duration: " + duration);
-			player.sendMessage("  Money Earned " + ChatColor.GOLD + totalPayout + ChatColor.GRAY +" (" + payout + " x " + df.format(totalMultiplier) + ")");
+			player.sendMessage("  Money Earned " + ChatColor.GOLD +df.format(totalPayout) + ChatColor.GRAY +" (" + df.format(payout) + " x " + df.format(totalMultiplier) + ")");
 			player.sendMessage("");
 			player.sendMessage("----- " + ChatColor.GOLD + "Ride Ended"+ ChatColor.WHITE + " ----- ");
 			

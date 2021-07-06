@@ -16,7 +16,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.bergerkiller.bukkit.tc.signactions.SignAction;
 import com.google.common.base.Charsets;
 
-
 import net.citizensnpcs.api.trait.TraitInfo;
 import net.clownercraft.ccRides.ccRidesPlugin;
 import net.milkbowl.vault.economy.Economy;
@@ -31,7 +30,6 @@ import tv.tirco.parkmanager.TradingCards.commands.TradingCardSignCommand;
 import tv.tirco.parkmanager.commands.AliasCommand;
 import tv.tirco.parkmanager.commands.BenchCommand;
 import tv.tirco.parkmanager.commands.ExitRideCommand;
-import tv.tirco.parkmanager.commands.GadgetsCommand;
 import tv.tirco.parkmanager.commands.HideItemInfoCommand;
 import tv.tirco.parkmanager.commands.ModelDataCommand;
 import tv.tirco.parkmanager.commands.OwedItemsCommand;
@@ -146,7 +144,6 @@ public class ParkManager extends JavaPlugin {
         getCommand("rideadmin").setExecutor(new RideAdminCommand());
         getCommand("exitride").setExecutor(new ExitRideCommand());
         getCommand("resourcepack").setExecutor(new ResourcePackCommand());
-        getCommand("gadgets").setExecutor(new GadgetsCommand());
         getCommand("randomride").setExecutor(new RandomrideCommand());
         getCommand("tradingcardadmin").setExecutor(new TradingCardAdminCommand());
         getCommand("tradingcardevaluate").setExecutor(new TradingCardEvaluateCommand());
@@ -284,6 +281,7 @@ public class ParkManager extends JavaPlugin {
 		RidesConfig.getInstance().loadKeys();
 		TradingCardConfig.getInstance().loadAllCards();
 		OwedItemsConfig.getInstance().loadAllItems();
+		StoredItemsConfig.getInstance().loadAllItems();
 	}
 	
 	public static String getMainDirectory() {

@@ -22,9 +22,9 @@ public class DataStorage {
 	List<Alias> aliases;
 	Inventory rideMenu; //Storing it here as it shouldn't change.
 	HashMap<UUID, List<ItemStack>> owedItems; //Owed Items - Items that are supposed to be given out to players.
-	Boolean owedItemsChanged;
+	Boolean owedItemsChanged = false;
 	HashMap<String, ItemStack> storedItems; //Stored Items - Items that can be handed out with commands.
-	Boolean storedItemsChanged;
+	Boolean storedItemsChanged = false;
 	
 	
 	public Inventory getRideMenu() {
@@ -241,7 +241,12 @@ public class DataStorage {
 	}
 	
 	public ItemStack getStoredItem(String identifier) {
-		return this.storedItems.get(identifier.toLowerCase());
+		ItemStack item = this.storedItems.get(identifier.toLowerCase());
+		if(item == null) {
+			return null;
+		} else {
+			return item.clone();
+		}
 	}
 
 	public Set<String> getStoredItemNames() {
@@ -258,6 +263,10 @@ public class DataStorage {
 
 	public void setOwedItemsChanged(boolean b) {
 		this.owedItemsChanged = b;
+	}
+
+	public HashMap<String, ItemStack> getAllStoredItems() {
+		return this.storedItems;
 	}
 
 

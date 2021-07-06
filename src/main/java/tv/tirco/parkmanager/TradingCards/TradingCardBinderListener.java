@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.ParkManager;
@@ -249,6 +250,5 @@ public class TradingCardBinderListener implements Listener{
 				}
 			}
 		}
-		
 	}
 }

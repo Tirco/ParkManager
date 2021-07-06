@@ -35,6 +35,7 @@ public class PlayerProfile {
 	private int cardScore = 0;
 	
 	private boolean isOpeningPack = false;
+	int packTaskID;
 
 	
 	public PlayerProfile(String playerName, UUID uuid, BiMap<Integer,ItemStack> cards, int score) {
@@ -244,6 +245,14 @@ public class PlayerProfile {
 	
 	public void updateSpamCooldown() {
 		this.spamCooldown = System.currentTimeMillis();
+	}
+
+
+
+	
+	public void setPackTaskId(int task) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

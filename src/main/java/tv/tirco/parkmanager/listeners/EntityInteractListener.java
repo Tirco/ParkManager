@@ -133,8 +133,44 @@ public class EntityInteractListener implements Listener{
 				return;
 			}
 		}
+		
+		if(e.getAction().equals(Action.LEFT_CLICK_BLOCK) || e.getAction().equals(Action.LEFT_CLICK_AIR)) {
+			return;
+		}
+		
+		if(Util.rightClickBlockAllowed(player.getWorld().getName())) {
+			return;
+		}
 
 		
+		if(!UserManager.hasPlayerDataKey(player)) {
+			e.setCancelled(true);
+			return;
+		}
+
+		
+		if(UserManager.getPlayer(player) == null) {
+			e.setCancelled(true);
+			return;
+		}
+		PlayerData pData = UserManager.getPlayer(player);
+
+		//Add world detector
+		//Make sure tehre is item in hand.
+		
+    	//Use item check - Do we have an item in hand?
+    	ItemStack item = player.getInventory().getItemInMainHand();
+    	if(item == null || item.getType().equals(Material.AIR)) {
+    	} else {
+    		if(pData.spamCooldown())  {
+    			e.setCancelled(true);
+    			player.sendMessage(ChatColor.RED + "Slow down!");
+    			return;
+    		} else {
+    			pData.updateSpamCooldown();
+    		}
+    	}
+
 		//Is clicking blocks allowed in this world?
 		//Needed for some minigames that have doors etc.
 		if(Util.rightClickBlockAllowed(player.getWorld().getName())) {
@@ -201,7 +237,7 @@ public class EntityInteractListener implements Listener{
 		    }
 	    	
 	    	//Use item check - Do we have an item in hand?
-	    	ItemStack item = player.getInventory().getItemInMainHand();
+	    	//ItemStack item = player.getInventory().getItemInMainHand();
 	    	if(item == null || item.getType().equals(Material.AIR)) {
 	    		return;
 	    	}
@@ -225,24 +261,18 @@ public class EntityInteractListener implements Listener{
 		    			}
 		    			return;
 		    		}
+//CARDPACK		    		
 		    	} else if(nbti.hasKey("isCardPack")) {
 		    		
-		    		//Check inv
-		    		if(!UserManager.hasPlayerDataKey(player)) {
-		    			player.sendMessage("Please wait, as your profile is not loaded yet.");
-						return;
-		    		}
-					PlayerData pData = UserManager.getPlayer(player);
 					if(!pData.isLoaded()) {
 						player.sendMessage("Please wait, as your profile is not loaded yet.");
 						return;
 					}
-					if(pData.spamCooldown())  {
+					
+					if(pData.isOpeningPack()) {
 						e.setCancelled(true);
-						player.sendMessage(ChatColor.RED + "Slow down!");
+						player.sendMessage(ChatColor.RED + "You are already opening a pack!");
 						return;
-					} else {
-						pData.updateSpamCooldown();
 					}
 					
 					
@@ -263,6 +293,7 @@ public class EntityInteractListener implements Listener{
 						removeItem.setAmount(1);
 						player.getInventory().removeItem(removeItem);
 
+					pData.setIsOpeningPack(true);
 					new TradingCardPackTask(ParkManager.parkManager, player, pData);
 					return;
 		    	}

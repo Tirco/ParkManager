@@ -2,6 +2,7 @@ package tv.tirco.parkmanager.TradingCards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -41,6 +42,7 @@ public class TradingCardPackTask {
 		this.plugin = plugin;
 		this.player = player;
 		this.pData = pData;
+		pData.setIsOpeningPack(true); //Doing this again, extra safety.
 		
 		double modifier = 0.000;
 		if(player.hasPotionEffect(PotionEffectType.LUCK)) {
@@ -50,7 +52,7 @@ public class TradingCardPackTask {
 		}
 		
 		
-		pData.setIsOpeningPack(true);
+
 		 cardOne = TradingCardManager.getInstance().drawTradingCard(modifier);
 		 cardTwo = TradingCardManager.getInstance().drawTradingCard(modifier);
 		 cardThree = TradingCardManager.getInstance().drawTradingCard(modifier);
@@ -68,6 +70,11 @@ public class TradingCardPackTask {
 
 		this.task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
+				
+				if(inv.isEmpty()) {
+					MessageHandler.getInstance().log(Level.SEVERE + "CardPack error - " + player.getName() + " tried to tick an empty inventory.");
+					return;
+				}
 
 				if(cycle < 3) {
 					ItemStack i = inv.getItem(3);

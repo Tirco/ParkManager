@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -61,7 +60,7 @@ public class StoredItemsConfig extends AutoUpdateConfigLoader {
 	}
 	
 	public void loadAllItems() {
-		MessageHandler.getInstance().debug("----  OwedItems ---");
+		MessageHandler.getInstance().debug("----  StoredItems ---");
 		//Stored as "<uudi>.1.<lots of itemstuff>"
 		HashMap<String,ItemStack> storedItems = new HashMap<String,ItemStack>();
 		for(String key : config.getKeys(false)) {
@@ -75,6 +74,7 @@ public class StoredItemsConfig extends AutoUpdateConfigLoader {
 			
 		}
 		DataStorage.getInstance().setStoredItems(storedItems);
+		MessageHandler.getInstance().log("Loaded " + storedItems.size() + " stored items.");
 	}
 	
 	public void clearAllSavedOwedItems() {
@@ -85,15 +85,10 @@ public class StoredItemsConfig extends AutoUpdateConfigLoader {
 	}
 	
 	public void saveAllItems() {
-		HashMap<UUID, List<ItemStack>> owedItems = DataStorage.getInstance().getAllOwedItems();
+		HashMap<String,ItemStack> storedItems = DataStorage.getInstance().getAllStoredItems();
 		clearAllSavedOwedItems(); 
-		for(UUID id : owedItems.keySet()) {
-			List<ItemStack> items = owedItems.get(id);
-			int i = 0;
-			for(ItemStack item : items) {
-				config.set(id.toString() + "." + i, item.serialize());
-				i++;
-			}
+		for(String s : storedItems.keySet()) {
+			config.set(s, storedItems.get(s).serialize());
 		}
 		saveFile();
 	}

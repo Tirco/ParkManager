@@ -17,9 +17,9 @@ public class SpawnCommand implements CommandExecutor{
 		Player player = (Player) sender;
 		int version = Util.getVersion(player);
 		if(Util.isGeyser(player) || ((version != 0 && version < 477))) {
-			player.performCommand("/warp minigames");
+			player.performCommand("warp minigames");
 		} else {
-			player.performCommand("/warp spawn");
+			player.performCommand("warp spawn");
 		}
 		return true;
 	}

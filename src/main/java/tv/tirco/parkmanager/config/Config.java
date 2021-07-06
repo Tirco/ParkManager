@@ -13,6 +13,9 @@ import tv.tirco.parkmanager.storage.database.SQLite.SQLite;
 import tv.tirco.parkmanager.util.MessageHandler;
 
 public class Config extends AutoUpdateConfigLoader {
+	
+	double globalBonus = 1.0;
+	
 	private static Config instance;
 
 	private Config() {
@@ -32,6 +35,7 @@ public class Config extends AutoUpdateConfigLoader {
 	protected void loadKeys() {
 		MessageHandler.getInstance().setDebugState(getDebug());
 		MessageHandler.getInstance().setDebugToAdminState(getDebugToAdmins());
+		this.globalBonus = config.getDouble("Rides.GlobalModifier",1.0);
 	}
 
 	@Override
@@ -145,7 +149,15 @@ public class Config extends AutoUpdateConfigLoader {
 	}
 
 	public Double getGlobalBonus() {
-		return config.getDouble("Rides.GlobalModifier",1.0);
+		return globalBonus;
+	}
+	
+	public void addGlobalBonus(double add) {
+		this.globalBonus += add;
+	}
+	
+	public void setGlobalBonus(double set) {
+		this.globalBonus = set;
 	}
 	
 

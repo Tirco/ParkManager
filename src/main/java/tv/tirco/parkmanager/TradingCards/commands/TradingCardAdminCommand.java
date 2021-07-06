@@ -290,14 +290,14 @@ public class TradingCardAdminCommand implements CommandExecutor, TabCompleter{
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		List<String> levelonearguments = ImmutableList.of("binder","top","forceload","getpack","getcardfromid","givecardfromid","givepack","getcard","givecard","cardinfo");
+		List<String> levelonearguments = ImmutableList.of("binder","top","forceload","getpack","getcardfromcode","givecardfromcode","givepack","getcard","givecard","cardinfo");
 		List<String> arguments = ImmutableList.of("condition:","shiny:","id:","signed:");
 		if(args.length == 1) {
 			return StringUtil.copyPartialMatches(args[args.length -1], levelonearguments, new ArrayList<String>(levelonearguments.size()));
 		}
 		else if(args.length > 1 && args[0].equalsIgnoreCase("getCard")) {
 			return StringUtil.copyPartialMatches(args[args.length -1], arguments, new ArrayList<String>(arguments.size()));
-		}else if(args.length > 1 && args[0].equalsIgnoreCase("giveCard")) {
+		}else if(args.length > 2 && args[0].equalsIgnoreCase("giveCard")) {
 			return StringUtil.copyPartialMatches(args[args.length -1], arguments, new ArrayList<String>(arguments.size()));
 		}
 		return null;
