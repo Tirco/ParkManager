@@ -60,12 +60,12 @@ commands:
     tradingcardadmin:
         description: admin related command for tradingcard.
         aliases: []
-        permission: parkmanager.tradingcard.admin
+        permission: parkmanager.admin
         usage: /<command> argument
     tradingcardevaluate:
         description: evaluates a tradingcard.
         aliases: [evaluatecard]
-        permission: parkmanager.tradingcard.admin
+        permission: parkmanager.admin
         usage: /<command>
     tradingcardsign:
         description: signs a tradingcard.
@@ -87,5 +87,81 @@ commands:
         aliases: []
         permission: parkmanager.admin
         usage: /<command>
-
-permissions: {}
+    forcehat:
+        description: Forces the item in hand to be your hat.
+        aliases: []
+        permission: parkmanager.command.forcehat
+        usage: /<command>
+    adminwarp:
+        description: Warp to adminwarps.
+        aliases: []
+        permission: parkmanager.command.adminwarp
+        usage: /<command>
+    setadminwarp:
+        description: set adminwarps.
+        aliases: []
+        permission: parkmanager.command.setadminwarp
+        usage: /<command>
+    deladminwarp:
+        description: set adminwarps.
+        aliases: []
+        permission: parkmanager.command.deladminwarp
+        usage: /<command>
+permissions:
+    parkmanager.sit:
+        descrption: "Permission to use the /sit command."
+        default: op
+    parkmanager.command.rides:
+        descrption: "Permission to use the /rides command."
+        default: true
+    parkmanager.command.signcard:
+        descrption: "Permission to use the /signcard command."
+        default: true
+    parkmanager.command.binder:
+        descrption: "Permission to use the /binder command."
+        default: true
+    parkmanager.command.spawn:
+        descrption: "Permission to use the /spawn command."
+        default: true
+    parkmanager.command.oweditems:
+        descrption: "Permission to use the /oweditems command."
+        default: true
+    parkmanager.command.exitride:
+        descrption: "Permission to use the /exitride command."
+        default: true
+    parkmanager.command.randomride:
+        descrption: "Permission to use the /randomride command."
+        default: true   
+    parkmanager.command.bench:
+        descrption: "Permission to use the /bench command."
+        default: op
+    parkmanager.command.adminwarp:
+        descrption: "Permission to use the /adminwarp command."
+        default: op
+    parkmanager.command.setadminwarp:
+        descrption: "Permission to use the /adminwarp command."
+        default: op
+    parkmanager.command.deladminwarp:
+        descrption: "Permission to use the /adminwarp command."
+        default: op
+    parkmanager.command.modeldata:
+        descrption: "Permission to use the /modeldata command."
+        default: op 
+    parkmanager.command.forcehat:
+        descrption: "Permission to use the /forcehat command."
+        default: op
+    parkmanager.command.hideiteminfo:
+        descrption: "Permission to use the /hideiteminfo command."
+        default: op
+    parkmanager.command.rideadmin:
+        descrption: "Permission to use the /rideadmin command."
+        default: op
+    parkmanager.command.alias:
+        descrption: "Permission to use the /alias command."
+        default: op
+    parkmanager.admin:
+        descrption: "Permission to use the /parkmanager command and other admin related commands."
+        default: op
+    parkmanager.tradingcard.admin:
+        descrption: "Outdated permission."
+        default: false

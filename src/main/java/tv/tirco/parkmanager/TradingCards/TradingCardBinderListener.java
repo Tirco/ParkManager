@@ -201,14 +201,14 @@ public class TradingCardBinderListener implements Listener{
 			}
 		//SHIFT CLICK
 		} else if(pData.getBinderPages().contains(e.getView().getTopInventory())) {
-			if(pData.spamCooldown())  {
-				e.setCancelled(true);
-				player.sendMessage(ChatColor.RED + "Slow down!");
-				return;
-			} else {
-				pData.updateSpamCooldown();
-			}
 			if(e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) {
+				if(pData.spamCooldown())  {
+					e.setCancelled(true);
+					player.sendMessage(ChatColor.RED + "Slow down!");
+					return;
+				} else {
+					pData.updateSpamCooldown();
+				}
 				ItemStack itemInHand = e.getCurrentItem();
 				if(itemInHand.getType().equals(Material.BLAZE_POWDER)) {
 					NBTItem nbti = new NBTItem(itemInHand);

@@ -14,11 +14,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.ImmutableList;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+import net.md_5.bungee.api.chat.HoverEvent.Action;
 import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.config.Config;
 import tv.tirco.parkmanager.storage.DataStorage;
@@ -51,7 +60,23 @@ public class ParkmanagerCommand implements CommandExecutor, TabCompleter{
 				return true;
 			}
 			
-			getPlayerInfo(sender,target);
+			
+			int page = 1;
+			if(args.length <=2) {
+				
+			} else {
+				try {
+					page = Integer.parseInt(args[2]);
+					
+				} catch (NumberFormatException ex) {
+					page = 1;
+				}
+			}
+			if(page < 1) {
+				page = 1;
+			}
+			getPlayerInfo(sender,target,page);
+			
 			return true;
 		} else if(args[0].equalsIgnoreCase("eco")) {
 			if(args.length <= 3) {
@@ -245,43 +270,153 @@ public class ParkmanagerCommand implements CommandExecutor, TabCompleter{
 
 	}
 
-	private void getPlayerInfo(CommandSender sender, Player target) {
+	private void getPlayerInfo(CommandSender sender, Player target, int page) {
+		int maxPage = 2;
 		//Geyser checks
 		String geyserStatus = ChatColor.RED + "Geyser is not loaded.";
 		if(Util.isGeyser(target)) {
-			geyserStatus = "Is a Bedrock player.";
+			geyserStatus = ChatColor.GREEN + "Is a Bedrock player.";
 		} else {
-			geyserStatus = "Not a Bedrock player.";
+			geyserStatus = ChatColor.RED + "Not a Bedrock player.";
 		}	
 		//Viaversion checks
 		int versionID = Util.getVersion(target);
 		String versionName = Util.getVersionString(target);
 		
 		//String protocolVersion = player.getHandle().playerConnection.networkManager.getVersion();
-		sender.sendMessage("Information about " + target.getName());
-		sender.sendMessage("Geyser status: " + geyserStatus);
-		sender.sendMessage("ViaVersion: " + versionID + " - " + versionName);
-		sender.sendMessage("ResourcePack SHA1:");
-		sender.sendMessage("UUID: " + target.getUniqueId().toString());
-		sender.sendMessage("GameMode: " + target.getGameMode().toString());
-		sender.sendMessage("Location: X:" + target.getLocation().getBlockX() + " Y:" + target.getLocation().getBlockY()+ " Z:" + target.getLocation().getBlockZ());
-		sender.sendMessage("World: " + target.getWorld().getName());
-		sender.sendMessage("OwedItems: " + DataStorage.getInstance().owedItems(target.getUniqueId()).size());
-		if(UserManager.hasPlayerDataKey(target)) {
-			PlayerData pData = UserManager.getPlayer(target);
-			if(pData.isLoaded()) {
-				sender.sendMessage("PlayerData Loaded: True");
-				sender.sendMessage("PlayerData Changed: " + pData.isChanged());
-				sender.sendMessage("Current Ride: " + pData.getRideIdentifier());
-				sender.sendMessage("--");
-				sender.sendMessage("Trading Card Score: " + pData.getCardScore());
-				sender.sendMessage("Stored Cards: " + pData.getStoredCardAmount());
+
+
+		sender.sendMessage(ChatColor.GOLD + "------" + target.getName() + " - Page " + page + "------");
+		if(page == 1) {
+			sender.spigot().sendMessage(
+					getComp(ChatColor.GOLD + "Information About: ", ChatColor.GREEN + target.getName(), //Text layout
+							"/teleport " + target.getName(), ClickEvent.Action.RUN_COMMAND, //Click action
+							ChatColor.GREEN + "Click to teleport to " + target.getName())); //Hover text.
+			sender.sendMessage(ChatColor.GOLD + "Geyser status: " + geyserStatus);
+			sender.sendMessage(ChatColor.GOLD + "ViaVersion: " + ChatColor.GREEN + + versionID + " - " + versionName);
+			sender.spigot().sendMessage(
+					getComp(ChatColor.GOLD + "IP: ", ChatColor.GREEN + "<SENSITIVE - Hover to SEE>", //Text layout
+							target.getAddress().toString(), ClickEvent.Action.COPY_TO_CLIPBOARD, //Click action
+							ChatColor.GREEN + "IP: " + target.getAddress().toString()+"\n"+"Click to copy.")); //Hover text.
+			sender.spigot().sendMessage(
+					getComp(ChatColor.GOLD + "UUID: ", ChatColor.GREEN + target.getUniqueId().toString(), //Text layout
+							target.getUniqueId().toString(), ClickEvent.Action.COPY_TO_CLIPBOARD, //Click action
+							ChatColor.GREEN + "Click to copy UUID to clipboard.")); //Hover text.
+			sender.spigot().sendMessage(
+					getComp(ChatColor.GOLD + "GameMode: ", ChatColor.GREEN + target.getGameMode().toString(), //Text layout
+							"/gamemode adventure " + target.getName(), ClickEvent.Action.SUGGEST_COMMAND, //Click action
+							ChatColor.GREEN + "Click to get a suggested\ngamemode command for " + target.getName())); //Hover text.
+			sender.spigot().sendMessage(
+					getComp(ChatColor.GOLD + "Location:", 
+							ChatColor.RED + " X:" + ChatColor.WHITE + target.getLocation().getBlockX() + 
+							ChatColor.GREEN + " Y:" + ChatColor.WHITE + target.getLocation().getBlockY() + 
+							ChatColor.YELLOW + " Z:" + ChatColor.WHITE + target.getLocation().getBlockZ(), //Text layout
+							target.getLocation().getBlockX() + " " +
+							target.getLocation().getBlockY() + " " +
+							target.getLocation().getBlockZ(), ClickEvent.Action.COPY_TO_CLIPBOARD, //Click action
+							ChatColor.GREEN + "Click to copy Location to clipboard.")); //Hover text.
+			sender.spigot().sendMessage(
+					getComp(ChatColor.GOLD + "World: ", ChatColor.GREEN + target.getWorld().getName(), //Text layout
+							"/mvinfo " + target.getWorld().getName(), ClickEvent.Action.RUN_COMMAND, //Click action
+							ChatColor.GREEN + "Click to get Multiverse Info about " + target.getWorld().getName())); //Hover text.
+			sender.sendMessage(ChatColor.GOLD + "OwedItems: " + ChatColor.GREEN + DataStorage.getInstance().owedItems(target.getUniqueId()).size());
+			if(target.getActivePotionEffects().isEmpty()) {
+				sender.sendMessage(ChatColor.GOLD + "Potion Effects: " + ChatColor.GREEN + "None.");
 			} else {
-				sender.sendMessage("PlayerData Loaded: False");
+				String effectString = "";
+				for(PotionEffect e : target.getActivePotionEffects()) {
+					effectString += 
+							ChatColor.GOLD + e.getType().getName() 
+							+ ChatColor.GREEN + " Level: " + ChatColor.WHITE + (e.getAmplifier() + 1) + ChatColor.GREEN +" Duration: " 
+							+ ChatColor.WHITE + (e.getDuration()/20) + "s\n";
+				}
+				sender.spigot().sendMessage(getComp(ChatColor.GOLD + "Potion Effects: ", ChatColor.GREEN +""+  target.getActivePotionEffects().size() + " - Hover for list", //Text layout
+						"/effect clear " + target.getName(), ClickEvent.Action.SUGGEST_COMMAND, //Click action
+						effectString)); //Hover text.
 			}
-			
+			sender.sendMessage(ChatColor.GOLD + "Fly Enabled: " + ChatColor.GREEN + target.getAllowFlight() + ChatColor.GOLD + " Is flying: " + ChatColor.GREEN + target.isFlying());
+			sender.sendMessage(ChatColor.GOLD + "Currently opened Inventory: " + ChatColor.WHITE + target.getOpenInventory().getTitle());
+			sender.spigot().sendMessage(
+					getComp(ChatColor.GOLD + "Money: ", ChatColor.GREEN  + ParkManager.getEconomy().format(ParkManager.getEconomy().getBalance(target)) + "", //Text layout
+							"/eco give " + target.getName() + " 0", ClickEvent.Action.SUGGEST_COMMAND, //Click action
+							ChatColor.GREEN + "/eco give <name> <amount>\n"
+							+ ChatColor.WHITE + " - Gives flat amount of money.\n"
+							+ ChatColor.GREEN + "/parkmanager eco give <name> <amount>\n"
+							+ ChatColor.WHITE + " - Gives money with rank/global bonus.")); //Hover text.
+		} else {
+
+			if(UserManager.hasPlayerDataKey(target)) {
+				PlayerData pData = UserManager.getPlayer(target);
+				if(pData.isLoaded()) {
+					sender.sendMessage(ChatColor.GOLD + "PlayerData Loaded: " + ChatColor.GREEN + "true");
+					sender.sendMessage(ChatColor.GOLD + "PlayerData Changed: " + ChatColor.GREEN + pData.isChanged());
+					sender.sendMessage(ChatColor.GOLD + "Current Ride: " + ChatColor.GREEN + pData.getRideIdentifier());
+					sender.sendMessage(ChatColor.GOLD + "Trading Card Score: " + ChatColor.GREEN + pData.getCardScore());
+					sender.sendMessage(ChatColor.GOLD + "Stored Cards: " + ChatColor.GREEN + pData.getStoredCardAmount());
+				} else {
+					sender.sendMessage(ChatColor.GOLD + "PlayerData Loaded: " + ChatColor.RED + "false");
+				}
+				sender.spigot().sendMessage(
+						getComp(ChatColor.GOLD + "HeadHunter Found: " , PlaceholderAPI.setPlaceholders(target, "%headhunter_player_found_amount%"), //Text layout
+								"/hha seelistas " + target.getName(), ClickEvent.Action.SUGGEST_COMMAND, //Click action
+								ChatColor.GREEN + "Click to see the list")); //Hover text.
+				sender.sendMessage(PlaceholderAPI.setPlaceholders(target, ChatColor.GOLD + "ProCosmetics Shards: " + ChatColor.GREEN + "%procosmetics_coins%"));
+				sender.sendMessage(PlaceholderAPI.setPlaceholders(target, ChatColor.GOLD + "OldCombatMechanics PvP Mode:" + ChatColor.GREEN + " %ocm_pvp_mode%"));
+				sender.spigot().sendMessage(
+						getComp(ChatColor.GOLD + "MurderMystery Stats:" , ChatColor.GREEN + " <Hover>", //Text layout
+								"/mm stats " + target.getName(), ClickEvent.Action.SUGGEST_COMMAND, //Click action
+								 PlaceholderAPI.setPlaceholders(target,ChatColor.GREEN + "Kills: " + "%murdermystery_kills%" + "\n"
+								+ "Deaths: " + "%murdermystery_deaths%" + "\n"
+								+ "Games Played: " + "%murdermystery_games_played%" + "\n"
+								+ "Wins: " + "%murdermystery_wins%" + "\n"
+								+ "Losses: " + "%murdermystery_loses%" + "\n"
+								+ "Highscore: " + "%murdermystery_highest_score%" + "\n"))); //Hover text.
+				sender.spigot().sendMessage(
+						getComp(ChatColor.GOLD + "mBedwars:" , ChatColor.GREEN + " <Hover>", //Text layout
+								"/mbedwars stats " + target.getName(), ClickEvent.Action.SUGGEST_COMMAND, //Click action
+								ChatColor.GREEN + PlaceholderAPI.setPlaceholders(target, "Rank: " + "%mbedwars_stats-rank%" + "\n"
+								+ "Wins: " + "%mbedwars_stats-wins%" + "\n"
+								+ "Loses: " + "%mbedwars_stats-loses%" + "\n"
+								+ "Rounds: " + "%mbedwars_stats-rounds_played%" + "\n"
+								+ "Kills: " + "%mbedwars_stats-kills%" + "\n"
+								+ "Deaths: " + "%mbedwars_stats-deaths%" + "\n"
+								+ "Playtime: " + "%mbedwars_stats-play_time%"))); //Hover text.
+				sender.spigot().sendMessage(
+						getComp(ChatColor.GOLD + "Votes:" , ChatColor.GREEN + " <Hover>", //Text layout
+								"/voteparty checkvotes " + target.getName(), ClickEvent.Action.SUGGEST_COMMAND, //Click action
+								ChatColor.GREEN + PlaceholderAPI.setPlaceholders(target, 
+								   "Daily: #" + "%voteparty_placement_daily%" + " (%voteparty_totalvotes_daily%)"+ "\n"
+								+ "Weekly: #%voteparty_placement_weekly%" + " (%voteparty_totalvotes_weekly%)"+ "\n"
+								+ "Monthly: #%voteparty_placement_monthly%" + " (%voteparty_totalvotes_monthly%)"+ "\n"
+								+ "Annually: #%voteparty_placement_annually%" + " (%voteparty_totalvotes_annually%)"+ "\n"
+								+ "Alltime: #%voteparty_placement_alltime%" + " (%voteparty_totalvotes_alltime%)"))); //Hover text.
+			}
 		}
 		
+		//Footer
+		TextComponent prev = new TextComponent((page > 1 ? ChatColor.GREEN : ChatColor.GRAY) + "<--");
+		TextComponent next = new TextComponent((page < maxPage ? ChatColor.GREEN : ChatColor.GRAY) + "-->");
+		TextComponent lines = new TextComponent(ChatColor.GOLD + " ----- ");
+		if(page > 1) {
+			prev.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/parkmanager playerinfo " + target.getName() + " " + (page - 1)));
+		}
+		if(page < maxPage) {
+			next.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/parkmanager playerinfo " + target.getName() + " " + (page + 1)));
+		}
+		
+		BaseComponent[] component = new ComponentBuilder().append(lines).append(prev).append(lines).append(next).append(lines).create();
+		sender.spigot().sendMessage(component);
+		
+	}
+	
+	private BaseComponent[] getComp(String text, String clickableText, String clickText, ClickEvent.Action action, String hoverText) {
+		TextComponent comp = new TextComponent(clickableText); //Information about: <player> - click to TP
+		comp.setClickEvent(new ClickEvent(action, clickText));
+		if(hoverText != null) {
+			comp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new Text(hoverText)));
+		}
+		BaseComponent[] component = new ComponentBuilder(text).append(comp).create();
+		return component;
 	}
 
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {

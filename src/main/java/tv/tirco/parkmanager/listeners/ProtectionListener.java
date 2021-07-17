@@ -11,7 +11,9 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
+import org.bukkit.event.player.PlayerBedLeaveEvent;
 
+import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.util.Util;
 
 public class ProtectionListener implements Listener{
@@ -30,9 +32,16 @@ public class ProtectionListener implements Listener{
     }
 
 	
+     //Try to intercept bedclicking - make sure spawn is still serverspawn
+    public void onLeaveBed(PlayerBedLeaveEvent e) {
+    	e.setSpawnLocation(false);
+    	e.getPlayer().setBedSpawnLocation(ParkManager.parkManager.spawn);
+    }
+    
+    
 	//Disable breaking blocks for non creative players.
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onBlockBreak(BlockBreakEvent e) {
+ 	public void onBlockBreak(BlockBreakEvent e) {
 		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
 			return;
 		}

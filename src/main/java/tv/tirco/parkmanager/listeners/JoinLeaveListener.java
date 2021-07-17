@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.ParkManager;
@@ -34,6 +35,10 @@ public class JoinLeaveListener implements Listener{
 		Player player = e.getPlayer();
 		Location spawn = ParkManager.parkManager.spawn;
 		player.teleport(spawn, TeleportCause.PLUGIN);
+		
+		if(player.hasPotionEffect(PotionEffectType.JUMP)) {
+			player.removePotionEffect(PotionEffectType.JUMP);
+		}
 		
 		//Owed Item Check
 		UUID uuid = player.getUniqueId();

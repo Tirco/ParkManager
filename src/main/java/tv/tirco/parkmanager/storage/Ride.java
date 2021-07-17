@@ -29,7 +29,7 @@ public class Ride {
 	boolean changed = false;
 	String warpName;
 	ItemStack icon;
-	double minPay = 1.0;
+	double minPay = 2.00;
 	boolean hasAdvancement = false;
 	boolean enabled = false;
 

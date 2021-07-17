@@ -32,15 +32,44 @@ public class ConsumeListener implements Listener{
 		
 		
 		ItemStack item = e.getItem();
+		int modifier;
+		int seconds;
 		if(e.getItem().getType().equals(Material.POTION)) {
 			ItemMeta meta = item.getItemMeta();
 			if(meta.hasCustomModelData()) {
 				player.getInventory().removeItem(item);
-				int seconds = (Util.getRandom().nextInt(155) + 15); //(15-180);
-				int modifier = Util.getRandom().nextInt(3); //(0-2);
-				//Random effect:
-				
-				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, seconds*20, modifier, false));
+				switch (meta.getCustomModelData()) {
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+					seconds = (Util.getRandom().nextInt(30) + 5); //(15-180);
+					modifier = Util.getRandom().nextInt(2); //(0-1);
+					int effect = Util.getRandom().nextInt(4);
+					if( effect == 0) {
+						player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, seconds*20, modifier, false));
+					} else if (effect == 1) {
+						player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, seconds*20, modifier, false));
+					} else if (effect == 2){
+						player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, seconds*20, modifier, false));
+					} else {
+						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, seconds*20, modifier, false));
+					}
+					 
+					break;
+				case 7:
+				case 8:
+				case 9:
+					seconds = (Util.getRandom().nextInt(155) + 15); //(15-180);
+					modifier = Util.getRandom().nextInt(3); //(0-2);
+					//Random effect:
+					
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, seconds*20, modifier, false));
+					break;
+				default: break;
+				}
+
 	            Bukkit.getServer().getScheduler().runTaskLater(ParkManager.plugin, new Runnable() {
 	                public void run() {
 	                    player.getInventory().remove(Material.GLASS_BOTTLE);

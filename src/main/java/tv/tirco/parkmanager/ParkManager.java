@@ -27,9 +27,12 @@ import tv.tirco.parkmanager.TradingCards.commands.TradingCardAdminCommand;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardBinderCommand;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardEvaluateCommand;
 import tv.tirco.parkmanager.TradingCards.commands.TradingCardSignCommand;
+import tv.tirco.parkmanager.commands.AdminWarpCommand;
 import tv.tirco.parkmanager.commands.AliasCommand;
 import tv.tirco.parkmanager.commands.BenchCommand;
+import tv.tirco.parkmanager.commands.DelAdminWarpCommand;
 import tv.tirco.parkmanager.commands.ExitRideCommand;
+import tv.tirco.parkmanager.commands.ForceHatCommand;
 import tv.tirco.parkmanager.commands.HideItemInfoCommand;
 import tv.tirco.parkmanager.commands.ModelDataCommand;
 import tv.tirco.parkmanager.commands.OwedItemsCommand;
@@ -38,8 +41,10 @@ import tv.tirco.parkmanager.commands.RandomrideCommand;
 import tv.tirco.parkmanager.commands.ResourcePackCommand;
 import tv.tirco.parkmanager.commands.RideAdminCommand;
 import tv.tirco.parkmanager.commands.RidesCommand;
+import tv.tirco.parkmanager.commands.SetAdminWarpCommand;
 import tv.tirco.parkmanager.commands.SitCommand;
 import tv.tirco.parkmanager.commands.SpawnCommand;
+import tv.tirco.parkmanager.config.AdminWarpsConfig;
 import tv.tirco.parkmanager.config.AliasesConfig;
 import tv.tirco.parkmanager.config.Config;
 import tv.tirco.parkmanager.config.OwedItemsConfig;
@@ -152,6 +157,10 @@ public class ParkManager extends JavaPlugin {
         getCommand("spawn").setExecutor(new SpawnCommand());
         getCommand("parkmanager").setExecutor(new ParkmanagerCommand());
         getCommand("oweditems").setExecutor(new OwedItemsCommand());
+        getCommand("forcehat").setExecutor(new ForceHatCommand());
+        getCommand("adminwarp").setExecutor(new AdminWarpCommand());
+        getCommand("setadminwarp").setExecutor(new SetAdminWarpCommand());
+        getCommand("deladminwarp").setExecutor(new DelAdminWarpCommand());
         
         MessageHandler.getInstance().log("Loading database...");
         db = DatabaseManagerFactory.getDatabaseManager();
@@ -218,6 +227,8 @@ public class ParkManager extends JavaPlugin {
     	OwedItemsConfig.getInstance().saveAllItems();
     	MessageHandler.getInstance().log("Saving all stored items...");
     	StoredItemsConfig.getInstance().saveAllItems();
+    	MessageHandler.getInstance().log("Saving all adminwarps...");
+    	AdminWarpsConfig.getInstance().saveAllWarps();
     	
     	
     	
@@ -282,6 +293,7 @@ public class ParkManager extends JavaPlugin {
 		TradingCardConfig.getInstance().loadAllCards();
 		OwedItemsConfig.getInstance().loadAllItems();
 		StoredItemsConfig.getInstance().loadAllItems();
+		AdminWarpsConfig.getInstance().loadAllWarps();
 	}
 	
 	public static String getMainDirectory() {

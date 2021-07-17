@@ -150,6 +150,7 @@ public class TradingCardAdminCommand implements CommandExecutor, TabCompleter{
 			} else if(args[0].equalsIgnoreCase("givecard")) {
 				if(args.length <= 2) { 
 					sender.sendMessage("Please specify the player to give a card, and which card to give.");
+					return true;
 				}
 				Player target = Bukkit.getPlayer(args[1]);
 				if(target == null) {

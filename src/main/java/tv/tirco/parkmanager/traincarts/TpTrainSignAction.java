@@ -72,7 +72,7 @@ public class TpTrainSignAction extends SignAction {
         		continue;
         	}
 
-        	MessageHandler.getInstance().debug("TP Sign parsed double to " + parsed);
+        	//MessageHandler.getInstance().debug("TP Sign parsed double to " + parsed);
         	
         	if(s.startsWith("x:")) {
         		x = parsed;
@@ -95,15 +95,15 @@ public class TpTrainSignAction extends SignAction {
 
             // This prevents instant teleporting back to the other end
             if (info.hasRails() && this.teleportTimes.isMarked(info.getRails(), 2000)) {
-            	MessageHandler.getInstance().log("Returntimer was blocked");
+            	//MessageHandler.getInstance().log("Returntimer was blocked");
                 return;
             } else {
                 this.teleportTimes.mark(destination.getBlock());
-                MessageHandler.getInstance().log("Marked report timer");
+                //MessageHandler.getInstance().log("Marked report timer");
             }
 
             if (destination.getWorld() == group.getWorld()) { //Should never fail?
-            	MessageHandler.getInstance().log("Teleporting train");
+            	//MessageHandler.getInstance().log("Teleporting train");
             	if(!destination.getChunk().isLoaded()) {
             		if(destination.getChunk().load()) {
             			MessageHandler.getInstance().log("Loaded chunk");

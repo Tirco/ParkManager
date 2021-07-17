@@ -160,6 +160,21 @@ public class EntityInteractListener implements Listener{
 		
     	//Use item check - Do we have an item in hand?
     	ItemStack item = player.getInventory().getItemInMainHand();
+    	if(item.getType().equals(Material.PUMPKIN_PIE)) {
+    		if(player.getFoodLevel() > 19) {
+    			player.setFoodLevel(19);
+    			e.setCancelled(true);
+    			return;
+    		}
+    	} else if(item.getType().equals(Material.CARROT_ON_A_STICK)) {
+    		if(player.getVehicle() != null) {
+    			return;
+    		} else {
+    			e.setCancelled(true);
+    		}
+    	}
+    	
+    	
     	if(item == null || item.getType().equals(Material.AIR)) {
     	} else {
     		if(pData.spamCooldown())  {

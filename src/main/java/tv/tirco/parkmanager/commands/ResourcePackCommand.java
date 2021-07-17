@@ -1,6 +1,5 @@
 package tv.tirco.parkmanager.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,7 +41,8 @@ public class ResourcePackCommand implements CommandExecutor{
 				MessageHandler.getInstance().debug("command /resourcepack threw an Illegal Argument Exception.");
 			}
 
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "usepack parkage " + player.getName());
+			player.performCommand("usepack parkage");
+			//Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "usepack parkage " + player.getName());
 			
 			return true;
 		} else {

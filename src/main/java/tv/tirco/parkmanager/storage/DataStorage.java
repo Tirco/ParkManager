@@ -3,10 +3,12 @@ package tv.tirco.parkmanager.storage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +27,8 @@ public class DataStorage {
 	Boolean owedItemsChanged = false;
 	HashMap<String, ItemStack> storedItems; //Stored Items - Items that can be handed out with commands.
 	Boolean storedItemsChanged = false;
+	Map<String,Location> adminwarps;
+	Boolean adminWarpsChanged = false;
 	
 	
 	public Inventory getRideMenu() {
@@ -79,6 +83,37 @@ public class DataStorage {
 		this.aliases = new ArrayList<Alias>();
 		this.owedItems = new HashMap<UUID, List<ItemStack>>();
 		this.storedItems = new HashMap<String,ItemStack>();
+		this.adminwarps = new HashMap<String,Location>();
+	}
+	
+	public void setAdminWarps(HashMap<String,Location> warps) {
+		this.adminwarps = warps;
+	}
+	
+	public Map<String, Location> getAdminWarps() {
+		return adminwarps;
+	}
+	
+	public Location getWarp(String name) {
+		return adminwarps.get(name);
+	}
+	
+	public void setWarp(String name, Location loc) {
+		adminwarps.put(name, loc);
+		adminWarpsChanged = true;
+	}
+	
+	public void delWarp(String name) {
+		adminwarps.remove(name);
+		adminWarpsChanged = true;
+	}
+	
+	public boolean isAdminWarpsChanged() {
+		return adminWarpsChanged;
+	}
+	
+	public void setAdminWarpsChanged(boolean state) {
+		this.adminWarpsChanged = state;
 	}
 	
 
@@ -267,6 +302,11 @@ public class DataStorage {
 
 	public HashMap<String, ItemStack> getAllStoredItems() {
 		return this.storedItems;
+	}
+
+	
+	public boolean isWarp(String string) {
+		return adminwarps.containsKey(string);
 	}
 
 

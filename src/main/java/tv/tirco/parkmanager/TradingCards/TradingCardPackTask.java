@@ -57,12 +57,11 @@ public class TradingCardPackTask {
 		 cardTwo = TradingCardManager.getInstance().drawTradingCard(modifier);
 		 cardThree = TradingCardManager.getInstance().drawTradingCard(modifier);
 		 
-		MessageHandler.getInstance().debug("Starting opening of CardPack for player" + player.getName());
-		MessageHandler.getInstance().debug("They have a picking bonus of " + modifier);
-		MessageHandler.getInstance().debug("Player will get " + 
+		MessageHandler.getInstance().debug("Starting opening of CardPack for player " + player.getName() + ". "
+		+ "They have a picking bonus of " + modifier + " and will get these cards: " + 
 		cardOne.getID() + ", "+
 		cardTwo.getID() + ", "+
-		cardThree.getID() + ". ");
+		cardThree.getID() + ".");
 		
 		player.openInventory(getInventory());
 		
@@ -135,7 +134,7 @@ public class TradingCardPackTask {
 		Bukkit.getScheduler().cancelTask(task);
 		if(early) {
 			MessageHandler.getInstance().log("Player " + player.getName() + " disconnected while opening card pack.");
-			MessageHandler.getInstance().log("Player should have  gotten " + 
+			MessageHandler.getInstance().log("Player should have gotten " + 
 					cardOne.getID() + ", "+
 					cardTwo.getID() + ", "+
 					cardThree.getID() + ". ");
@@ -150,7 +149,6 @@ public class TradingCardPackTask {
 			owedItems.add(cardThree.buildCardItem(TradingCardCondition.UNKNOWN, false, shiny));
 			
 			if(!owedItems.isEmpty()) { //Will probably never be empty.
-				MessageHandler.getInstance().log("If they log back in before the server reboots, they will get their cards.");
 				DataStorage.getInstance().addPlayerOwedItems(player.getUniqueId(),owedItems);
 			}
 			
