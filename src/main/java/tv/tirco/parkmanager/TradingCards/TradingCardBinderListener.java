@@ -230,10 +230,10 @@ public class TradingCardBinderListener implements Listener{
 									"There is already a card stored at that slot.");
 							player.sendMessage(ChatColor.YELLOW + 
 									"You need an empty space in your inventory to take it out.");
-							storedScore = TradingCardManager.getInstance().getItemScore(storedItem);
+							
 							return;
 						}
-						
+						storedScore = TradingCardManager.getInstance().getItemScore(storedItem);
 						player.getInventory().addItem(storedItem);
 					}
 					
