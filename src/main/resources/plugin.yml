@@ -82,6 +82,11 @@ commands:
         permission: parkmanager.command.spawn
         aliases: []
         usage: /<command>
+    namecolor:
+        description: Allows you to change your namecolor, using essentials.
+        permission: parkmanager.command.namecolor
+        aliases: []
+        usage: /<command> (color)
     parkmanager:
         description: Default admin command.
         aliases: []
@@ -110,6 +115,9 @@ commands:
 permissions:
     parkmanager.sit:
         descrption: "Permission to use the /sit command."
+        default: op
+    parkmanager.command.namecolor:
+        description: "Permission to use the /namecolor command."
         default: op
     parkmanager.command.rides:
         descrption: "Permission to use the /rides command."

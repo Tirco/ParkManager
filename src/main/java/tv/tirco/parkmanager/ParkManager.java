@@ -35,6 +35,7 @@ import tv.tirco.parkmanager.commands.ExitRideCommand;
 import tv.tirco.parkmanager.commands.ForceHatCommand;
 import tv.tirco.parkmanager.commands.HideItemInfoCommand;
 import tv.tirco.parkmanager.commands.ModelDataCommand;
+import tv.tirco.parkmanager.commands.NamecolorCommand;
 import tv.tirco.parkmanager.commands.OwedItemsCommand;
 import tv.tirco.parkmanager.commands.ParkmanagerCommand;
 import tv.tirco.parkmanager.commands.RandomrideCommand;
@@ -161,6 +162,7 @@ public class ParkManager extends JavaPlugin {
         getCommand("adminwarp").setExecutor(new AdminWarpCommand());
         getCommand("setadminwarp").setExecutor(new SetAdminWarpCommand());
         getCommand("deladminwarp").setExecutor(new DelAdminWarpCommand());
+        getCommand("namecolor").setExecutor(new NamecolorCommand());
         
         MessageHandler.getInstance().log("Loading database...");
         db = DatabaseManagerFactory.getDatabaseManager();
