@@ -39,6 +39,9 @@ public class JoinLeaveListener implements Listener{
 		if(player.hasPotionEffect(PotionEffectType.JUMP)) {
 			player.removePotionEffect(PotionEffectType.JUMP);
 		}
+		if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+			player.removePotionEffect(PotionEffectType.INVISIBILITY);
+		}
 		
 		//Owed Item Check
 		UUID uuid = player.getUniqueId();
@@ -81,6 +84,9 @@ public class JoinLeaveListener implements Listener{
 		
 		if(UserManager.hasPlayerDataKey(player)) {
 			PlayerData pData = UserManager.getPlayer(player);
+			if(pData.getMoneyLimitReached(false)) {
+				DataStorage.getInstance().setRecentMoney(player.getUniqueId());
+			}
 			pData.save();
 		}
 	}

@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.alias.Alias;
+import tv.tirco.parkmanager.config.Config;
 
 public class DataStorage {
 
@@ -29,7 +30,7 @@ public class DataStorage {
 	Boolean storedItemsChanged = false;
 	Map<String,Location> adminwarps;
 	Boolean adminWarpsChanged = false;
-	
+	HashMap<UUID,Long> moneyLimitReached;
 	
 	public Inventory getRideMenu() {
 		return getRideInventory();
@@ -84,6 +85,7 @@ public class DataStorage {
 		this.owedItems = new HashMap<UUID, List<ItemStack>>();
 		this.storedItems = new HashMap<String,ItemStack>();
 		this.adminwarps = new HashMap<String,Location>();
+		this.moneyLimitReached = new HashMap<UUID,Long>();
 	}
 	
 	public void setAdminWarps(HashMap<String,Location> warps) {
@@ -307,6 +309,22 @@ public class DataStorage {
 	
 	public boolean isWarp(String string) {
 		return adminwarps.containsKey(string);
+	}
+
+	
+	public HashMap<Long, Double> getRecentMoneyData(UUID uuid) {
+		HashMap<Long,Double> moneyAmount = new HashMap<Long,Double>();
+		if(this.moneyLimitReached.containsKey(uuid)) {
+			long time = moneyLimitReached.get(uuid);
+			double amount = Config.getInstance().getMoneyLimit();
+			moneyAmount.put(time, amount);
+		}
+		return moneyAmount;
+	}
+
+	public void setRecentMoney(UUID uuid) {
+		this.moneyLimitReached.put(uuid, System.currentTimeMillis());
+		
 	}
 
 

@@ -100,6 +100,15 @@ public class ParkmanagerCommand implements CommandExecutor, TabCompleter{
 				sender.sendMessage("Could not find a player with the name " + args[2]);
 				return true;
 			}
+			
+			PlayerData pData = UserManager.getPlayer(target);
+			if(pData.getMoneyLimitReached(true)) {
+				target.sendMessage(ChatColor.RED + "You have reached the money limit for this hour.");
+				sender.sendMessage("Could not pay " + target.getName() + " as they have reached their hourly limit.");
+				return true;
+				//Update money limit;
+				
+			}
 
 			double amount = 0;
 			try {
@@ -107,13 +116,15 @@ public class ParkmanagerCommand implements CommandExecutor, TabCompleter{
 			} catch(NumberFormatException ex) {
 				sender.sendMessage("Could not parse " + args[3] + " to a Double value.");
 				return true;
-			}
+			}		
 			
 			double globalModifier = Config.getInstance().getGlobalBonus();
 			double playerModifier = Config.getInstance().getPlayerBonus(target);
 			double totalModifier = globalModifier * playerModifier;
+			DecimalFormat df = new DecimalFormat("#.##");
+			double modifiedAmount =(amount * totalModifier); 
 			
-			double modifiedAmount = amount * (totalModifier); 
+			pData.addRecentMoney(modifiedAmount);
 			
 			boolean silenced = false;
 			if(args.length >= 5) {
@@ -123,13 +134,22 @@ public class ParkmanagerCommand implements CommandExecutor, TabCompleter{
 			ParkManager.getEconomy().depositPlayer(target, modifiedAmount);
 
 			if(!silenced) {
-				DecimalFormat df = new DecimalFormat("#.##");
+				
 				target.sendMessage(ChatColor.GREEN + "You earned $" + ChatColor.GOLD + df.format(modifiedAmount) + ChatColor.GRAY +
 						" (" + df.format(amount) + " x " + df.format(totalModifier) + ")");
 				
 			}
+			String reason = "Not set";
+			if(args.length >= 6) {
+				String message = "";
+				for (int i = 5; i < args.length; i++) {
+				    message = message + args[i] + " ";
+				}
+				reason = message;
+			}
 			
-			String message = (ChatColor.GREEN + "Paid " + ChatColor.GOLD + target.getName() + " " + ChatColor.GREEN + modifiedAmount + " $ - " + " Their modifier: " + totalModifier);
+			String message = (ChatColor.GREEN + "Paid " + ChatColor.GOLD + target.getName() + " " + ChatColor.GREEN + df.format(modifiedAmount) + " $ - " + " Their modifier: " + df.format(totalModifier)
+			+ " Reason: " + reason);
 			if(sender instanceof Player) {
 				sender.sendMessage(message);
 			} else {
@@ -353,6 +373,7 @@ public class ParkmanagerCommand implements CommandExecutor, TabCompleter{
 					sender.sendMessage(ChatColor.GOLD + "Current Ride: " + ChatColor.GREEN + pData.getRideIdentifier());
 					sender.sendMessage(ChatColor.GOLD + "Trading Card Score: " + ChatColor.GREEN + pData.getCardScore());
 					sender.sendMessage(ChatColor.GOLD + "Stored Cards: " + ChatColor.GREEN + pData.getStoredCardAmount());
+					sender.sendMessage(ChatColor.GOLD + "Money in last hour: " + ChatColor.GREEN + pData.getMoneyInLastHour() + ChatColor.GOLD + " / " + ChatColor.RED +  Config.getInstance().getMoneyLimit() + ChatColor.GOLD + ".");
 				} else {
 					sender.sendMessage(ChatColor.GOLD + "PlayerData Loaded: " + ChatColor.RED + "false");
 				}
@@ -433,6 +454,8 @@ public class ParkmanagerCommand implements CommandExecutor, TabCompleter{
 					return ImmutableList.of("<amount>");
 				case 5:
 					return ImmutableList.of("<silenced>","true","false");
+				case 6:
+					return ImmutableList.of("<msg>");
 				default:
 					return null;
 				}

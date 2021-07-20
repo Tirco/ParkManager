@@ -35,7 +35,12 @@ public class CommandStopper implements Listener {
 			if(!player.hasPermission("parkmanager.usecommandonride")) {
 				if(message.startsWith("/exitride")
 						||message.startsWith("/exit")
-						||message.startsWith("/leaveride")) {
+						||message.startsWith("/leaveride")
+						||message.startsWith("/sc")
+						||message.startsWith("/msg")
+						||message.startsWith("/r")
+						||message.startsWith("/vmessage")
+						||message.startsWith("/vreply")) {
 					//Do nothing
 				} else {
 					e.setCancelled(true);

@@ -1,6 +1,8 @@
 package tv.tirco.parkmanager.storage.playerdata;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -13,6 +15,8 @@ import com.google.common.collect.BiMap;
 import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.ParkManager;
 import tv.tirco.parkmanager.TradingCards.TradingCardManager;
+import tv.tirco.parkmanager.config.Config;
+import tv.tirco.parkmanager.storage.DataStorage;
 import tv.tirco.parkmanager.util.MessageHandler;
 
 public class PlayerProfile {
@@ -36,6 +40,9 @@ public class PlayerProfile {
 	
 	private boolean isOpeningPack = false;
 	int packTaskID;
+	
+	private HashMap<Long,Double> recentMoney;
+	private double recentMoneyTotal = 0;
 
 	
 	public PlayerProfile(String playerName, UUID uuid, BiMap<Integer,ItemStack> cards, int score) {
@@ -54,10 +61,14 @@ public class PlayerProfile {
 		}
 		forceUpdateAllCards();
 		this.loaded = true;
+		this.recentMoney = DataStorage.getInstance().getRecentMoneyData(uuid);
+		updateRecentMoney();
 	}
 	
-	
-	
+
+
+
+
 	private void forceUpdateAllCards() {
 		try {
 			int score = 0;
@@ -266,4 +277,54 @@ public class PlayerProfile {
 //	}
 
 
+	public boolean getMoneyLimitReached(boolean update) {
+		if(update) {
+			updateRecentMoney();
+		}
+		return this.recentMoneyTotal >= Config.getInstance().getMoneyLimit();
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public void updateRecentMoney() {
+		long time = System.currentTimeMillis();
+		HashMap<Long,Double> recentMoneyCopy;
+		try {
+			recentMoneyCopy = (HashMap<Long, Double>) recentMoney.clone();
+		} catch (Exception ex) {
+			MessageHandler.getInstance().log("Error when trying to get recentMoney HashMap:");
+			ex.printStackTrace();
+			return;
+		}
+		
+		Set<Long> times = recentMoneyCopy.keySet();
+		double total = 0;
+		for(Long l : times) {
+			if((time - l) > 3600000) {
+				//debug
+				//MessageHandler.getInstance().log(l + " has been removed.");
+				recentMoney.remove(l);
+			} else {
+				total += recentMoney.get(l);
+				//MessageHandler.getInstance().log(l + " added to total. Total is: " + total);
+			}
+		}
+		
+		this.recentMoneyTotal = total;
+	}
+	
+	public void addRecentMoney(double amount) {
+		this.recentMoney.put(System.currentTimeMillis(), amount);
+		this.recentMoneyTotal += amount;
+	}
+
+
+
+
+
+	public double getMoneyInLastHour() {
+
+		return recentMoneyTotal;
+	}
 }

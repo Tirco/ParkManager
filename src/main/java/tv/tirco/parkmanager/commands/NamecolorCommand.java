@@ -31,7 +31,7 @@ public class NamecolorCommand implements CommandExecutor, TabCompleter{
 			ChatColor colorCode = getColorCode(args[0]);
 			if(colorCode == null) {
 				sender.sendMessage(ChatColor.RED + "You can not use " + ChatColor.WHITE + args[0] + ChatColor.RED + " as a color code. Valid colors are:");
-				String s = "";
+				String s = " ";
 				for(String c : colors) {
 					s += getColorCode(c) + c + " ";
 				}
@@ -39,6 +39,7 @@ public class NamecolorCommand implements CommandExecutor, TabCompleter{
 				return true;
 			}
 			Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "nick " + player.getName() + " " + colorCode + player.getName());
+			return true;
 		} else {
 			sender.sendMessage("This command can only be used by players.");
 		}

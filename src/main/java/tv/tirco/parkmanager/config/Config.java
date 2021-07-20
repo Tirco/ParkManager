@@ -131,7 +131,7 @@ public class Config extends AutoUpdateConfigLoader {
 	}
 	
 	public Double getPlayerBonus(Player player) {
-		MessageHandler.getInstance().debug("Running test for getPlayerBonus");
+		//MessageHandler.getInstance().debug("Running test for getPlayerBonus");
 		ConfigurationSection keyNode = config.getConfigurationSection("RankModifiers");
 		if(keyNode == null)  {
 			MessageHandler.getInstance().log("Could not find ConfigurationSection RankModifiers");
@@ -158,6 +158,12 @@ public class Config extends AutoUpdateConfigLoader {
 	
 	public void setGlobalBonus(double set) {
 		this.globalBonus = set;
+	}
+
+	
+	public double getMoneyLimit() {
+		
+		return config.getDouble("MaxMoneyPrHour",300.0);
 	}
 	
 

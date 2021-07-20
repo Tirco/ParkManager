@@ -82,6 +82,9 @@ public class EntityInteractListener implements Listener{
 		        			player.performCommand(cmd);
 		        			//player.sendMessage("Attempting to start game: " + gameName);
 		        			
+		        		} else if(nameClean.equalsIgnoreCase("atm")) {
+		        			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "atm " + player.getName());
+		        			
 		        		}
 		        	}
 		        }

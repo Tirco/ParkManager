@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import net.md_5.bungee.api.ChatColor;
 import tv.tirco.parkmanager.ParkManager;
 
 public class PlayerData {
@@ -172,7 +173,21 @@ public class PlayerData {
 		return profile.getStoredCards().size();
 	}
 
+	public boolean getMoneyLimitReached(boolean update) {
+		return profile.getMoneyLimitReached(update);
+	}
 	
+	
+	
+	public void updateRecentMoney() {
+		profile.updateRecentMoney();
+	}
+	
+	public void addRecentMoney(double amount) {
+		profile.addRecentMoney(amount);
+	}
 
-	
+	public double getMoneyInLastHour() {
+		return profile.getMoneyInLastHour();
+	}	
 }

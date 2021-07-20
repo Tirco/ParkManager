@@ -14,6 +14,10 @@ commands:
         description: plunk that butt down on the ground
         permission: parkmanager.sit
         usage: /<command>
+    granttag:
+        description: Grant a deluxetag to a player.
+        permission: parkmanager.command.granttag
+        usage: /granttag <name> <tag>
     hideiteminfo:
         description: hides all the flags on the item in hand.
         permission: parkmanager.command.hideiteminfo
@@ -114,8 +118,11 @@ commands:
         usage: /<command>
 permissions:
     parkmanager.sit:
-        descrption: "Permission to use the /sit command."
+        description: "Permission to use the /sit command."
         default: op
+    parkmanager.command.granttag:
+        description: "Permission to grant tags to players."
+        default: op    
     parkmanager.command.namecolor:
         description: "Permission to use the /namecolor command."
         default: op

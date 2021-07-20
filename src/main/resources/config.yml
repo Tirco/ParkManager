@@ -11,6 +11,7 @@ RankModifiers: ##Add ranks, the top rank will be checked first, if they have it,
     Wither: 1.35
     Guardian: 1.20
     Blaze: 1.10
+MaxMoneyPrHour: 300.0
 SQLite:
     Filename: "PlayerDatabase"
 worldprotection:
