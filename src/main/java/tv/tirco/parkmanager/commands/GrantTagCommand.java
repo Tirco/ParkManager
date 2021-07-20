@@ -23,6 +23,7 @@ public class GrantTagCommand implements CommandExecutor,TabCompleter{
 		
 		Player player = Bukkit.getPlayer(playername);
 		if(player == null) {
+			@SuppressWarnings("deprecation")
 			OfflinePlayer oPlayer = Bukkit.getOfflinePlayer(args[0]);
 			if(!oPlayer.hasPlayedBefore()) {
 				sender.sendMessage("Unknown player: " + playername);
